@@ -62,6 +62,11 @@ export default {
           DEFAULT: "hsl(var(--info))",
           foreground: "hsl(var(--info-foreground))",
         },
+        academy: {
+          DEFAULT: "hsl(var(--academy))",
+          foreground: "hsl(var(--academy-foreground))",
+          glow: "hsl(var(--academy-glow))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

@@ -13,6 +13,7 @@ export const Navbar = () => {
     { to: "/dashboard", label: "Dashboard" },
     { to: "/quiz", label: "Quiz" },
     { to: "/glossary", label: "Glossário" },
+    { to: "/academy", label: "Academy", highlight: true },
   ];
 
   return (
@@ -36,8 +37,12 @@ export const Navbar = () => {
                 key={item.to}
                 to={item.to}
                 end={item.to === "/"}
-                className="rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                activeClassName="bg-muted text-foreground"
+                className={
+                  item.highlight
+                    ? "rounded-lg px-4 py-2 text-sm font-medium text-academy transition-colors hover:bg-academy/10 hover:text-academy-glow"
+                    : "rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                }
+                activeClassName={item.highlight ? "bg-academy/20 text-academy-glow" : "bg-muted text-foreground"}
               >
                 {item.label}
               </NavLink>
@@ -65,8 +70,12 @@ export const Navbar = () => {
                   key={item.to}
                   to={item.to}
                   end={item.to === "/"}
-                  className="rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                  activeClassName="bg-muted text-foreground"
+                  className={
+                    item.highlight
+                      ? "rounded-lg px-4 py-3 text-sm font-medium text-academy transition-colors hover:bg-academy/10 hover:text-academy-glow"
+                      : "rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  }
+                  activeClassName={item.highlight ? "bg-academy/20 text-academy-glow" : "bg-muted text-foreground"}
                   onClick={() => setIsOpen(false)}
                 >
                   {item.label}

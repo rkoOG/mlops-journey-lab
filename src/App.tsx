@@ -9,6 +9,10 @@ import Simulation from "./pages/Simulation";
 import Dashboard from "./pages/Dashboard";
 import Quiz from "./pages/Quiz";
 import Glossary from "./pages/Glossary";
+import Academy from "./pages/Academy";
+import AcademyTrail from "./pages/AcademyTrail";
+import AcademyModule from "./pages/AcademyModule";
+import AcademyProgress from "./pages/AcademyProgress";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +30,10 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/glossary" element={<Glossary />} />
+          <Route path="/academy" element={<Academy />} />
+          <Route path="/academy/trail/:trailId" element={<AcademyTrail />} />
+          <Route path="/academy/trail/:trailId/module/:moduleId" element={<AcademyModule />} />
+          <Route path="/academy/progress" element={<AcademyProgress />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -53,6 +53,11 @@
     --info: 217 91% 60%;
     --info-foreground: 0 0% 100%;
 
+    /* Academy - Gold accent */
+    --academy: 43 74% 49%;
+    --academy-foreground: 0 0% 100%;
+    --academy-glow: 48 90% 70%;
+
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(262 83% 58%));
     --gradient-success: linear-gradient(135deg, hsl(160 84% 39%), hsl(160 84% 50%));
@@ -117,6 +122,11 @@
     
     --info: 217 91% 60%;
     --info-foreground: 0 0% 100%;
+
+    /* Academy - Gold accent */
+    --academy: 43 74% 49%;
+    --academy-foreground: 220 53% 8%;
+    --academy-glow: 48 90% 70%;
 
     --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(262 83% 58%));
     --gradient-success: linear-gradient(135deg, hsl(160 84% 39%), hsl(160 84% 50%));
