@@ -17,6 +17,7 @@ import {
   ExternalLink 
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
+import introVideo from "@/assets/mlops-intro-video.mp4";
 
 const moduleData = {
   "mlops-fundamentals": {
@@ -187,11 +188,15 @@ export default function AcademyModule() {
                 </CardHeader>
                 <CardContent>
                   {/* Video/Reading Area */}
-                  <div className="aspect-video bg-muted rounded-lg flex items-center justify-center mb-6">
-                    <div className="text-center">
-                      <PlayCircle className="h-16 w-16 text-muted-foreground mx-auto mb-2" />
-                      <p className="text-sm text-muted-foreground">Área de vídeo/conteúdo</p>
-                    </div>
+                  <div className="aspect-video bg-muted rounded-lg overflow-hidden mb-6">
+                    <video 
+                      controls 
+                      className="w-full h-full"
+                      poster=""
+                    >
+                      <source src={introVideo} type="video/mp4" />
+                      O teu navegador não suporta vídeos.
+                    </video>
                   </div>
                 </CardContent>
               </Card>
