@@ -14,133 +14,183 @@ import {
   Circle, 
   ChevronLeft, 
   ChevronRight,
-  ExternalLink 
+  Clock,
+  Award
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import introVideo from "@/assets/mlops-intro-video.mp4";
 
-const moduleData = {
-  "mlops-fundamentals": {
-    1: {
-      title: "Introdução ao MLOps",
-      description:
-        "Compreende os fundamentos de MLOps e porque é essencial para projetos de ML em produção.",
-      duration: "1h",
-      lessons: [
-        {
-          id: 1,
-          title: "O que é MLOps?",
-          type: "video",
-          duration: "10min",
-          completed: false,
-          videoUrl: introVideo,
-          content: {
-            overview:
-              "Neste módulo vais aprender os conceitos fundamentais de MLOps, incluindo o ciclo de vida completo de um modelo de machine learning em produção.",
-            keyPoints: [
-              "Definição e importância de MLOps",
-              "Diferenças entre ML tradicional e MLOps",
-              "Componentes principais de um sistema MLOps",
-              "Ciclo de vida: desenvolvimento → deployment → monitorização",
-            ],
-            codeSnippet:
-              "# Exemplo: Pipeline MLOps básico\nimport mlflow\nfrom sklearn.model_selection import train_test_split\n\n# 1. Carregar e preparar dados\nX_train, X_test, y_train, y_test = train_test_split(X, y)\n\n# 2. Treinar modelo com tracking\nwith mlflow.start_run():\n    model = train_model(X_train, y_train)\n    \n    # Log métricas\n    mlflow.log_metric('accuracy', accuracy)\n    mlflow.log_metric('f1_score', f1)\n    \n    # Log modelo\n    mlflow.sklearn.log_model(model, 'model')",
-            exercises: [
-              "Identifica os componentes principais de um pipeline MLOps",
-              "Descreve 3 desafios de modelos ML em produção",
-              "Lista ferramentas open-source para cada etapa do ciclo",
-            ],
-          },
-        },
-        {
-          id: 2,
-          title: "Ciclo de vida de ML",
-          type: "reading",
-          duration: "15min",
-          completed: false,
-          videoUrl: introVideo,
-          content: {
-            overview:
-              "Explora cada fase do ciclo de vida de ML: desde a ingestão de dados até à monitorização em produção.",
-            keyPoints: [
-              "Fases principais: dados, treino, validação, deployment, monitorização",
-              "Iterações contínuas e feedback loop",
-              "Importância de automatizar o ciclo de vida",
-              "Onde MLOps acrescenta valor em cada etapa",
-            ],
-            codeSnippet:
-              "# Exemplo simplificado de ciclo de vida\nfor step in ['ingest', 'validate', 'train', 'evaluate', 'deploy']:\n    run_step(step)\n    log_status(step)",
-            exercises: [
-              "Desenha o ciclo de vida de ML da tua organização (mesmo que hipotético)",
-              "Indica em que fases faz mais sentido automatizar primeiro",
-            ],
-          },
-        },
-        {
-          id: 3,
-          title: "Desafios em produção",
-          type: "video",
-          duration: "12min",
-          completed: false,
-          videoUrl: introVideo,
-          content: {
-            overview:
-              "Entende os principais desafios de ter modelos em produção: drift, monitorização, versões e confiabilidade.",
-            keyPoints: [
-              "Dados em mudança (data drift e concept drift)",
-              "Monitorização de métricas de negócio vs métricas de modelo",
-              "Gestão de versões de modelos e rollback",
-              "Alertas e SLOs para sistemas de ML",
-            ],
-            codeSnippet:
-              "# Exemplo de verificação simples de drift\nimport numpy as np\n\nbaseline_mean = 0.5\ncurrent_mean = np.mean(current_feature_values)\n\nif abs(current_mean - baseline_mean) > 0.1:\n    alert('Possível data drift detectado')",
-            exercises: [
-              "Lista 3 sinais de que um modelo em produção pode estar degradado",
-              "Descreve como reagirias a um alerta de drift elevado",
-            ],
-          },
-        },
-        {
-          id: 4,
-          title: "Ferramentas essenciais",
-          type: "reading",
-          duration: "18min",
-          completed: false,
-          videoUrl: introVideo,
-          content: {
-            overview:
-              "Conhece ferramentas populares para cada etapa do pipeline MLOps, desde tracking até orquestração.",
-            keyPoints: [
-              "Tracking e experimentação (MLflow, Weights & Biases)",
-              "Orquestração (Airflow, Prefect, Dagster)",
-              "Servir modelos (FastAPI, BentoML, KFServing)",
-              "Monitorização (Prometheus, Grafana, ferramentas especializadas)",
-            ],
-            codeSnippet:
-              "# Exemplo: configuração de experimento\nimport mlflow\n\nmlflow.set_experiment('mlops_explorer_demo')\nwith mlflow.start_run(run_name='baseline_model'):\n    mlflow.log_param('model_type', 'RandomForest')\n    mlflow.log_metric('accuracy', 0.91)",
-            exercises: [
-              "Mapeia pelo menos uma ferramenta para cada etapa do ciclo MLOps",
-              "Escolhe um stack mínimo viável de MLOps para um projeto pequeno",
-            ],
-          },
-        },
-      ],
-    },
+const courseData = {
+  "intro-mlops": {
+    title: "Introdução ao MLOps",
+    description: "Conceitos básicos e casos de uso de MLOps",
+    duration: "2h",
+    level: "Iniciante",
+    lessons: [
+      {
+        id: 1,
+        title: "O que é MLOps?",
+        type: "video",
+        duration: "15min",
+        completed: false,
+        videoUrl: introVideo,
+        content: {
+          overview: "Introdução aos conceitos fundamentais de MLOps e sua importância no ciclo de vida de ML.",
+          keyPoints: [
+            "Definição de MLOps e seus objetivos",
+            "Diferenças entre DevOps e MLOps",
+            "Benefícios de implementar MLOps",
+            "Casos de uso reais de MLOps"
+          ],
+          codeSnippet: "# Conceitos básicos\n# MLOps = ML + Dev + Ops\n# Objetivo: automatizar e monitorizar o ciclo de vida de ML",
+          exercises: [
+            "Identifica 3 diferenças entre DevOps e MLOps",
+            "Lista 5 benefícios de implementar MLOps numa organização"
+          ]
+        }
+      },
+      {
+        id: 2,
+        title: "Casos de Uso de MLOps",
+        type: "reading",
+        duration: "20min",
+        completed: false,
+        videoUrl: introVideo,
+        content: {
+          overview: "Explora casos de uso reais de MLOps em diferentes indústrias.",
+          keyPoints: [
+            "MLOps em e-commerce e recomendação",
+            "MLOps em serviços financeiros",
+            "MLOps em saúde e diagnóstico",
+            "MLOps em manufatura e IoT"
+          ],
+          codeSnippet: "# Exemplo: Sistema de recomendação\n# Pipeline de treino → deployment → monitorização\n# Retraining automático baseado em feedback",
+          exercises: [
+            "Escolhe uma indústria e descreve como MLOps pode ajudar",
+            "Identifica desafios específicos de MLOps nessa indústria"
+          ]
+        }
+      }
+    ]
   },
+  "python-ml-pipeline": {
+    title: "Python para ML Pipeline",
+    description: "Best practices e ferramentas Python para pipelines de ML",
+    duration: "4h",
+    level: "Iniciante",
+    lessons: [
+      {
+        id: 1,
+        title: "Configuração do Ambiente Python",
+        type: "video",
+        duration: "25min",
+        completed: false,
+        videoUrl: introVideo,
+        content: {
+          overview: "Aprende a configurar um ambiente Python robusto para projetos de ML.",
+          keyPoints: [
+            "Gestão de dependências com Poetry/Pipenv",
+            "Ambientes virtuais e isolamento",
+            "Configuração de ferramentas de desenvolvimento",
+            "Boas práticas de estruturação de projetos"
+          ],
+          codeSnippet: "# Criar ambiente virtual\npython -m venv mlops-env\nsource mlops-env/bin/activate\n\n# Instalar dependências\npip install scikit-learn pandas mlflow",
+          exercises: [
+            "Cria um projeto Python com Poetry",
+            "Configura pre-commit hooks para qualidade de código"
+          ]
+        }
+      },
+      {
+        id: 2,
+        title: "Data Processing com Pandas",
+        type: "video",
+        duration: "30min",
+        completed: false,
+        videoUrl: introVideo,
+        content: {
+          overview: "Técnicas de processamento de dados com Pandas para ML.",
+          keyPoints: [
+            "Leitura e escrita de dados",
+            "Limpeza e transformação de dados",
+            "Feature engineering",
+            "Validação de dados"
+          ],
+          codeSnippet: "import pandas as pd\n\n# Carregar dados\ndf = pd.read_csv('data.csv')\n\n# Limpeza\ndf = df.dropna()\ndf['feature'] = df['feature'].apply(lambda x: x.strip())\n\n# Feature engineering\ndf['new_feature'] = df['a'] * df['b']",
+          exercises: [
+            "Cria um pipeline de limpeza de dados",
+            "Implementa validação de schema com Pandera"
+          ]
+        }
+      }
+    ]
+  },
+  "docker-kubernetes-ml": {
+    title: "Docker & Kubernetes para ML",
+    description: "Containerização e orquestração de aplicações de ML",
+    duration: "6h",
+    level: "Intermédio",
+    lessons: [
+      {
+        id: 1,
+        title: "Introdução ao Docker",
+        type: "video",
+        duration: "30min",
+        completed: false,
+        videoUrl: introVideo,
+        content: {
+          overview: "Aprende os fundamentos de Docker para containerizar aplicações de ML.",
+          keyPoints: [
+            "Conceitos básicos de containers",
+            "Criação de Dockerfiles",
+            "Build e gestão de imagens",
+            "Docker Compose para multi-container"
+          ],
+          codeSnippet: "# Dockerfile para aplicação ML\nFROM python:3.9-slim\n\nWORKDIR /app\n\nCOPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\n\nCOPY . .\n\nCMD [\"python\", \"app.py\"]",
+          exercises: [
+            "Cria um Dockerfile para uma aplicação de ML",
+            "Usa Docker Compose para orquestrar API + Database"
+          ]
+        }
+      },
+      {
+        id: 2,
+        title: "Kubernetes para ML",
+        type: "video",
+        duration: "45min",
+        completed: false,
+        videoUrl: introVideo,
+        content: {
+          overview: "Orquestra aplicações de ML em produção com Kubernetes.",
+          keyPoints: [
+            "Arquitetura de Kubernetes",
+            "Deployments e Services",
+            "ConfigMaps e Secrets",
+            "Auto-scaling de modelos ML"
+          ],
+          codeSnippet: "# deployment.yaml\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: ml-model\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: ml-model\n  template:\n    metadata:\n      labels:\n        app: ml-model\n    spec:\n      containers:\n      - name: model-server\n        image: ml-model:v1\n        ports:\n        - containerPort: 8080",
+          exercises: [
+            "Cria um deployment Kubernetes para um modelo",
+            "Configura auto-scaling baseado em CPU/memória"
+          ]
+        }
+      }
+    ]
+  }
 };
 
-export default function AcademyModule() {
-  const { trailId, moduleId } = useParams();
+export default function AcademyCourse() {
+  const { courseId } = useParams();
   const [currentLesson, setCurrentLesson] = useState(0);
   
-  const module = moduleData[trailId as keyof typeof moduleData]?.[Number(moduleId) as keyof typeof moduleData["mlops-fundamentals"]];
+  const course = courseData[courseId as keyof typeof courseData];
 
-  if (!module) {
+  if (!course) {
     return (
       <div className="min-h-screen flex flex-col bg-background">
         <Navbar />
         <main className="flex-1 container mx-auto px-4 py-20 text-center">
-          <h1 className="text-3xl font-bold mb-4">Módulo não encontrado</h1>
+          <h1 className="text-3xl font-bold mb-4">Curso não encontrado</h1>
           <Button asChild>
             <Link to="/academy">Voltar à Academy</Link>
           </Button>
@@ -150,8 +200,8 @@ export default function AcademyModule() {
     );
   }
 
-  const completedLessons = module.lessons.filter(l => l.completed).length;
-  const progress = (completedLessons / module.lessons.length) * 100;
+  const completedLessons = course.lessons.filter(l => l.completed).length;
+  const progress = (completedLessons / course.lessons.length) * 100;
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -164,15 +214,22 @@ export default function AcademyModule() {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <Button variant="ghost" size="sm" asChild className="mb-2">
-                  <Link to={`/academy/trail/${trailId}`}>← Voltar à trilha</Link>
+                  <Link to="/academy">← Voltar à Academy</Link>
                 </Button>
                 <h1 className="text-2xl md:text-3xl font-bold">
-                  Módulo {moduleId}: {module.title}
+                  {course.title}
                 </h1>
-                <p className="text-muted-foreground mt-1">{module.description}</p>
+                <p className="text-muted-foreground mt-1">{course.description}</p>
               </div>
               <div className="flex items-center gap-4">
-                <Badge variant="outline">{module.duration}</Badge>
+                <Badge variant="outline" className="flex items-center gap-1">
+                  <Clock className="h-3 w-3" />
+                  {course.duration}
+                </Badge>
+                <Badge variant="outline" className="flex items-center gap-1">
+                  <Award className="h-3 w-3" />
+                  {course.level}
+                </Badge>
                 <div className="text-right">
                   <div className="text-sm font-medium">{Math.round(progress)}%</div>
                   <Progress value={progress} className="w-24 h-2" />
@@ -191,7 +248,7 @@ export default function AcademyModule() {
                   <CardTitle className="text-lg">Conteúdos</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  {module.lessons.map((lesson, index) => (
+                  {course.lessons.map((lesson, index) => (
                     <button
                       key={lesson.id}
                       onClick={() => setCurrentLesson(index)}
@@ -233,24 +290,24 @@ export default function AcademyModule() {
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle>{module.lessons[currentLesson].title}</CardTitle>
+                      <CardTitle>{course.lessons[currentLesson].title}</CardTitle>
                       <CardDescription className="flex items-center gap-2 mt-2">
-                        {module.lessons[currentLesson].type === "video" ? (
+                        {course.lessons[currentLesson].type === "video" ? (
                           <PlayCircle className="h-4 w-4" />
                         ) : (
                           <BookOpen className="h-4 w-4" />
                         )}
-                        {module.lessons[currentLesson].duration}
+                        {course.lessons[currentLesson].duration}
                       </CardDescription>
                     </div>
-                    <Badge variant={module.lessons[currentLesson].completed ? "default" : "outline"}>
-                      {module.lessons[currentLesson].completed ? "Concluída" : "Em progresso"}
+                    <Badge variant={course.lessons[currentLesson].completed ? "default" : "outline"}>
+                      {course.lessons[currentLesson].completed ? "Concluída" : "Em progresso"}
                     </Badge>
                   </div>
                 </CardHeader>
                 <CardContent>
                   {/* Video/Reading Area */}
-                  {module.lessons[currentLesson].type === "video" ? (
+                  {course.lessons[currentLesson].type === "video" ? (
                     <div className="aspect-video bg-muted rounded-lg overflow-hidden mb-6">
                       <video 
                         key={currentLesson}
@@ -258,7 +315,7 @@ export default function AcademyModule() {
                         className="w-full h-full"
                         poster=""
                       >
-                        <source src={module.lessons[currentLesson].videoUrl} type="video/mp4" />
+                        <source src={course.lessons[currentLesson].videoUrl} type="video/mp4" />
                         O teu navegador não suporta vídeos.
                       </video>
                     </div>
@@ -283,16 +340,16 @@ export default function AcademyModule() {
                 <TabsContent value="overview" className="space-y-4 mt-6">
                   <Card>
                     <CardHeader>
-                      <CardTitle>Sobre este módulo</CardTitle>
+                      <CardTitle>Sobre esta lição</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <p className="text-muted-foreground">
-                        {module.lessons[currentLesson].content.overview}
+                        {course.lessons[currentLesson].content.overview}
                       </p>
                       <div>
                         <h4 className="font-semibold mb-3">Pontos-chave:</h4>
                         <ul className="space-y-2">
-                          {module.lessons[currentLesson].content.keyPoints.map((point, index) => (
+                          {course.lessons[currentLesson].content.keyPoints.map((point, index) => (
                             <li key={index} className="flex gap-3">
                               <CheckCircle2 className="h-5 w-5 text-academy flex-shrink-0 mt-0.5" />
                               <span className="text-sm">{point}</span>
@@ -300,13 +357,6 @@ export default function AcademyModule() {
                           ))}
                         </ul>
                       </div>
-
-                      <Button asChild variant="outline" className="w-full">
-                        <Link to="/simulation">
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          Tentar na Simulação
-                        </Link>
-                      </Button>
                     </CardContent>
                   </Card>
                 </TabsContent>
@@ -321,7 +371,7 @@ export default function AcademyModule() {
                     </CardHeader>
                     <CardContent>
                       <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
-                        <code>{module.lessons[currentLesson].content.codeSnippet}</code>
+                        <code>{course.lessons[currentLesson].content.codeSnippet}</code>
                       </pre>
                     </CardContent>
                   </Card>
@@ -333,7 +383,7 @@ export default function AcademyModule() {
                       <CardTitle>Exercícios Práticos</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      {module.lessons[currentLesson].content.exercises.map((exercise, index) => (
+                      {course.lessons[currentLesson].content.exercises.map((exercise, index) => (
                         <div key={index} className="p-4 bg-muted rounded-lg">
                           <div className="flex gap-3">
                             <div className="flex-shrink-0 w-6 h-6 rounded-full bg-academy text-academy-foreground flex items-center justify-center text-sm font-semibold">
@@ -360,8 +410,8 @@ export default function AcademyModule() {
                 </Button>
                 <Button 
                   className="bg-academy hover:bg-academy/80 text-academy-foreground"
-                  disabled={currentLesson === module.lessons.length - 1}
-                  onClick={() => setCurrentLesson(prev => Math.min(module.lessons.length - 1, prev + 1))}
+                  disabled={currentLesson === course.lessons.length - 1}
+                  onClick={() => setCurrentLesson(prev => Math.min(course.lessons.length - 1, prev + 1))}
                 >
                   Seguinte
                   <ChevronRight className="h-4 w-4 ml-2" />

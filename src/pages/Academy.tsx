@@ -60,18 +60,21 @@ const trails = [
 
 const courses = [
   {
+    id: "intro-mlops",
     title: "Introdução ao MLOps",
     description: "Conceitos básicos e casos de uso",
     duration: "2 horas",
     level: "Iniciante",
   },
   {
+    id: "python-ml-pipeline",
     title: "Python para ML Pipeline",
     description: "Best practices e ferramentas",
     duration: "4 horas",
     level: "Iniciante",
   },
   {
+    id: "docker-kubernetes-ml",
     title: "Docker & Kubernetes para ML",
     description: "Containerização e orquestração",
     duration: "6 horas",
@@ -84,16 +87,19 @@ const resources = [
     title: "MLOps Cheat Sheet",
     description: "Referência rápida de comandos e conceitos",
     type: "PDF",
+    url: "https://ml-ops.org/content/references",
   },
   {
     title: "Pipeline Templates",
     description: "Templates prontos para diferentes casos de uso",
     type: "Código",
+    url: "https://github.com/GoogleCloudPlatform/mlops-on-gcp",
   },
   {
     title: "Artigos & Papers",
     description: "Literatura essencial sobre MLOps",
     type: "Leitura",
+    url: "https://arxiv.org/search/?query=mlops&searchtype=all",
   },
 ];
 
@@ -223,7 +229,9 @@ export default function Academy() {
                         <Clock className="h-4 w-4" />
                         {course.duration}
                       </div>
-                      <Button variant="secondary" className="w-full">Ver Curso</Button>
+                      <Button asChild variant="secondary" className="w-full">
+                        <Link to={`/academy/course/${course.id}`}>Ver Curso</Link>
+                      </Button>
                     </CardContent>
                   </Card>
                 ))}
@@ -243,7 +251,11 @@ export default function Academy() {
                       <CardDescription>{resource.description}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <Button variant="outline" className="w-full">Download</Button>
+                      <Button asChild variant="outline" className="w-full">
+                        <a href={resource.url} target="_blank" rel="noopener noreferrer">
+                          Download
+                        </a>
+                      </Button>
                     </CardContent>
                   </Card>
                 ))}
