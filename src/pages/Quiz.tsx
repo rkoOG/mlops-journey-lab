@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +6,9 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, XCircle, Trophy } from "lucide-react";
+import { CheckCircle, XCircle, Trophy, History, Award } from "lucide-react";
+import { saveQuizResult, getBestQuizScore, getQuizResults } from "@/lib/storage";
+import { toast } from "sonner";
 
 interface Question {
   question: string;
@@ -79,6 +81,13 @@ const Quiz = () => {
   const [showFeedback, setShowFeedback] = useState(false);
   const [score, setScore] = useState(0);
   const [completed, setCompleted] = useState(false);
+  const [bestScore, setBestScore] = useState(0);
+  const [attemptCount, setAttemptCount] = useState(0);
+
+  useEffect(() => {
+    setBestScore(getBestQuizScore());
+    setAttemptCount(getQuizResults().length);
+  }, []);
 
   const handleSubmit = () => {
     if (selectedAnswer === null) return;
@@ -95,6 +104,25 @@ const Quiz = () => {
       setSelectedAnswer(null);
       setShowFeedback(false);
     } else {
+      const finalScore = score + (selectedAnswer === questions[currentQuestion].correctAnswer ? 1 : 0);
+      const percentage = Math.round((finalScore / questions.length) * 100);
+      
+      saveQuizResult({
+        score: finalScore,
+        totalQuestions: questions.length,
+        percentage,
+        timestamp: Date.now(),
+      });
+      
+      const previousBest = bestScore;
+      const newBest = getBestQuizScore();
+      
+      if (newBest > previousBest) {
+        toast.success(`\ud83c\udfc6 Novo recorde! ${percentage}%`);
+      }
+      
+      setBestScore(newBest);
+      setAttemptCount(getQuizResults().length);
       setCompleted(true);
     }
   };
@@ -118,11 +146,23 @@ const Quiz = () => {
         {/* Hero Section */}
         <section className="bg-gradient-hero py-12">
           <div className="container mx-auto px-4">
-            <div className="mx-auto max-w-3xl text-center">
+            <div className="mx-auto max-w-3xl text-center space-y-4">
               <h1 className="mb-4 text-4xl font-bold md:text-5xl">Quiz MLOps</h1>
               <p className="text-lg text-muted-foreground">
                 Testa os teus conhecimentos sobre MLOps com estas perguntas
               </p>
+              {bestScore > 0 && (
+                <div className="flex items-center justify-center gap-4 text-sm">
+                  <Badge variant="outline" className="bg-primary/10">
+                    <Award className="mr-1 h-3 w-3" />
+                    Melhor: {bestScore}%
+                  </Badge>
+                  <Badge variant="outline" className="bg-muted">
+                    <History className="mr-1 h-3 w-3" />
+                    {attemptCount} {attemptCount === 1 ? "tentativa" : "tentativas"}
+                  </Badge>
+                </div>
+              )}
             </div>
           </div>
         </section>

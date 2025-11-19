@@ -126,7 +126,7 @@ export default function AcademyTrail() {
       <div className="min-h-screen flex flex-col bg-background">
         <Navbar />
         <main className="flex-1 container mx-auto px-4 py-20 text-center">
-          <h1 className="text-3xl font-bold mb-4">Trilha não encontrada</h1>
+          <h1 className="text-3xl font-bold mb-4">Curso não encontrado</h1>
           <Button asChild>
             <Link to="/academy">Voltar à Academy</Link>
           </Button>
@@ -182,7 +182,7 @@ export default function AcademyTrail() {
               {progress > 0 && (
                 <div className="space-y-2 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Progresso da Trilha</span>
+                    <span className="text-muted-foreground">Progresso do Curso</span>
                     <span className="font-medium">{Math.round(progress)}%</span>
                   </div>
                   <Progress value={progress} className="h-3" />
@@ -197,7 +197,7 @@ export default function AcademyTrail() {
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-6">
               <div>
-                <h2 className="text-2xl font-bold mb-4">Roadmap da Trilha</h2>
+                <h2 className="text-2xl font-bold mb-4">Roadmap do Curso</h2>
                 <div className="space-y-3">
                   {trail.modules.map((module, index) => (
                     <Card 
@@ -294,7 +294,7 @@ export default function AcademyTrail() {
                 asChild
               >
                 <Link to={`/academy/trail/${trailId}/module/1`}>
-                  {progress > 0 ? "Continuar Trilha" : "Iniciar Trilha"}
+                  {progress > 0 ? "Continuar Curso" : "Iniciar Curso"}
                 </Link>
               </Button>
             </div>
