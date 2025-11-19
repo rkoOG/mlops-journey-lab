@@ -23,46 +23,108 @@ const moduleData = {
   "mlops-fundamentals": {
     1: {
       title: "Introdução ao MLOps",
-      description: "Compreende os fundamentos de MLOps e porque é essencial para projetos de ML em produção.",
+      description:
+        "Compreende os fundamentos de MLOps e porque é essencial para projetos de ML em produção.",
       duration: "1h",
       lessons: [
-        { id: 1, title: "O que é MLOps?", type: "video", duration: "10min", completed: false, videoUrl: introVideo },
-        { id: 2, title: "Ciclo de vida de ML", type: "reading", duration: "15min", completed: false, videoUrl: introVideo },
-        { id: 3, title: "Desafios em produção", type: "video", duration: "12min", completed: false, videoUrl: introVideo },
-        { id: 4, title: "Ferramentas essenciais", type: "reading", duration: "18min", completed: false, videoUrl: introVideo },
+        {
+          id: 1,
+          title: "O que é MLOps?",
+          type: "video",
+          duration: "10min",
+          completed: false,
+          videoUrl: introVideo,
+          content: {
+            overview:
+              "Neste módulo vais aprender os conceitos fundamentais de MLOps, incluindo o ciclo de vida completo de um modelo de machine learning em produção.",
+            keyPoints: [
+              "Definição e importância de MLOps",
+              "Diferenças entre ML tradicional e MLOps",
+              "Componentes principais de um sistema MLOps",
+              "Ciclo de vida: desenvolvimento → deployment → monitorização",
+            ],
+            codeSnippet:
+              "# Exemplo: Pipeline MLOps básico\nimport mlflow\nfrom sklearn.model_selection import train_test_split\n\n# 1. Carregar e preparar dados\nX_train, X_test, y_train, y_test = train_test_split(X, y)\n\n# 2. Treinar modelo com tracking\nwith mlflow.start_run():\n    model = train_model(X_train, y_train)\n    \n    # Log métricas\n    mlflow.log_metric('accuracy', accuracy)\n    mlflow.log_metric('f1_score', f1)\n    \n    # Log modelo\n    mlflow.sklearn.log_model(model, 'model')",
+            exercises: [
+              "Identifica os componentes principais de um pipeline MLOps",
+              "Descreve 3 desafios de modelos ML em produção",
+              "Lista ferramentas open-source para cada etapa do ciclo",
+            ],
+          },
+        },
+        {
+          id: 2,
+          title: "Ciclo de vida de ML",
+          type: "reading",
+          duration: "15min",
+          completed: false,
+          videoUrl: introVideo,
+          content: {
+            overview:
+              "Explora cada fase do ciclo de vida de ML: desde a ingestão de dados até à monitorização em produção.",
+            keyPoints: [
+              "Fases principais: dados, treino, validação, deployment, monitorização",
+              "Iterações contínuas e feedback loop",
+              "Importância de automatizar o ciclo de vida",
+              "Onde MLOps acrescenta valor em cada etapa",
+            ],
+            codeSnippet:
+              "# Exemplo simplificado de ciclo de vida\nfor step in ['ingest', 'validate', 'train', 'evaluate', 'deploy']:\n    run_step(step)\n    log_status(step)",
+            exercises: [
+              "Desenha o ciclo de vida de ML da tua organização (mesmo que hipotético)",
+              "Indica em que fases faz mais sentido automatizar primeiro",
+            ],
+          },
+        },
+        {
+          id: 3,
+          title: "Desafios em produção",
+          type: "video",
+          duration: "12min",
+          completed: false,
+          videoUrl: introVideo,
+          content: {
+            overview:
+              "Entende os principais desafios de ter modelos em produção: drift, monitorização, versões e confiabilidade.",
+            keyPoints: [
+              "Dados em mudança (data drift e concept drift)",
+              "Monitorização de métricas de negócio vs métricas de modelo",
+              "Gestão de versões de modelos e rollback",
+              "Alertas e SLOs para sistemas de ML",
+            ],
+            codeSnippet:
+              "# Exemplo de verificação simples de drift\nimport numpy as np\n\nbaseline_mean = 0.5\ncurrent_mean = np.mean(current_feature_values)\n\nif abs(current_mean - baseline_mean) > 0.1:\n    alert('Possível data drift detectado')",
+            exercises: [
+              "Lista 3 sinais de que um modelo em produção pode estar degradado",
+              "Descreve como reagirias a um alerta de drift elevado",
+            ],
+          },
+        },
+        {
+          id: 4,
+          title: "Ferramentas essenciais",
+          type: "reading",
+          duration: "18min",
+          completed: false,
+          videoUrl: introVideo,
+          content: {
+            overview:
+              "Conhece ferramentas populares para cada etapa do pipeline MLOps, desde tracking até orquestração.",
+            keyPoints: [
+              "Tracking e experimentação (MLflow, Weights & Biases)",
+              "Orquestração (Airflow, Prefect, Dagster)",
+              "Servir modelos (FastAPI, BentoML, KFServing)",
+              "Monitorização (Prometheus, Grafana, ferramentas especializadas)",
+            ],
+            codeSnippet:
+              "# Exemplo: configuração de experimento\nimport mlflow\n\nmlflow.set_experiment('mlops_explorer_demo')\nwith mlflow.start_run(run_name='baseline_model'):\n    mlflow.log_param('model_type', 'RandomForest')\n    mlflow.log_metric('accuracy', 0.91)",
+            exercises: [
+              "Mapeia pelo menos uma ferramenta para cada etapa do ciclo MLOps",
+              "Escolhe um stack mínimo viável de MLOps para um projeto pequeno",
+            ],
+          },
+        },
       ],
-      content: {
-        overview: "Neste módulo vais aprender os conceitos fundamentais de MLOps, incluindo o ciclo de vida completo de um modelo de machine learning em produção.",
-        videoUrl: "https://example.com/video", // Placeholder
-        keyPoints: [
-          "Definição e importância de MLOps",
-          "Diferenças entre ML tradicional e MLOps",
-          "Componentes principais de um sistema MLOps",
-          "Ciclo de vida: desenvolvimento → deployment → monitorização",
-        ],
-        codeSnippet: `# Exemplo: Pipeline MLOps básico
-import mlflow
-from sklearn.model_selection import train_test_split
-
-# 1. Carregar e preparar dados
-X_train, X_test, y_train, y_test = train_test_split(X, y)
-
-# 2. Treinar modelo com tracking
-with mlflow.start_run():
-    model = train_model(X_train, y_train)
-    
-    # Log métricas
-    mlflow.log_metric("accuracy", accuracy)
-    mlflow.log_metric("f1_score", f1)
-    
-    # Log modelo
-    mlflow.sklearn.log_model(model, "model")`,
-        exercises: [
-          "Identifica os componentes principais de um pipeline MLOps",
-          "Descreve 3 desafios de modelos ML em produção",
-          "Lista ferramentas open-source para cada etapa do ciclo",
-        ],
-      },
     },
   },
 };
@@ -224,12 +286,13 @@ export default function AcademyModule() {
                       <CardTitle>Sobre este módulo</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <p className="text-muted-foreground">{module.content.overview}</p>
-                      
+                      <p className="text-muted-foreground">
+                        {module.lessons[currentLesson].content.overview}
+                      </p>
                       <div>
                         <h4 className="font-semibold mb-3">Pontos-chave:</h4>
                         <ul className="space-y-2">
-                          {module.content.keyPoints.map((point, index) => (
+                          {module.lessons[currentLesson].content.keyPoints.map((point, index) => (
                             <li key={index} className="flex gap-3">
                               <CheckCircle2 className="h-5 w-5 text-academy flex-shrink-0 mt-0.5" />
                               <span className="text-sm">{point}</span>
@@ -258,7 +321,7 @@ export default function AcademyModule() {
                     </CardHeader>
                     <CardContent>
                       <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
-                        <code>{module.content.codeSnippet}</code>
+                        <code>{module.lessons[currentLesson].content.codeSnippet}</code>
                       </pre>
                     </CardContent>
                   </Card>
@@ -270,7 +333,7 @@ export default function AcademyModule() {
                       <CardTitle>Exercícios Práticos</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      {module.content.exercises.map((exercise, index) => (
+                      {module.lessons[currentLesson].content.exercises.map((exercise, index) => (
                         <div key={index} className="p-4 bg-muted rounded-lg">
                           <div className="flex gap-3">
                             <div className="flex-shrink-0 w-6 h-6 rounded-full bg-academy text-academy-foreground flex items-center justify-center text-sm font-semibold">
