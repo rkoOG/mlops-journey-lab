@@ -26,10 +26,10 @@ const moduleData = {
       description: "Compreende os fundamentos de MLOps e porque é essencial para projetos de ML em produção.",
       duration: "1h",
       lessons: [
-        { id: 1, title: "O que é MLOps?", type: "video", duration: "10min", completed: false },
-        { id: 2, title: "Ciclo de vida de ML", type: "reading", duration: "15min", completed: false },
-        { id: 3, title: "Desafios em produção", type: "video", duration: "12min", completed: false },
-        { id: 4, title: "Ferramentas essenciais", type: "reading", duration: "18min", completed: false },
+        { id: 1, title: "O que é MLOps?", type: "video", duration: "10min", completed: false, videoUrl: introVideo },
+        { id: 2, title: "Ciclo de vida de ML", type: "reading", duration: "15min", completed: false, videoUrl: introVideo },
+        { id: 3, title: "Desafios em produção", type: "video", duration: "12min", completed: false, videoUrl: introVideo },
+        { id: 4, title: "Ferramentas essenciais", type: "reading", duration: "18min", completed: false, videoUrl: introVideo },
       ],
       content: {
         overview: "Neste módulo vais aprender os conceitos fundamentais de MLOps, incluindo o ciclo de vida completo de um modelo de machine learning em produção.",
@@ -188,16 +188,26 @@ export default function AcademyModule() {
                 </CardHeader>
                 <CardContent>
                   {/* Video/Reading Area */}
-                  <div className="aspect-video bg-muted rounded-lg overflow-hidden mb-6">
-                    <video 
-                      controls 
-                      className="w-full h-full"
-                      poster=""
-                    >
-                      <source src={introVideo} type="video/mp4" />
-                      O teu navegador não suporta vídeos.
-                    </video>
-                  </div>
+                  {module.lessons[currentLesson].type === "video" ? (
+                    <div className="aspect-video bg-muted rounded-lg overflow-hidden mb-6">
+                      <video 
+                        key={currentLesson}
+                        controls 
+                        className="w-full h-full"
+                        poster=""
+                      >
+                        <source src={module.lessons[currentLesson].videoUrl} type="video/mp4" />
+                        O teu navegador não suporta vídeos.
+                      </video>
+                    </div>
+                  ) : (
+                    <div className="aspect-video bg-muted rounded-lg flex items-center justify-center mb-6">
+                      <div className="text-center">
+                        <BookOpen className="h-16 w-16 text-muted-foreground mx-auto mb-2" />
+                        <p className="text-sm text-muted-foreground">Conteúdo de leitura</p>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
 
