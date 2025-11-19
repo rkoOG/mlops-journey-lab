@@ -18,26 +18,26 @@ const Index = () => {
               <div className="space-y-8 animate-fade-in-up">
                 <div className="space-y-4">
                   <h1 className="text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
-                    Aprende MLOps{" "}
+                    MLOps Academy:{" "}
                     <span className="bg-gradient-primary bg-clip-text text-transparent">
-                      Fazendo
+                      Aprende Fazendo
                     </span>
                   </h1>
                   <p className="text-lg text-muted-foreground md:text-xl">
-                    Explora, pratica e domina o ciclo completo de MLOps com simulações
-                    interativas e exemplos práticos. Ideal para estudantes e profissionais júnior.
+                    Plataforma educacional completa com trilhas estruturadas, exercícios práticos e
+                    quizzes interativos. Do zero à produção em MLOps e LLMOps.
                   </p>
                 </div>
 
                 <div className="flex flex-col gap-4 sm:flex-row">
                   <Button asChild size="lg" variant="hero">
-                    <a href="/pipeline">
-                      Explorar Pipeline
+                    <a href="/academy">
+                      Iniciar Aprendizagem
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </a>
                   </Button>
                   <Button asChild size="lg" variant="outline">
-                    <a href="/simulation">Correr Simulação</a>
+                    <a href="/quiz">Testar Conhecimentos</a>
                   </Button>
                 </div>
               </div>
@@ -61,68 +61,68 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="mx-auto mb-12 max-w-3xl text-center">
               <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-                Aprende MLOps de Forma Prática
+                Cursos Estruturados de MLOps
               </h2>
               <p className="text-lg text-muted-foreground">
-                Três experiências interativas para dominar MLOps do zero à produção
+                Desde fundamentos até tópicos avançados, com conteúdo prático e progressivo
               </p>
             </div>
 
             <div className="grid gap-6 md:grid-cols-3">
-              {/* Feature 1 */}
+              {/* Trail 1 */}
               <Card className="group transition-all duration-300 hover:-translate-y-2 hover:shadow-card-hover">
                 <CardContent className="p-8">
                   <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-primary">
                     <Workflow className="h-7 w-7 text-primary-foreground" />
                   </div>
-                  <h3 className="mb-3 text-2xl font-bold">Pipeline Interativo</h3>
+                  <h3 className="mb-3 text-2xl font-bold">MLOps Fundamentals</h3>
                   <p className="mb-4 text-muted-foreground">
-                    Explora cada etapa do ciclo MLOps de forma visual. Clica para ver ferramentas,
-                    riscos e código de exemplo.
+                    Aprende os fundamentos de MLOps desde a ingestão de dados até à monitorização em produção.
+                    6 módulos • 8 horas
                   </p>
                   <Button asChild variant="ghost" className="group-hover:text-primary">
-                    <a href="/pipeline">
-                      Explorar
+                    <a href="/academy">
+                      Começar
                       <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </a>
                   </Button>
                 </CardContent>
               </Card>
 
-              {/* Feature 2 */}
+              {/* Trail 2 */}
               <Card className="group transition-all duration-300 hover:-translate-y-2 hover:shadow-card-hover">
                 <CardContent className="p-8">
                   <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-success">
                     <Play className="h-7 w-7 text-success-foreground" />
                   </div>
-                  <h3 className="mb-3 text-2xl font-bold">Simulação de Treino</h3>
+                  <h3 className="mb-3 text-2xl font-bold">CI/CD para ML</h3>
                   <p className="mb-4 text-muted-foreground">
-                    Executa uma simulação completa de treino e deployment. Observa logs em tempo
-                    real e resultados.
+                    Implementa pipelines de integração e deployment contínuo para modelos ML.
+                    5 módulos • 6 horas
                   </p>
                   <Button asChild variant="ghost" className="group-hover:text-success">
-                    <a href="/simulation">
-                      Executar
+                    <a href="/academy">
+                      Começar
                       <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </a>
                   </Button>
                 </CardContent>
               </Card>
 
-              {/* Feature 3 */}
+              {/* Trail 3 */}
               <Card className="group transition-all duration-300 hover:-translate-y-2 hover:shadow-card-hover">
                 <CardContent className="p-8">
                   <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-glow">
                     <BarChart3 className="h-7 w-7 text-accent-foreground" />
                   </div>
-                  <h3 className="mb-3 text-2xl font-bold">Dashboard</h3>
+                  <h3 className="mb-3 text-2xl font-bold">Chatbots & LLM Ops</h3>
                   <p className="mb-4 text-muted-foreground">
-                    Visualiza métricas de monitorização, detecção de drift e performance em
-                    produção.
+                    Constrói e opera chatbots com Large Language Models em produção.
+                    7 módulos • 10 horas
                   </p>
                   <Button asChild variant="ghost" className="group-hover:text-accent">
-                    <a href="/dashboard">
-                      Ver Dashboard
+                    <a href="/academy">
+                      Começar
                       <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </a>
                   </Button>
@@ -137,15 +137,15 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-3xl text-center text-primary-foreground">
               <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-                Pronto para Começar?
+                Começa a Tua Jornada em MLOps
               </h2>
               <p className="mb-8 text-lg opacity-90">
-                Explora o pipeline MLOps completo, faz o quiz para testar conhecimentos ou
-                consulta o glossário detalhado.
+                Escolhe um curso, testa os teus conhecimentos com quizzes
+                ou consulta o glossário com termos essenciais.
               </p>
               <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
                 <Button asChild size="lg" variant="secondary">
-                  <a href="/pipeline">Começar Agora</a>
+                  <a href="/academy">Explorar Cursos</a>
                 </Button>
                 <Button asChild size="lg" variant="secondary" className="bg-primary text-primary-foreground hover:bg-primary/80 border-0">
                   <a href="/quiz">Fazer Quiz</a>

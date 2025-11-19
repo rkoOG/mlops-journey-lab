@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, Clock, Award, TrendingUp, Search } from "lucide-react";
 import { Link } from "react-router-dom";
+import { getTrailProgress } from "@/lib/storage";
 
 const trails = [
   {
@@ -96,6 +98,17 @@ const resources = [
 ];
 
 export default function Academy() {
+  const [trailsProgress, setTrailsProgress] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    const progress = getTrailProgress();
+    const progressMap: Record<string, number> = {};
+    progress.forEach(p => {
+      progressMap[p.trailId] = p.progress;
+    });
+    setTrailsProgress(progressMap);
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
@@ -109,10 +122,11 @@ export default function Academy() {
               <span className="text-sm font-medium text-academy">Aprende no teu ritmo</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-academy via-academy-glow to-primary bg-clip-text text-transparent">
-              Academy: Trilhas de MLOps e Chatbots
+              Cursos de MLOps
             </h1>
             <p className="text-lg text-muted-foreground mb-8">
-              Conteúdos gratuitos e trilhas estruturadas para dominar MLOps, desde os fundamentos até tópicos avançados de produção.
+              Plataforma educacional completa com conteúdo estruturado, exercícios práticos e avaliações.
+              Do zero à produção em MLOps e LLMOps.
             </p>
           </div>
         </section>
@@ -121,8 +135,8 @@ export default function Academy() {
         <section className="container mx-auto px-4 pb-20">
           <Tabs defaultValue="trilhas" className="w-full">
             <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 mb-12">
-              <TabsTrigger value="trilhas">Trilhas</TabsTrigger>
-              <TabsTrigger value="cursos">Cursos</TabsTrigger>
+              <TabsTrigger value="trilhas">Cursos</TabsTrigger>
+              <TabsTrigger value="cursos">Tutoriais</TabsTrigger>
               <TabsTrigger value="recursos">Recursos</TabsTrigger>
             </TabsList>
 
@@ -131,7 +145,7 @@ export default function Academy() {
               <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                 <div className="relative w-full md:w-96">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input placeholder="Pesquisar trilhas..." className="pl-10" />
+                  <Input placeholder="Pesquisar cursos..." className="pl-10" />
                 </div>
                 <div className="flex gap-2 flex-wrap">
                   <Badge variant="outline" className="cursor-pointer hover:bg-muted">Iniciante</Badge>
@@ -141,50 +155,53 @@ export default function Academy() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {trails.map((trail, index) => (
-                  <Card key={trail.id} className="group hover:shadow-card-hover transition-all duration-300 hover:scale-105 animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
-                    <CardHeader>
-                      <div className="flex items-start justify-between mb-2">
-                        <Badge variant={trail.level === "Iniciante" ? "secondary" : trail.level === "Intermédio" ? "default" : "destructive"}>
-                          {trail.level}
-                        </Badge>
-                        <BookOpen className="h-5 w-5 text-academy" />
-                      </div>
-                      <CardTitle className="text-xl group-hover:text-academy transition-colors">
-                        {trail.title}
-                      </CardTitle>
-                      <CardDescription>{trail.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <Clock className="h-4 w-4" />
-                          {trail.duration}
+                {trails.map((trail, index) => {
+                  const progress = trailsProgress[trail.id] || 0;
+                  return (
+                    <Card key={trail.id} className="group hover:shadow-card-hover transition-all duration-300 hover:scale-105 animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
+                      <CardHeader>
+                        <div className="flex items-start justify-between mb-2">
+                          <Badge variant={trail.level === "Iniciante" ? "secondary" : trail.level === "Intermédio" ? "default" : "destructive"}>
+                            {trail.level}
+                          </Badge>
+                          <BookOpen className="h-5 w-5 text-academy" />
                         </div>
-                        <div className="flex items-center gap-1">
-                          <BookOpen className="h-4 w-4" />
-                          {trail.modules} módulos
-                        </div>
-                      </div>
-                      {trail.progress > 0 && (
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-sm">
-                            <span className="text-muted-foreground">Progresso</span>
-                            <span className="font-medium">{trail.progress}%</span>
+                        <CardTitle className="text-xl group-hover:text-academy transition-colors">
+                          {trail.title}
+                        </CardTitle>
+                        <CardDescription>{trail.description}</CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                          <div className="flex items-center gap-1">
+                            <Clock className="h-4 w-4" />
+                            {trail.duration}
                           </div>
-                          <div className="h-2 bg-muted rounded-full overflow-hidden">
-                            <div className="h-full bg-academy transition-all duration-500" style={{ width: `${trail.progress}%` }} />
+                          <div className="flex items-center gap-1">
+                            <BookOpen className="h-4 w-4" />
+                            {trail.modules} módulos
                           </div>
                         </div>
-                      )}
-                      <Button asChild className="w-full bg-academy hover:bg-academy/80 text-academy-foreground">
-                        <Link to={`/academy/trail/${trail.id}`}>
-                          {trail.progress > 0 ? "Continuar" : "Iniciar Trilha"}
-                        </Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
+                        {progress > 0 && (
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span className="text-muted-foreground">Progresso</span>
+                              <span className="font-medium">{progress}%</span>
+                            </div>
+                            <div className="h-2 bg-muted rounded-full overflow-hidden">
+                              <div className="h-full bg-academy transition-all duration-500" style={{ width: `${progress}%` }} />
+                            </div>
+                          </div>
+                        )}
+                        <Button asChild className="w-full bg-academy hover:bg-academy/80 text-academy-foreground">
+                          <Link to={`/academy/trail/${trail.id}`}>
+                            {progress > 0 ? "Continuar" : "Iniciar Curso"}
+                          </Link>
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             </TabsContent>
 

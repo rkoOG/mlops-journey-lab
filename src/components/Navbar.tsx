@@ -8,12 +8,9 @@ export const Navbar = () => {
 
   const navItems = [
     { to: "/", label: "Home" },
-    { to: "/pipeline", label: "Pipeline" },
-    { to: "/simulation", label: "Simulação" },
-    { to: "/dashboard", label: "Dashboard" },
+    { to: "/academy", label: "Cursos", highlight: true },
     { to: "/quiz", label: "Quiz" },
     { to: "/glossary", label: "Glossário" },
-    { to: "/academy", label: "Academy", highlight: true },
   ];
 
   return (
