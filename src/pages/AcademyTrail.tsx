@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { BookOpen, Clock, Award, CheckCircle2, Circle, PlayCircle } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
+import { getSpecificTrailProgress } from "@/lib/storage";
 
 const trailData = {
   "mlops-fundamentals": {
@@ -35,6 +36,10 @@ const trailData = {
 export default function AcademyTrail() {
   const { trailId } = useParams();
   const trail = trailData[trailId as keyof typeof trailData];
+  
+  // Carregar progresso do localStorage
+  const trailProgress = getSpecificTrailProgress(trailId as string);
+  const completedModuleIds = trailProgress?.completedModules || [];
 
   if (!trail) {
     return (
@@ -51,8 +56,9 @@ export default function AcademyTrail() {
     );
   }
 
-  const completedModules = trail.modules.filter(m => m.completed).length;
+  const completedModules = completedModuleIds.length;
   const progress = (completedModules / trail.modules.length) * 100;
+  const isCourseComplete = completedModules === trail.modules.length;
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -94,6 +100,13 @@ export default function AcademyTrail() {
                 </div>
               </div>
 
+              {isCourseComplete && (
+                <div className="flex items-center gap-2 p-4 bg-academy/10 border border-academy rounded-lg animate-fade-in-up" style={{ animationDelay: "300ms" }}>
+                  <Award className="h-5 w-5 text-academy" />
+                  <span className="font-medium text-academy">🎉 Curso Completo! Parabéns!</span>
+                </div>
+              )}
+
               {progress > 0 && (
                 <div className="space-y-2 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
                   <div className="flex justify-between text-sm">
@@ -114,16 +127,18 @@ export default function AcademyTrail() {
               <div>
                 <h2 className="text-2xl font-bold mb-4">Roadmap do Curso</h2>
                 <div className="space-y-3">
-                  {trail.modules.map((module, index) => (
+                  {trail.modules.map((module, index) => {
+                    const isModuleComplete = completedModuleIds.includes(String(module.id));
+                    return (
                     <Card 
                       key={module.id} 
-                      className={`hover:shadow-card-hover transition-all duration-300 animate-fade-in-up ${module.completed ? 'border-academy' : ''}`}
+                      className={`hover:shadow-card-hover transition-all duration-300 animate-fade-in-up ${isModuleComplete ? 'border-academy' : ''}`}
                       style={{ animationDelay: `${index * 50}ms` }}
                     >
                       <CardHeader className="pb-3">
                         <div className="flex items-start gap-4">
-                          <div className={`flex-shrink-0 mt-1 ${module.completed ? 'text-academy' : 'text-muted-foreground'}`}>
-                            {module.completed ? (
+                          <div className={`flex-shrink-0 mt-1 ${isModuleComplete ? 'text-academy' : 'text-muted-foreground'}`}>
+                            {isModuleComplete ? (
                               <CheckCircle2 className="h-6 w-6" />
                             ) : (
                               <Circle className="h-6 w-6" />
@@ -146,23 +161,23 @@ export default function AcademyTrail() {
                       <CardContent>
                         <Button 
                           asChild 
-                          variant={module.completed ? "outline" : "default"}
+                          variant={isModuleComplete ? "outline" : "default"}
                           className="w-full"
                         >
                           <Link to={`/academy/trail/${trailId}/module/${module.id}`}>
-                            {module.completed ? "Rever Módulo" : "Começar Módulo"}
+                            {isModuleComplete ? "Rever Módulo" : "Começar Módulo"}
                           </Link>
                         </Button>
                       </CardContent>
                     </Card>
-                  ))}
+                  )})}
                 </div>
               </div>
             </div>
 
             {/* Sidebar */}
             <div className="space-y-6">
-              <Card className="sticky top-20">
+              <Card>
                 <CardHeader>
                   <CardTitle>O que vais aprender</CardTitle>
                 </CardHeader>
