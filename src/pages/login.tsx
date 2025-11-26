@@ -3,7 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -29,7 +35,7 @@ const Login = () => {
     } else {
       setError("Invalid access token. Please check your token and try again.");
     }
-    
+
     setIsLoading(false);
   };
 
@@ -37,7 +43,9 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">Welcome Back</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">
+            Welcome Back
+          </CardTitle>
           <CardDescription className="text-center">
             Enter your credentials to access the MLOps Journey Lab
           </CardDescription>
@@ -57,10 +65,11 @@ const Login = () => {
                 className="font-mono"
               />
               <p className="text-xs text-muted-foreground">
-                Enter the secure access token provided by your team administrator
+                Enter the secure access token provided by your team
+                administrator
               </p>
             </div>
-            
+
             {error && (
               <Alert variant="destructive">
                 <AlertDescription>{error}</AlertDescription>
@@ -73,7 +82,10 @@ const Login = () => {
 
             <div className="text-xs text-center text-muted-foreground mt-4 p-3 bg-muted/50 rounded-md">
               <p className="font-medium mb-1">🔒 Secure Access</p>
-              <p>This application uses token-based authentication to protect access.</p>
+              <p>
+                This application uses token-based authentication to protect
+                access.
+              </p>
             </div>
           </form>
         </CardContent>

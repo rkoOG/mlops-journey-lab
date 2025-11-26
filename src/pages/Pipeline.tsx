@@ -51,7 +51,11 @@ def ingest_data():
       "Testes de qualidade automatizados",
     ],
     details: {
-      tools: ["Great Expectations", "Pandas Profiling", "TensorFlow Data Validation"],
+      tools: [
+        "Great Expectations",
+        "Pandas Profiling",
+        "TensorFlow Data Validation",
+      ],
       risks: ["Dados corrompidos", "Drift de dados", "Missing values"],
       snippet: `# Validação de dados
 from great_expectations import DataContext
@@ -100,7 +104,11 @@ with mlflow.start_run():
     ],
     details: {
       tools: ["MLflow Model Registry", "DVC", "Amazon SageMaker"],
-      risks: ["Perda de modelos", "Versionamento incorreto", "Metadados incompletos"],
+      risks: [
+        "Perda de modelos",
+        "Versionamento incorreto",
+        "Metadados incompletos",
+      ],
       snippet: `# Registar modelo
 import mlflow
 
@@ -177,7 +185,9 @@ dashboard.save("drift_report.html")`,
 ];
 
 const Pipeline = () => {
-  const [selectedStage, setSelectedStage] = useState<typeof pipelineStages[0] | null>(null);
+  const [selectedStage, setSelectedStage] = useState<
+    (typeof pipelineStages)[0] | null
+  >(null);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -188,10 +198,12 @@ const Pipeline = () => {
         <section className="bg-gradient-hero py-16">
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-3xl text-center">
-              <h1 className="mb-4 text-4xl font-bold md:text-5xl">Pipeline MLOps Interativo</h1>
+              <h1 className="mb-4 text-4xl font-bold md:text-5xl">
+                Pipeline MLOps Interativo
+              </h1>
               <p className="text-lg text-muted-foreground">
-                Explora cada etapa do pipeline MLOps de forma visual e interativa. Clica em cada
-                componente para aprender mais.
+                Explora cada etapa do pipeline MLOps de forma visual e
+                interativa. Clica em cada componente para aprender mais.
               </p>
             </div>
           </div>
@@ -216,11 +228,16 @@ const Pipeline = () => {
       <Footer />
 
       {/* Stage Details Dialog */}
-      <Dialog open={!!selectedStage} onOpenChange={() => setSelectedStage(null)}>
+      <Dialog
+        open={!!selectedStage}
+        onOpenChange={() => setSelectedStage(null)}
+      >
         <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-3 text-2xl">
-              {selectedStage && <selectedStage.icon className="h-6 w-6 text-primary" />}
+              {selectedStage && (
+                <selectedStage.icon className="h-6 w-6 text-primary" />
+              )}
               {selectedStage?.title}
             </DialogTitle>
             <DialogDescription>{selectedStage?.description}</DialogDescription>
@@ -260,7 +277,9 @@ const Pipeline = () => {
               <div>
                 <h3 className="mb-3 font-semibold">Exemplo de Código</h3>
                 <pre className="overflow-x-auto rounded-lg bg-muted p-4">
-                  <code className="text-sm">{selectedStage.details.snippet}</code>
+                  <code className="text-sm">
+                    {selectedStage.details.snippet}
+                  </code>
                 </pre>
               </div>
             </div>
