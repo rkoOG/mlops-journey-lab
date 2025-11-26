@@ -1,10 +1,23 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Award, TrendingUp, Clock, Target, Download, Share2 } from "lucide-react";
+import {
+  Award,
+  TrendingUp,
+  Clock,
+  Target,
+  Download,
+  Share2,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 const userProgress = {
@@ -25,6 +38,7 @@ const userProgress = {
     },
     {
       id: "cicd-ml",
+
       title: "CI/CD para ML",
       progress: 60,
       status: "in-progress",
@@ -53,12 +67,13 @@ const userProgress = {
 };
 
 export default function AcademyProgress() {
-  const overallProgress = (userProgress.completedHours / userProgress.totalHours) * 100;
+  const overallProgress =
+    (userProgress.completedHours / userProgress.totalHours) * 100;
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
-      
+
       <main className="flex-1">
         {/* Header */}
         <section className="border-b border-border bg-card/50">
@@ -70,8 +85,11 @@ export default function AcademyProgress() {
               <h1 className="text-3xl md:text-4xl font-bold mb-4 animate-fade-in-up">
                 O Teu Progresso
               </h1>
-              <p className="text-lg text-muted-foreground animate-fade-in-up" style={{ animationDelay: "100ms" }}>
-                Acompanha o teu progresso nas trilhas e conquista certificados.
+              <p
+                className="text-lg text-muted-foreground animate-fade-in-up"
+                style={{ animationDelay: "100ms" }}
+              >
+                Acompanha o teu progresso nas trilhos e conquista certificados.
               </p>
             </div>
           </div>
@@ -87,16 +105,21 @@ export default function AcademyProgress() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold mb-2">{Math.round(overallProgress)}%</div>
+                <div className="text-3xl font-bold mb-2">
+                  {Math.round(overallProgress)}%
+                </div>
                 <Progress value={overallProgress} className="h-2" />
               </CardContent>
             </Card>
 
-            <Card className="animate-fade-in-up" style={{ animationDelay: "100ms" }}>
+            <Card
+              className="animate-fade-in-up"
+              style={{ animationDelay: "100ms" }}
+            >
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                   <Target className="h-4 w-4" />
-                  Trilhas Concluídas
+                  Trilhos Concluídas
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -106,7 +129,10 @@ export default function AcademyProgress() {
               </CardContent>
             </Card>
 
-            <Card className="animate-fade-in-up" style={{ animationDelay: "200ms" }}>
+            <Card
+              className="animate-fade-in-up"
+              style={{ animationDelay: "200ms" }}
+            >
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                   <Clock className="h-4 w-4" />
@@ -123,7 +149,10 @@ export default function AcademyProgress() {
               </CardContent>
             </Card>
 
-            <Card className="animate-fade-in-up border-academy" style={{ animationDelay: "300ms" }}>
+            <Card
+              className="animate-fade-in-up border-academy"
+              style={{ animationDelay: "300ms" }}
+            >
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-academy flex items-center gap-2">
                   <Award className="h-4 w-4" />
@@ -142,10 +171,12 @@ export default function AcademyProgress() {
             {/* Trails Progress */}
             <div className="lg:col-span-2 space-y-6">
               <div>
-                <h2 className="text-2xl font-bold mb-6">Trilhas em Progresso</h2>
+                <h2 className="text-2xl font-bold mb-6">
+                  Trilhos em Progresso
+                </h2>
                 <div className="space-y-4">
                   {userProgress.trails.map((trail, index) => (
-                    <Card 
+                    <Card
                       key={trail.id}
                       className={`hover:shadow-card-hover transition-all duration-300 animate-fade-in-up ${
                         trail.status === "completed" ? "border-academy" : ""
@@ -155,16 +186,24 @@ export default function AcademyProgress() {
                       <CardHeader>
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1">
-                            <CardTitle className="text-lg mb-2">{trail.title}</CardTitle>
+                            <CardTitle className="text-lg mb-2">
+                              {trail.title}
+                            </CardTitle>
                             <CardDescription className="flex items-center gap-4 text-sm">
                               {trail.status === "completed" && (
                                 <span className="text-academy font-medium">
-                                  Concluída em {new Date(trail.completedDate!).toLocaleDateString('pt-PT')}
+                                  Concluída em{" "}
+                                  {new Date(
+                                    trail.completedDate!
+                                  ).toLocaleDateString("pt-PT")}
                                 </span>
                               )}
                               {trail.status === "in-progress" && (
                                 <span>
-                                  Último acesso: {new Date(trail.lastAccessed!).toLocaleDateString('pt-PT')}
+                                  Último acesso:{" "}
+                                  {new Date(
+                                    trail.lastAccessed!
+                                  ).toLocaleDateString("pt-PT")}
                                 </span>
                               )}
                               {trail.status === "not-started" && (
@@ -172,13 +211,17 @@ export default function AcademyProgress() {
                               )}
                             </CardDescription>
                           </div>
-                          <Badge 
+                          <Badge
                             variant={
-                              trail.status === "completed" ? "default" : 
-                              trail.status === "in-progress" ? "secondary" : 
-                              "outline"
+                              trail.status === "completed"
+                                ? "default"
+                                : trail.status === "in-progress"
+                                ? "secondary"
+                                : "outline"
                             }
-                            className={trail.status === "completed" ? "bg-academy" : ""}
+                            className={
+                              trail.status === "completed" ? "bg-academy" : ""
+                            }
                           >
                             {trail.progress}%
                           </Badge>
@@ -187,23 +230,30 @@ export default function AcademyProgress() {
                       <CardContent className="space-y-4">
                         <Progress value={trail.progress} className="h-2" />
                         <div className="flex gap-2">
-                          <Button 
-                            asChild 
-                            variant={trail.status === "completed" ? "outline" : "default"}
+                          <Button
+                            asChild
+                            variant={
+                              trail.status === "completed"
+                                ? "outline"
+                                : "default"
+                            }
                             size="sm"
                             className="flex-1"
                           >
                             <Link to={`/academy/trail/${trail.id}`}>
-                              {trail.status === "completed" ? "Rever" : 
-                               trail.status === "in-progress" ? "Continuar" : 
-                               "Iniciar"}
+                              {trail.status === "completed"
+                                ? "Rever"
+                                : trail.status === "in-progress"
+                                ? "Continuar"
+                                : "Iniciar"}
                             </Link>
                           </Button>
-                          {trail.status === "completed" && trail.certificateUrl && (
-                            <Button variant="outline" size="sm">
-                              <Award className="h-4 w-4" />
-                            </Button>
-                          )}
+                          {trail.status === "completed" &&
+                            trail.certificateUrl && (
+                              <Button variant="outline" size="sm">
+                                <Award className="h-4 w-4" />
+                              </Button>
+                            )}
                         </div>
                       </CardContent>
                     </Card>
@@ -223,24 +273,36 @@ export default function AcademyProgress() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {userProgress.trails
-                    .filter(t => t.status === "completed")
+                    .filter((t) => t.status === "completed")
                     .map((trail) => (
-                      <div key={trail.id} className="p-4 bg-academy/10 rounded-lg border border-academy/20">
+                      <div
+                        key={trail.id}
+                        className="p-4 bg-academy/10 rounded-lg border border-academy/20"
+                      >
                         <div className="flex items-start justify-between mb-3">
                           <Award className="h-8 w-8 text-academy" />
                           <Badge variant="outline" className="text-xs">
-                            {new Date(trail.completedDate!).toLocaleDateString('pt-PT', { 
-                              year: 'numeric', 
-                              month: 'short' 
-                            })}
+                            {new Date(trail.completedDate!).toLocaleDateString(
+                              "pt-PT",
+                              {
+                                year: "numeric",
+                                month: "short",
+                              }
+                            )}
                           </Badge>
                         </div>
-                        <h4 className="font-semibold mb-1 text-sm">{trail.title}</h4>
+                        <h4 className="font-semibold mb-1 text-sm">
+                          {trail.title}
+                        </h4>
                         <p className="text-xs text-muted-foreground mb-3">
                           Certificado de Conclusão
                         </p>
                         <div className="flex gap-2">
-                          <Button size="sm" variant="outline" className="flex-1">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="flex-1"
+                          >
                             <Download className="h-3 w-3 mr-1" />
                             Download
                           </Button>
@@ -262,10 +324,14 @@ export default function AcademyProgress() {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <p className="text-sm text-muted-foreground">
-                    Tens {userProgress.totalTrails - userProgress.completedTrails - userProgress.inProgressTrails} trilhas por iniciar.
+                    Tens{" "}
+                    {userProgress.totalTrails -
+                      userProgress.completedTrails -
+                      userProgress.inProgressTrails}{" "}
+                    trilhos por iniciar.
                   </p>
                   <Button asChild className="w-full">
-                    <Link to="/academy">Explorar Trilhas</Link>
+                    <Link to="/academy">Explorar Trilhos</Link>
                   </Button>
                 </CardContent>
               </Card>

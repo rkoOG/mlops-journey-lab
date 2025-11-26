@@ -333,7 +333,7 @@ export default function AcademyCourse() {
               <Tabs defaultValue="overview" className="w-full">
                 <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-                  <TabsTrigger value="code">Código</TabsTrigger>
+                
                   <TabsTrigger value="exercises">Exercícios</TabsTrigger>
                 </TabsList>
 
@@ -361,21 +361,7 @@ export default function AcademyCourse() {
                   </Card>
                 </TabsContent>
 
-                <TabsContent value="code" className="mt-6">
-                  <Card>
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <CardTitle>Exemplo de Código</CardTitle>
-                        <FileCode className="h-5 w-5 text-muted-foreground" />
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
-                        <code>{course.lessons[currentLesson].content.codeSnippet}</code>
-                      </pre>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
+            
 
                 <TabsContent value="exercises" className="mt-6">
                   <Card>
