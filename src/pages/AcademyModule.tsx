@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,124 +16,794 @@ import {
   ChevronRight,
   ExternalLink 
 } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import introVideo from "@/assets/mlops-intro-video.mp4";
+import { markModuleComplete, getSpecificTrailProgress } from "@/lib/storage";
+import { toast } from "sonner";
 
 const moduleData = {
   "mlops-fundamentals": {
     1: {
       title: "Introdução ao MLOps",
+      description: "Compreende os fundamentos de MLOps e porque é essencial para projetos de ML em produção.",
+      duration: "1h",
+      lessons: [
+        { id: 1, title: "O que é MLOps?", type: "video", duration: "10min", completed: false, videoUrl: introVideo },
+        { id: 2, title: "Ciclo de vida de ML", type: "reading", duration: "15min", completed: false, videoUrl: introVideo },
+        { id: 3, title: "Desafios em produção", type: "video", duration: "12min", completed: false, videoUrl: introVideo },
+        { id: 4, title: "Ferramentas essenciais", type: "reading", duration: "18min", completed: false, videoUrl: introVideo },
+      ],
+      content: {
+        overview: "Neste módulo vais aprender os conceitos fundamentais de MLOps, incluindo o ciclo de vida completo de um modelo de machine learning em produção.",
+        videoUrl: "https://example.com/video",
+        keyPoints: [
+          "Definição e importância de MLOps",
+          "Diferenças entre ML tradicional e MLOps",
+          "Componentes principais de um sistema MLOps",
+          "Ciclo de vida: desenvolvimento → deployment → monitorização",
+        ],
+        codeSnippet: `# Exemplo: Pipeline MLOps básico
+import mlflow
+from sklearn.model_selection import train_test_split
+
+# 1. Carregar e preparar dados
+X_train, X_test, y_train, y_test = train_test_split(X, y)
+
+# 2. Treinar modelo com tracking
+with mlflow.start_run():
+    model = train_model(X_train, y_train)
+    
+    # Log métricas
+    mlflow.log_metric("accuracy", accuracy)
+    mlflow.log_metric("f1_score", f1)
+    
+    # Log modelo
+    mlflow.sklearn.log_model(model, "model")`,
+        exercises: [
+          "Identifica os componentes principais de um pipeline MLOps",
+          "Descreve 3 desafios de modelos ML em produção",
+          "Lista ferramentas open-source para cada etapa do ciclo",
+        ],
+      },
+    },
+    2: {
+      title: "Data Ingestion & Validation",
+      description: "Aprende a construir pipelines de ingestão de dados robustos e implementar validação automática.",
+      duration: "1.5h",
+      lessons: [
+        { id: 1, title: "Arquiteturas de ingestão", type: "video", duration: "15min", completed: false, videoUrl: introVideo },
+        { id: 2, title: "Streaming vs Batch", type: "reading", duration: "20min", completed: false, videoUrl: introVideo },
+        { id: 3, title: "Data validation com Great Expectations", type: "video", duration: "25min", completed: false, videoUrl: introVideo },
+        { id: 4, title: "Schema evolution", type: "reading", duration: "15min", completed: false, videoUrl: introVideo },
+        { id: 5, title: "Data quality monitoring", type: "video", duration: "15min", completed: false, videoUrl: introVideo },
+      ],
+      content: {
+        overview: "Neste módulo vais dominar técnicas de ingestão e validação de dados para garantir qualidade e consistência nos teus pipelines ML.",
+        videoUrl: "https://example.com/video",
+        keyPoints: [
+          "Padrões de arquitetura: batch, streaming, micro-batch",
+          "Validação de schema e tipos de dados",
+          "Data quality checks automatizados",
+          "Deteção de anomalias e drift nos dados",
+          "Integração com ferramentas como Great Expectations",
+        ],
+        codeSnippet: `# Exemplo: Data validation com Great Expectations
+import great_expectations as ge
+from great_expectations.dataset import PandasDataset
+
+# Carregar dados
+df = ge.read_csv('data/training_data.csv')
+
+# Definir expectativas
+df.expect_column_values_to_not_be_null('user_id')
+df.expect_column_values_to_be_between('age', 0, 120)
+df.expect_column_values_to_be_in_set('country', ['PT', 'ES', 'FR'])
+
+# Validar dados
+results = df.validate()
+
+if not results['success']:
+    print("Validação falhou!")
+    for check in results['results']:
+        if not check['success']:
+            print(f"Erro: {check['expectation_config']['kwargs']}")`,
+        exercises: [
+          "Implementa um pipeline de ingestão batch e streaming",
+          "Define expectativas de qualidade para um dataset",
+          "Configura alertas para data quality issues",
+          "Cria testes automatizados para schema validation",
+        ],
+      },
+    },
+    3: {
+      title: "Model Training Pipeline",
+      description: "Constrói pipelines de treino escaláveis com experiment tracking e hyperparameter tuning.",
+      duration: "2h",
+      lessons: [
+        { id: 1, title: "Pipeline orchestration", type: "video", duration: "20min", completed: false, videoUrl: introVideo },
+        { id: 2, title: "Feature engineering", type: "reading", duration: "25min", completed: false, videoUrl: introVideo },
+        { id: 3, title: "Hyperparameter tuning distribuído", type: "video", duration: "25min", completed: false, videoUrl: introVideo },
+        { id: 4, title: "Experiment tracking com MLflow", type: "reading", duration: "20min", completed: false, videoUrl: introVideo },
+        { id: 5, title: "Model artifacts", type: "video", duration: "15min", completed: false, videoUrl: introVideo },
+        { id: 6, title: "Reprodutibilidade", type: "reading", duration: "15min", completed: false, videoUrl: introVideo },
+      ],
+      content: {
+        overview: "Aprende a construir pipelines de treino profissionais com orchestration, tracking e reprodutibilidade garantida.",
+        videoUrl: "https://example.com/video",
+        keyPoints: [
+          "Orchestração com Airflow, Kubeflow ou Prefect",
+          "Feature stores para reutilização de features",
+          "Distributed training e hyperparameter optimization",
+          "Experiment tracking e comparação de modelos",
+          "Versionamento de dados, código e modelos",
+          "Garantir reprodutibilidade total",
+        ],
+        codeSnippet: `# Exemplo: Training pipeline com MLflow e Optuna
+import mlflow
+import optuna
+from sklearn.ensemble import RandomForestClassifier
+
+def objective(trial):
+    with mlflow.start_run(nested=True):
+        # Hyperparameters
+        n_estimators = trial.suggest_int('n_estimators', 50, 300)
+        max_depth = trial.suggest_int('max_depth', 3, 15)
+        min_samples_split = trial.suggest_int('min_samples_split', 2, 20)
+        
+        # Treinar modelo
+        clf = RandomForestClassifier(
+            n_estimators=n_estimators,
+            max_depth=max_depth,
+            min_samples_split=min_samples_split,
+            random_state=42
+        )
+        clf.fit(X_train, y_train)
+        
+        # Avaliar
+        accuracy = clf.score(X_test, y_test)
+        
+        # Log no MLflow
+        mlflow.log_params({
+            'n_estimators': n_estimators,
+            'max_depth': max_depth,
+            'min_samples_split': min_samples_split
+        })
+        mlflow.log_metric('accuracy', accuracy)
+        mlflow.sklearn.log_model(clf, 'model')
+        
+        return accuracy
+
+# Otimização com Optuna
+study = optuna.create_study(direction='maximize')
+study.optimize(objective, n_trials=50)
+
+print(f"Melhor accuracy: {study.best_value}")
+print(f"Melhores params: {study.best_params}")`,
+        exercises: [
+          "Cria um pipeline Airflow para treino automatizado",
+          "Implementa feature store para partilha de features",
+          "Configura hyperparameter tuning distribuído",
+          "Implementa versionamento de datasets e modelos",
+          "Garante reprodutibilidade com seeds e ambientes",
+        ],
+      },
+    },
+    4: {
+      title: "Model Registry & Versioning",
+      description: "Gestão profissional de modelos com registry, versionamento semântico e lifecycle management.",
+      duration: "1.5h",
+      lessons: [
+        { id: 1, title: "Model Registry: conceitos", type: "video", duration: "20min", completed: false, videoUrl: introVideo },
+        { id: 2, title: "Versionamento semântico", type: "reading", duration: "25min", completed: false, videoUrl: introVideo },
+        { id: 3, title: "Model lifecycle stages", type: "video", duration: "25min", completed: false, videoUrl: introVideo },
+        { id: 4, title: "Gestão de metadados", type: "reading", duration: "20min", completed: false, videoUrl: introVideo },
+      ],
+      content: {
+        overview: "Aprende a gerir modelos de forma profissional com registry centralizado, versionamento e tracking de lifecycle.",
+        videoUrl: "https://example.com/video",
+        keyPoints: [
+          "Model Registry: repositório centralizado de modelos",
+          "Versionamento semântico (major.minor.patch)",
+          "Stages: Staging, Production, Archived",
+          "Metadata tracking: métricas, dependencies, datasets",
+          "Promoção automática de modelos baseada em métricas",
+          "Rollback e auditoria de mudanças",
+        ],
+        codeSnippet: `# Exemplo: Model Registry com MLflow
+import mlflow
+from mlflow.tracking import MlflowClient
+
+client = MlflowClient()
+
+# 1. Registar modelo após treino
+model_uri = f"runs:/{run_id}/model"
+model_details = mlflow.register_model(
+    model_uri=model_uri,
+    name="fraud_detection_model"
+)
+
+# 2. Adicionar descrição e tags
+client.update_model_version(
+    name="fraud_detection_model",
+    version=model_details.version,
+    description="Random Forest com SMOTE para balanceamento"
+)
+
+client.set_model_version_tag(
+    name="fraud_detection_model",
+    version=model_details.version,
+    key="validation_status",
+    value="passed"
+)
+
+# 3. Transicionar para Production se métricas OK
+if accuracy > 0.95 and f1_score > 0.90:
+    client.transition_model_version_stage(
+        name="fraud_detection_model",
+        version=model_details.version,
+        stage="Production",
+        archive_existing_versions=True
+    )
+    print(f"Modelo v{model_details.version} promovido para Production!")
+
+# 4. Carregar modelo de Production
+production_model = mlflow.pyfunc.load_model(
+    model_uri="models:/fraud_detection_model/Production"
+)
+
+# 5. Rollback se necessário
+client.transition_model_version_stage(
+    name="fraud_detection_model",
+    version="3",  # versão anterior
+    stage="Production"
+)`,
+        exercises: [
+          "Implementa um model registry com MLflow",
+          "Define estratégia de versionamento semântico",
+          "Cria pipeline de promoção automática de modelos",
+          "Implementa sistema de aprovação com 2-step review",
+          "Configura alertas para mudanças em Production",
+        ],
+      },
+    },
+    5: {
+      title: "CI/CD para ML",
+      description: "Automatiza testing, validação e deployment de modelos com pipelines CI/CD adaptados para ML.",
+      duration: "1.5h",
+      lessons: [
+        { id: 1, title: "CI/CD tradicional vs ML", type: "video", duration: "20min", completed: false, videoUrl: introVideo },
+        { id: 2, title: "Testes para modelos ML", type: "reading", duration: "25min", completed: false, videoUrl: introVideo },
+        { id: 3, title: "Deployment strategies", type: "video", duration: "20min", completed: false, videoUrl: introVideo },
+        { id: 4, title: "GitOps para ML", type: "reading", duration: "15min", completed: false, videoUrl: introVideo },
+        { id: 5, title: "Canary deployments", type: "video", duration: "20min", completed: false, videoUrl: introVideo },
+      ],
+      content: {
+        overview: "Domina CI/CD para machine learning com testes automatizados, deployment strategies e GitOps.",
+        videoUrl: "https://example.com/video",
+        keyPoints: [
+          "Diferenças entre CI/CD tradicional e ML",
+          "Tipos de testes: unit, integration, model validation",
+          "Data testing e drift detection",
+          "Deployment strategies: blue-green, canary, shadow",
+          "GitOps: Git como single source of truth",
+          "Rollback automático baseado em métricas",
+        ],
+        codeSnippet: `# Exemplo: CI/CD Pipeline com GitHub Actions
+# .github/workflows/ml-pipeline.yml
+
+name: ML Model CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+      
+      - name: Run unit tests
+        run: pytest tests/unit --cov
+      
+      - name: Data validation tests
+        run: python tests/validate_data.py
+      
+      - name: Model performance tests
+        run: |
+          python train.py
+          python tests/test_model_performance.py
+
+  deploy-staging:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to staging
+        run: |
+          # Deploy modelo para ambiente de staging
+          python scripts/deploy.py --env staging
+      
+      - name: Integration tests
+        run: python tests/integration_tests.py
+      
+      - name: Performance monitoring
+        run: python scripts/monitor_staging.py --duration 3600
+
+  deploy-production:
+    needs: deploy-staging
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Canary deployment
+        run: |
+          # Deploy com 10% de tráfego
+          python scripts/deploy.py --env production --strategy canary --traffic 10
+      
+      - name: Monitor canary metrics
+        run: python scripts/monitor_canary.py --threshold 0.95
+      
+      - name: Full rollout
+        run: python scripts/deploy.py --env production --traffic 100`,
+        exercises: [
+          "Cria pipeline CI/CD para modelo ML no GitHub Actions",
+          "Implementa testes automatizados (unit, integration, model)",
+          "Configura canary deployment com rollback automático",
+          "Implementa GitOps workflow com ArgoCD",
+          "Adiciona gates de aprovação baseados em métricas",
+        ],
+      },
+    },
+    6: {
+      title: "Monitoring & Observability",
+      description: "Monitoriza modelos em produção com métricas, alertas e deteção de drift para garantir performance contínua.",
+      duration: "1.5h",
+      lessons: [
+        { id: 1, title: "Métricas de produção", type: "video", duration: "20min", completed: false, videoUrl: introVideo },
+        { id: 2, title: "Data drift detection", type: "reading", duration: "25min", completed: false, videoUrl: introVideo },
+        { id: 3, title: "Concept drift", type: "video", duration: "15min", completed: false, videoUrl: introVideo },
+        { id: 4, title: "Alerting e incident response", type: "reading", duration: "20min", completed: false, videoUrl: introVideo },
+        { id: 5, title: "Observability stack", type: "video", duration: "20min", completed: false, videoUrl: introVideo },
+      ],
+      content: {
+        overview: "Aprende a monitorizar modelos ML em produção com deteção de drift, alertas inteligentes e observability completa.",
+        videoUrl: "https://example.com/video",
+        keyPoints: [
+          "Métricas de negócio vs métricas técnicas",
+          "Data drift: mudanças na distribuição dos dados",
+          "Concept drift: mudanças na relação X → Y",
+          "Prediction drift: mudanças nas previsões do modelo",
+          "Alerting inteligente com thresholds dinâmicos",
+          "Observability: logs, metrics, traces",
+          "Retraining triggers automáticos",
+        ],
+        codeSnippet: `# Exemplo: Monitoring com Evidently e Prometheus
+from evidently.report import Report
+from evidently.metric_preset import DataDriftPreset, DataQualityPreset
+from prometheus_client import Gauge, Counter, start_http_server
+import pandas as pd
+
+# Métricas Prometheus
+prediction_latency = Gauge('model_prediction_latency_seconds', 'Latência das previsões')
+prediction_counter = Counter('model_predictions_total', 'Total de previsões')
+data_drift_score = Gauge('model_data_drift_score', 'Score de data drift')
+accuracy_gauge = Gauge('model_accuracy', 'Accuracy em produção')
+
+# Dados de referência (training data)
+reference_data = pd.read_csv('training_data.csv')
+
+# Monitorização contínua
+def monitor_predictions(current_data):
+    """Monitoriza previsões e deteta drift"""
+    
+    # 1. Criar relatório de drift
+    report = Report(metrics=[
+        DataDriftPreset(),
+        DataQualityPreset(),
+    ])
+    
+    report.run(
+        reference_data=reference_data,
+        current_data=current_data
+    )
+    
+    # 2. Extrair métricas
+    drift_results = report.as_dict()
+    dataset_drift = drift_results['metrics'][0]['result']['dataset_drift']
+    drift_share = drift_results['metrics'][0]['result']['share_of_drifted_columns']
+    
+    # 3. Atualizar métricas Prometheus
+    data_drift_score.set(drift_share)
+    
+    # 4. Alertar se drift detetado
+    if dataset_drift:
+        print(f"⚠️ DATA DRIFT DETETADO! {drift_share*100:.1f}% das features com drift")
+        trigger_retraining_pipeline()
+    
+    # 5. Calcular accuracy em produção (se labels disponíveis)
+    if 'actual_label' in current_data.columns:
+        accuracy = (current_data['prediction'] == current_data['actual_label']).mean()
+        accuracy_gauge.set(accuracy)
+        
+        if accuracy < 0.85:  # Threshold
+            print(f"⚠️ ACCURACY BAIXA: {accuracy:.3f}")
+            send_alert_to_slack(f"Modelo com accuracy {accuracy:.3f}")
+
+# Iniciar servidor Prometheus
+start_http_server(8000)
+
+# Loop de monitorização
+while True:
+    current_batch = get_latest_predictions()
+    monitor_predictions(current_batch)
+    time.sleep(3600)  # Verificar a cada hora`,
+        exercises: [
+          "Implementa dashboard de monitorização com Grafana",
+          "Configura deteção de data drift e concept drift",
+          "Cria sistema de alertas baseado em thresholds",
+          "Implementa retraining automático quando drift detetado",
+          "Configura observability stack (Prometheus + Grafana + Loki)",
+          "Define SLIs e SLOs para modelos ML",
+        ],
+      },
+    },
+  },
+    "cicd-ml": {
+    1: {
+      title: "Fundamentos de CI/CD",
+      description: "Entende como aplicar princípios de integração e deployment contínuos a projetos de machine learning.",
+      duration: "1h",
+      lessons: [
+        { id: 1, title: "O que é CI/CD em ML?", type: "video", duration: "12min", completed: false, videoUrl: "" },
+        { id: 2, title: "Pipeline básico de CI", type: "reading", duration: "15min", completed: false, videoUrl: "" },
+        { id: 3, title: "Deployment contínuo para modelos", type: "video", duration: "18min", completed: false, videoUrl: "" },
+        { id: 4, title: "Ambientes: dev, staging, prod", type: "reading", duration: "15min", completed: false, videoUrl: "" },
+      ],
+      content: {
+        overview:
+          "Neste módulo introduces os conceitos de integração contínua (CI) e deployment contínuo (CD) aplicados a ML. Vais ver como automatizar testes, builds de imagens e deploys de modelos para reduzir erros manuais e acelerar a entrega.",
+        videoUrl: "",
+        keyPoints: [
+          "Diferenças entre CI/CD tradicional e CI/CD para ML.",
+          "Componentes principais de um pipeline de CI (lint, testes, build de imagem).",
+          "Estratégias de deployment contínuo para modelos ML.",
+          "Gestão de ambientes e configuração (dev, staging, prod).",
+        ],
+        codeSnippet: `# Exemplo simplificado de pipeline CI para modelo ML em GitHub Actions
+name: ci-ml
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+      - name: Correr testes e lint
+        run: |
+          pytest -q
+          flake8 .
+
+  build-image:
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build docker image
+        run: |
+          docker build -t registry.example.com/ml-model:latest .
+          docker push registry.example.com/ml-model:latest`,
+        exercises: [
+          "Desenha o fluxo de um pipeline CI/CD para um modelo que já tenhas (ou imaginas). Identifica os passos de testes, build e deployment.",
+          "Lista pelo menos 3 diferenças entre pipelines de CI/CD para código backend normal e para projetos de ML.",
+          "Configura um pipeline CI simples (local ou em GitHub Actions) que corra testes do teu modelo a cada push.",
+        ],
+      },
+    },
+  },
+
+  "experiment-tracking": {
+    1: {
+      title: "Introdução ao Experiment Tracking",
       description:
-        "Compreende os fundamentos de MLOps e porque é essencial para projetos de ML em produção.",
+        "Aprende a registar, comparar e reproduzir experiências de machine learning de forma estruturada.",
       duration: "1h",
       lessons: [
         {
           id: 1,
-          title: "O que é MLOps?",
+          title: "Porque precisamos de experiment tracking",
           type: "video",
           duration: "10min",
           completed: false,
-          videoUrl: introVideo,
-          content: {
-            overview:
-              "Neste módulo vais aprender os conceitos fundamentais de MLOps, incluindo o ciclo de vida completo de um modelo de machine learning em produção.",
-            keyPoints: [
-              "Definição e importância de MLOps",
-              "Diferenças entre ML tradicional e MLOps",
-              "Componentes principais de um sistema MLOps",
-              "Ciclo de vida: desenvolvimento → deployment → monitorização",
-            ],
-            codeSnippet:
-              "# Exemplo: Pipeline MLOps básico\nimport mlflow\nfrom sklearn.model_selection import train_test_split\n\n# 1. Carregar e preparar dados\nX_train, X_test, y_train, y_test = train_test_split(X, y)\n\n# 2. Treinar modelo com tracking\nwith mlflow.start_run():\n    model = train_model(X_train, y_train)\n    \n    # Log métricas\n    mlflow.log_metric('accuracy', accuracy)\n    mlflow.log_metric('f1_score', f1)\n    \n    # Log modelo\n    mlflow.sklearn.log_model(model, 'model')",
-            exercises: [
-              "Identifica os componentes principais de um pipeline MLOps",
-              "Descreve 3 desafios de modelos ML em produção",
-              "Lista ferramentas open-source para cada etapa do ciclo",
-            ],
-          },
+          videoUrl: "",
         },
         {
           id: 2,
-          title: "Ciclo de vida de ML",
+          title: "Conceitos básicos: run, params, metrics",
           type: "reading",
           duration: "15min",
           completed: false,
-          videoUrl: introVideo,
-          content: {
-            overview:
-              "Explora cada fase do ciclo de vida de ML: desde a ingestão de dados até à monitorização em produção.",
-            keyPoints: [
-              "Fases principais: dados, treino, validação, deployment, monitorização",
-              "Iterações contínuas e feedback loop",
-              "Importância de automatizar o ciclo de vida",
-              "Onde MLOps acrescenta valor em cada etapa",
-            ],
-            codeSnippet:
-              "# Exemplo simplificado de ciclo de vida\nfor step in ['ingest', 'validate', 'train', 'evaluate', 'deploy']:\n    run_step(step)\n    log_status(step)",
-            exercises: [
-              "Desenha o ciclo de vida de ML da tua organização (mesmo que hipotético)",
-              "Indica em que fases faz mais sentido automatizar primeiro",
-            ],
-          },
+          videoUrl: "",
         },
-        {
-          id: 3,
-          title: "Desafios em produção",
-          type: "video",
-          duration: "12min",
-          completed: false,
-          videoUrl: introVideo,
-          content: {
-            overview:
-              "Entende os principais desafios de ter modelos em produção: drift, monitorização, versões e confiabilidade.",
-            keyPoints: [
-              "Dados em mudança (data drift e concept drift)",
-              "Monitorização de métricas de negócio vs métricas de modelo",
-              "Gestão de versões de modelos e rollback",
-              "Alertas e SLOs para sistemas de ML",
-            ],
-            codeSnippet:
-              "# Exemplo de verificação simples de drift\nimport numpy as np\n\nbaseline_mean = 0.5\ncurrent_mean = np.mean(current_feature_values)\n\nif abs(current_mean - baseline_mean) > 0.1:\n    alert('Possível data drift detectado')",
-            exercises: [
-              "Lista 3 sinais de que um modelo em produção pode estar degradado",
-              "Descreve como reagirias a um alerta de drift elevado",
-            ],
-          },
-        },
-        {
-          id: 4,
-          title: "Ferramentas essenciais",
-          type: "reading",
-          duration: "18min",
-          completed: false,
-          videoUrl: introVideo,
-          content: {
-            overview:
-              "Conhece ferramentas populares para cada etapa do pipeline MLOps, desde tracking até orquestração.",
-            keyPoints: [
-              "Tracking e experimentação (MLflow, Weights & Biases)",
-              "Orquestração (Airflow, Prefect, Dagster)",
-              "Servir modelos (FastAPI, BentoML, KFServing)",
-              "Monitorização (Prometheus, Grafana, ferramentas especializadas)",
-            ],
-            codeSnippet:
-              "# Exemplo: configuração de experimento\nimport mlflow\n\nmlflow.set_experiment('mlops_explorer_demo')\nwith mlflow.start_run(run_name='baseline_model'):\n    mlflow.log_param('model_type', 'RandomForest')\n    mlflow.log_metric('accuracy', 0.91)",
-            exercises: [
-              "Mapeia pelo menos uma ferramenta para cada etapa do ciclo MLOps",
-              "Escolhe um stack mínimo viável de MLOps para um projeto pequeno",
-            ],
-          },
-        },
+        { id: 3, title: "Demo com MLflow Tracking", type: "video", duration: "20min", completed: false, videoUrl: "" },
       ],
+      content: {
+        overview:
+          "Neste módulo vais perceber como organizar experiências de ML para não te perderes em versões de notebooks. Vais ver como guardar parâmetros, métricas, artefactos e código de cada experimento para poderes compará-los e reproduzi-los mais tarde.",
+        videoUrl: "",
+        keyPoints: [
+          "Problemas comuns sem experiment tracking (notebooks v1_final_final).",
+          "Conceitos principais: experimento, run, parâmetros, métricas e artefactos.",
+          "Vantagens de usar uma ferramenta centralizada como MLflow Tracking.",
+          "Boas práticas para nomear e organizar experiências.",
+        ],
+        codeSnippet: `# Exemplo simples de uso de MLflow Tracking
+import mlflow
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+def train_and_log(X_train, X_test, y_train, y_test, n_estimators: int):
+    with mlflow.start_run(run_name=f"rf_{n_estimators}"):
+        model = RandomForestClassifier(n_estimators=n_estimators, random_state=42)
+        model.fit(X_train, y_train)
+
+        preds = model.predict(X_test)
+        acc = accuracy_score(y_test, preds)
+
+        mlflow.log_param("n_estimators", n_estimators)
+        mlflow.log_metric("accuracy", acc)
+        mlflow.sklearn.log_model(model, "model")
+
+        print(f"Run com {n_estimators} árvores -> accuracy={acc:.3f}")
+
+# Exemplo de vários runs
+for n in [50, 100, 200]:
+    train_and_log(X_train, X_test, y_train, y_test, n)`,
+        exercises: [
+          "Lista 3 problemas que já tiveste (ou imaginas ter) por não registar bem as experiências.",
+          "Desenha como organizarias experiências de um projeto real (nomes de experimento, tags, etc.).",
+          "Implementa um script simples com MLflow (ou outra ferramenta) para comparar pelo menos 3 modelos diferentes.",
+        ],
+      },
     },
   },
+
+  "monitoring-drift": {
+    1: {
+      title: "Fundamentos de Monitorização ML",
+      description:
+        "Entende o que deve ser monitorizado num sistema de ML em produção e como começar a instrumentar o teu modelo.",
+      duration: "1.5h",
+      lessons: [
+        { id: 1, title: "Porque monitorizar modelos?", type: "video", duration: "12min", completed: false, videoUrl: "" },
+        {
+          id: 2,
+          title: "Tipos de métricas (negócio, modelo, sistema)",
+          type: "reading",
+          duration: "20min",
+          completed: false,
+          videoUrl: "",
+        },
+        { id: 3, title: "Instrumentação básica", type: "video", duration: "20min", completed: false, videoUrl: "" },
+        {
+          id: 4,
+          title: "Ferramentas de monitorização",
+          type: "reading",
+          duration: "15min",
+          completed: false,
+          videoUrl: "",
+        },
+        { id: 5, title: "Primeiro dashboard", type: "video", duration: "15min", completed: false, videoUrl: "" },
+      ],
+      content: {
+        overview:
+          "Neste módulo vais ver porque é que colocar o modelo em produção é só o começo. Vais aprender a distinguir métricas de negócio, do modelo e de infraestrutura, e a enviar essas métricas para uma stack de monitorização como Prometheus + Grafana.",
+        videoUrl: "",
+        keyPoints: [
+          "Riscos de não monitorizar modelos em produção.",
+          "Tipos de métricas: negócio (ex: conversão), modelo (ex: accuracy, AUC), sistema (ex: latência, erros).",
+          "Instrumentação via código para enviar métricas para Prometheus.",
+          "Primeiros passos para construir um dashboard de monitorização.",
+        ],
+        codeSnippet: `# Exemplo simples de exposição de métricas com Prometheus client
+from prometheus_client import Counter, Histogram, start_http_server
+import time
+
+# Métricas de exemplo
+PREDICTIONS_TOTAL = Counter("predictions_total", "Número total de previsões do modelo")
+PREDICTION_LATENCY = Histogram("prediction_latency_seconds", "Latência do endpoint de previsão")
+
+def predict(request):
+    start = time.time()
+    # ... chamar modelo aqui ...
+    result = {"prediction": 1}
+
+    duration = time.time() - start
+    PREDICTIONS_TOTAL.inc()
+    PREDICTION_LATENCY.observe(duration)
+
+    return result
+
+if __name__ == "__main__":
+    # Expor métricas em :8000/metrics
+    start_http_server(8000)
+    while True:
+      _ = predict({})
+      time.sleep(1)`,
+        exercises: [
+          "Define pelo menos 5 métricas que farias questão de monitorizar num modelo teu em produção.",
+          "Desenha um dashboard ideal com 3–4 gráficos para acompanhar a saúde do modelo.",
+          "Implementa um pequeno script que exponha pelo menos uma métrica de contagem e uma de latência.",
+        ],
+      },
+    },
+  },
+
+  "chatbots-llm": {
+    1: {
+      title: "Introdução a LLMs",
+      description:
+        "Percebe os conceitos base de Large Language Models e como usá-los para construir chatbots simples.",
+      duration: "1.5h",
+      lessons: [
+        { id: 1, title: "O que são LLMs?", type: "video", duration: "15min", completed: false, videoUrl: "" },
+        {
+          id: 2,
+          title: "Tokenização e contexto",
+          type: "reading",
+          duration: "20min",
+          completed: false,
+          videoUrl: "",
+        },
+        { id: 3, title: "Chamadas a APIs de LLM", type: "video", duration: "20min", completed: false, videoUrl: "" },
+        {
+          id: 4,
+          title: "Limitações e riscos",
+          type: "reading",
+          duration: "20min",
+          completed: false,
+          videoUrl: "",
+        },
+        {
+          id: 5,
+          title: "Mini chatbot em linha de comandos",
+          type: "video",
+          duration: "15min",
+          completed: false,
+          videoUrl: "",
+        },
+      ],
+      content: {
+        overview:
+          "Neste módulo vais ter uma visão geral de como funcionam LLMs, como são treinados e como podes começar a consumi-los via API. Também vamos falar de limitações, riscos e boas práticas básicas antes de pôr um chatbot em produção.",
+        videoUrl: "",
+        keyPoints: [
+          "Intuição sobre como LLMs são treinados (pré-treino + fine-tuning).",
+          "Conceitos de tokens, janela de contexto e custo por chamada.",
+          "Como fazer uma chamada simples a uma API de LLM.",
+          "Riscos: alucinações, enviesamentos, segurança e privacidade.",
+        ],
+        codeSnippet: `# Exemplo muito simples de chatbot em linha de comandos com uma API de LLM
+import os
+import openai  # ou outro SDK equivalente
+
+openai.api_key = os.environ.get("OPENAI_API_KEY")
+
+def ask_llm(prompt: str) -> str:
+    response = openai.ChatCompletion.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "És um assistente útil."},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=0.3,
+        max_tokens=200,
+    )
+    return response["choices"][0]["message"]["content"]
+
+if __name__ == "__main__":
+    while True:
+        user_input = input("Tu: ")
+        if not user_input:
+            break
+        answer = ask_llm(user_input)
+        print("Bot:", answer)`,
+        exercises: [
+          "Escreve 3 casos de uso concretos onde usarias um chatbot com LLM na tua área.",
+          "Desenha o fluxo de alto nível de um sistema de chatbot (frontend → API → LLM → logs/monitorização).",
+          "Implementa um pequeno script de consola que faça pelo menos uma chamada a uma API de LLM (mesmo que seja num ambiente de sandbox).",
+        ],
+      },
+    },
+  },
+
 };
 
 export default function AcademyModule() {
   const { trailId, moduleId } = useParams();
+  const navigate = useNavigate();
   const [currentLesson, setCurrentLesson] = useState(0);
+  const [completedLessons, setCompletedLessons] = useState<number[]>([]);
   
   const module = moduleData[trailId as keyof typeof moduleData]?.[Number(moduleId) as keyof typeof moduleData["mlops-fundamentals"]];
+  const totalModules = 6; // Total de módulos no curso
+
+  useEffect(() => {
+    // Carregar progresso do localStorage
+    const savedProgress = localStorage.getItem(`module_${trailId}_${moduleId}`);
+    if (savedProgress) {
+      setCompletedLessons(JSON.parse(savedProgress));
+    } else {
+      // Reset se não houver progresso salvo (novo módulo)
+      setCompletedLessons([]);
+    }
+    // Reset lição atual ao mudar de módulo
+    setCurrentLesson(0);
+  }, [trailId, moduleId]);
+
+  useEffect(() => {
+    // Salvar progresso
+    if (completedLessons.length > 0) {
+      localStorage.setItem(`module_${trailId}_${moduleId}`, JSON.stringify(completedLessons));
+    }
+  }, [completedLessons, trailId, moduleId]);
+
+  const markLessonComplete = (lessonIndex: number) => {
+    if (!completedLessons.includes(lessonIndex)) {
+      setCompletedLessons(prev => [...prev, lessonIndex]);
+      toast.success("Lição concluída!");
+      
+      // Se todas as lições completadas, marcar módulo como completo
+      if (completedLessons.length + 1 === module.lessons.length) {
+        markModuleComplete(trailId as string, moduleId as string, totalModules);
+        toast.success("🎉 Módulo concluído!");
+      }
+    }
+  };
+
+  const goToNextLesson = () => {
+    // Marcar lição atual como completa
+    markLessonComplete(currentLesson);
+    
+    // Avançar para próxima lição se não for a última
+    if (currentLesson < module.lessons.length - 1) {
+      setCurrentLesson(prev => prev + 1);
+    }
+    // Se for a última lição, apenas marca como completa (o botão mudará automaticamente)
+  };
+
+  const goToNextModule = () => {
+    // Garantir que a última lição está marcada como completa antes de avançar
+    if (!completedLessons.includes(currentLesson)) {
+      markLessonComplete(currentLesson);
+    }
+    
+    const nextModule = Number(moduleId) + 1;
+    if (nextModule <= totalModules) {
+      navigate(`/academy/trail/${trailId}/module/${nextModule}`);
+      window.scrollTo(0, 0);
+    } else {
+      // Curso completo - voltar para página do curso
+      navigate(`/academy/trail/${trailId}`);
+      toast.success("🎓 Parabéns! Completaste o curso!");
+    }
+  };
 
   if (!module) {
     return (
@@ -150,8 +820,13 @@ export default function AcademyModule() {
     );
   }
 
-  const completedLessons = module.lessons.filter(l => l.completed).length;
-  const progress = (completedLessons / module.lessons.length) * 100;
+  const progress = (completedLessons.length / module.lessons.length) * 100;
+  const allLessonsCompleted = completedLessons.length === module.lessons.length;
+  const isLastModule = Number(moduleId) === totalModules;
+  
+  // Verificar se o curso inteiro está completo
+  const trailProgress = getSpecificTrailProgress(trailId as string);
+  const isCourseComplete = trailProgress?.completedModules.length === totalModules;
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -191,7 +866,9 @@ export default function AcademyModule() {
                   <CardTitle className="text-lg">Conteúdos</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  {module.lessons.map((lesson, index) => (
+                  {module.lessons.map((lesson, index) => {
+                    const isCompleted = completedLessons.includes(index);
+                    return (
                     <button
                       key={lesson.id}
                       onClick={() => setCurrentLesson(index)}
@@ -202,7 +879,7 @@ export default function AcademyModule() {
                       }`}
                     >
                       <div className="flex items-start gap-3">
-                        {lesson.completed ? (
+                        {isCompleted ? (
                           <CheckCircle2 className="h-5 w-5 text-academy flex-shrink-0 mt-0.5" />
                         ) : (
                           <Circle className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
@@ -222,7 +899,7 @@ export default function AcademyModule() {
                         </div>
                       </div>
                     </button>
-                  ))}
+                  )})}
                 </CardContent>
               </Card>
             </aside>
@@ -243,8 +920,8 @@ export default function AcademyModule() {
                         {module.lessons[currentLesson].duration}
                       </CardDescription>
                     </div>
-                    <Badge variant={module.lessons[currentLesson].completed ? "default" : "outline"}>
-                      {module.lessons[currentLesson].completed ? "Concluída" : "Em progresso"}
+                    <Badge variant={completedLessons.includes(currentLesson) ? "default" : "outline"}>
+                      {completedLessons.includes(currentLesson) ? "Concluída" : "Em progresso"}
                     </Badge>
                   </div>
                 </CardHeader>
@@ -286,13 +963,12 @@ export default function AcademyModule() {
                       <CardTitle>Sobre este módulo</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <p className="text-muted-foreground">
-                        {module.lessons[currentLesson].content.overview}
-                      </p>
+                      <p className="text-muted-foreground">{module.content.overview}</p>
+                      
                       <div>
                         <h4 className="font-semibold mb-3">Pontos-chave:</h4>
                         <ul className="space-y-2">
-                          {module.lessons[currentLesson].content.keyPoints.map((point, index) => (
+                          {module.content.keyPoints.map((point, index) => (
                             <li key={index} className="flex gap-3">
                               <CheckCircle2 className="h-5 w-5 text-academy flex-shrink-0 mt-0.5" />
                               <span className="text-sm">{point}</span>
@@ -321,7 +997,7 @@ export default function AcademyModule() {
                     </CardHeader>
                     <CardContent>
                       <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
-                        <code>{module.lessons[currentLesson].content.codeSnippet}</code>
+                        <code>{module.content.codeSnippet}</code>
                       </pre>
                     </CardContent>
                   </Card>
@@ -333,7 +1009,7 @@ export default function AcademyModule() {
                       <CardTitle>Exercícios Práticos</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      {module.lessons[currentLesson].content.exercises.map((exercise, index) => (
+                      {module.content.exercises.map((exercise, index) => (
                         <div key={index} className="p-4 bg-muted rounded-lg">
                           <div className="flex gap-3">
                             <div className="flex-shrink-0 w-6 h-6 rounded-full bg-academy text-academy-foreground flex items-center justify-center text-sm font-semibold">
@@ -358,14 +1034,26 @@ export default function AcademyModule() {
                   <ChevronLeft className="h-4 w-4 mr-2" />
                   Anterior
                 </Button>
-                <Button 
-                  className="bg-academy hover:bg-academy/80 text-academy-foreground"
-                  disabled={currentLesson === module.lessons.length - 1}
-                  onClick={() => setCurrentLesson(prev => Math.min(module.lessons.length - 1, prev + 1))}
-                >
-                  Seguinte
-                  <ChevronRight className="h-4 w-4 ml-2" />
-                </Button>
+                
+                {/* Se todas as lições completas, mostrar botão para próximo módulo */}
+                {allLessonsCompleted ? (
+                  <Button 
+                    className="bg-academy hover:bg-academy/80 text-academy-foreground"
+                    onClick={goToNextModule}
+                  >
+                    {isLastModule ? (isCourseComplete ? "Voltar ao Curso" : "Concluir Curso") : "Próximo Módulo"}
+                    <ChevronRight className="h-4 w-4 ml-2" />
+                  </Button>
+                ) : (
+                  /* Botão para marcar lição como completa e avançar */
+                  <Button 
+                    className="bg-academy hover:bg-academy/80 text-academy-foreground"
+                    onClick={goToNextLesson}
+                  >
+                    {currentLesson === module.lessons.length - 1 ? "Concluir Módulo" : "Marcar como Completa"}
+                    <ChevronRight className="h-4 w-4 ml-2" />
+                  </Button>
+                )}
               </div>
             </div>
           </div>

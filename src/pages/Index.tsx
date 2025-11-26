@@ -2,7 +2,8 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Workflow, Play, BarChart3 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { ArrowRight, BookOpen, Brain, CheckCircle2, Trophy } from "lucide-react";
 import heroImage from "@/assets/hero-pipeline.jpg";
 
 const Index = () => {
@@ -18,26 +19,27 @@ const Index = () => {
               <div className="space-y-8 animate-fade-in-up">
                 <div className="space-y-4">
                   <h1 className="text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
-                    MLOps Academy:{" "}
+                    Domina{" "}
                     <span className="bg-gradient-primary bg-clip-text text-transparent">
-                      Aprende Fazendo
+                      MLOps & LLMOps
                     </span>
+                    {" "}em Produção
                   </h1>
                   <p className="text-lg text-muted-foreground md:text-xl">
-                    Plataforma educacional completa com trilhas estruturadas, exercícios práticos e
-                    quizzes interativos. Do zero à produção em MLOps e LLMOps.
+                    Aprende através de cursos estruturados, valida conhecimentos com quizzes 
+                    interativos e consulta o glossário sempre que precisares.
                   </p>
                 </div>
 
                 <div className="flex flex-col gap-4 sm:flex-row">
-                  <Button asChild size="lg" variant="hero">
+                  <Button asChild size="lg" className="bg-academy hover:bg-academy/80">
                     <a href="/academy">
-                      Iniciar Aprendizagem
+                      Começar a Aprender
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </a>
                   </Button>
                   <Button asChild size="lg" variant="outline">
-                    <a href="/quiz">Testar Conhecimentos</a>
+                    <a href="/glossary">Ver Glossário</a>
                   </Button>
                 </div>
               </div>
@@ -61,73 +63,135 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="mx-auto mb-12 max-w-3xl text-center">
               <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-                Cursos Estruturados de MLOps
+                Como Funciona a Plataforma
               </h2>
               <p className="text-lg text-muted-foreground">
-                Desde fundamentos até tópicos avançados, com conteúdo prático e progressivo
+                Aprende de forma estruturada e valida os teus conhecimentos
               </p>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-3">
-              {/* Trail 1 */}
-              <Card className="group transition-all duration-300 hover:-translate-y-2 hover:shadow-card-hover">
+            <div className="grid gap-8 md:grid-cols-3">
+              {/* Cursos */}
+              <Card className="group transition-all duration-300 hover:-translate-y-2 hover:shadow-card-hover border-academy/30">
                 <CardContent className="p-8">
-                  <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-primary">
-                    <Workflow className="h-7 w-7 text-primary-foreground" />
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-academy/10">
+                    <BookOpen className="h-8 w-8 text-academy" />
                   </div>
-                  <h3 className="mb-3 text-2xl font-bold">MLOps Fundamentals</h3>
-                  <p className="mb-4 text-muted-foreground">
-                    Aprende os fundamentos de MLOps desde a ingestão de dados até à monitorização em produção.
-                    6 módulos • 8 horas
+                  <h3 className="mb-3 text-2xl font-bold">Cursos Estruturados</h3>
+                  <p className="mb-6 text-muted-foreground leading-relaxed">
+                    Percursos de aprendizagem organizados em módulos e lições. 
+                    Progride do básico ao avançado com conteúdo teórico e prático.
                   </p>
-                  <Button asChild variant="ghost" className="group-hover:text-primary">
+                  <ul className="space-y-2 mb-6">
+                    <li className="flex items-center gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-academy" />
+                      <span>Vídeos explicativos</span>
+                    </li>
+                    <li className="flex items-center gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-academy" />
+                      <span>Material de leitura</span>
+                    </li>
+                    <li className="flex items-center gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-academy" />
+                      <span>Progresso salvo</span>
+                    </li>
+                  </ul>
+                  <Button asChild className="w-full bg-academy hover:bg-academy/80">
                     <a href="/academy">
-                      Começar
-                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      Explorar Cursos
+                      <ArrowRight className="ml-2 h-4 w-4" />
                     </a>
                   </Button>
                 </CardContent>
               </Card>
 
-              {/* Trail 2 */}
-              <Card className="group transition-all duration-300 hover:-translate-y-2 hover:shadow-card-hover">
+              {/* Quiz */}
+              <Card className="group transition-all duration-300 hover:-translate-y-2 hover:shadow-card-hover border-primary/30">
                 <CardContent className="p-8">
-                  <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-success">
-                    <Play className="h-7 w-7 text-success-foreground" />
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
+                    <Brain className="h-8 w-8 text-primary" />
                   </div>
-                  <h3 className="mb-3 text-2xl font-bold">CI/CD para ML</h3>
-                  <p className="mb-4 text-muted-foreground">
-                    Implementa pipelines de integração e deployment contínuo para modelos ML.
-                    5 módulos • 6 horas
+                  <h3 className="mb-3 text-2xl font-bold">Quizzes Interativos</h3>
+                  <p className="mb-6 text-muted-foreground leading-relaxed">
+                    Testa e consolida os teus conhecimentos com perguntas de escolha múltipla.
+                    Recebe feedback imediato e acompanha a evolução.
                   </p>
-                  <Button asChild variant="ghost" className="group-hover:text-success">
-                    <a href="/academy">
-                      Começar
-                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  <ul className="space-y-2 mb-6">
+                    <li className="flex items-center gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-primary" />
+                      <span>Feedback instantâneo</span>
+                    </li>
+                    <li className="flex items-center gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-primary" />
+                      <span>Histórico de tentativas</span>
+                    </li>
+                    <li className="flex items-center gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-primary" />
+                      <span>Melhor pontuação</span>
+                    </li>
+                  </ul>
+                  <Button asChild className="w-full" variant="default">
+                    <a href="/quiz">
+                      Fazer Quiz
+                      <ArrowRight className="ml-2 h-4 w-4" />
                     </a>
                   </Button>
                 </CardContent>
               </Card>
 
-              {/* Trail 3 */}
-              <Card className="group transition-all duration-300 hover:-translate-y-2 hover:shadow-card-hover">
+              {/* Glossário */}
+              <Card className="group transition-all duration-300 hover:-translate-y-2 hover:shadow-card-hover border-success/30">
                 <CardContent className="p-8">
-                  <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-glow">
-                    <BarChart3 className="h-7 w-7 text-accent-foreground" />
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-success/10">
+                    <Trophy className="h-8 w-8 text-success" />
                   </div>
-                  <h3 className="mb-3 text-2xl font-bold">Chatbots & LLM Ops</h3>
-                  <p className="mb-4 text-muted-foreground">
-                    Constrói e opera chatbots com Large Language Models em produção.
-                    7 módulos • 10 horas
+                  <h3 className="mb-3 text-2xl font-bold">Glossário Completo</h3>
+                  <p className="mb-6 text-muted-foreground leading-relaxed">
+                    Dicionário com termos essenciais de MLOps e LLMOps. 
+                    Consulta definições claras e exemplos práticos.
                   </p>
-                  <Button asChild variant="ghost" className="group-hover:text-accent">
-                    <a href="/academy">
-                      Começar
-                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  <ul className="space-y-2 mb-6">
+                    <li className="flex items-center gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-success" />
+                      <span>Definições claras</span>
+                    </li>
+                    <li className="flex items-center gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-success" />
+                      <span>Exemplos práticos</span>
+                    </li>
+                    <li className="flex items-center gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-success" />
+                      <span>Pesquisa rápida</span>
+                    </li>
+                  </ul>
+                  <Button asChild className="w-full" variant="outline">
+                    <a href="/glossary">
+                      Consultar Glossário
+                      <ArrowRight className="ml-2 h-4 w-4" />
                     </a>
                   </Button>
                 </CardContent>
               </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* Stats Section */}
+        <section className="py-20 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="grid gap-8 md:grid-cols-3 max-w-4xl mx-auto">
+              <div className="text-center">
+                <div className="text-4xl font-bold text-academy mb-2">3</div>
+                <div className="text-muted-foreground">Cursos Disponíveis</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-primary mb-2">50+</div>
+                <div className="text-muted-foreground">Lições Interativas</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-success mb-2">100+</div>
+                <div className="text-muted-foreground">Termos no Glossário</div>
+              </div>
             </div>
           </div>
         </section>
@@ -137,20 +201,18 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-3xl text-center text-primary-foreground">
               <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-                Começa a Tua Jornada em MLOps
+                Pronto para Começar?
               </h2>
               <p className="mb-8 text-lg opacity-90">
-                Escolhe um curso, testa os teus conhecimentos com quizzes
-                ou consulta o glossário com termos essenciais.
+                Inicia o teu percurso de aprendizagem em MLOps. Aprende ao teu ritmo,
+                valida conhecimentos e consulta recursos sempre que precisares.
               </p>
-              <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-                <Button asChild size="lg" variant="secondary">
-                  <a href="/academy">Explorar Cursos</a>
-                </Button>
-                <Button asChild size="lg" variant="secondary" className="bg-primary text-primary-foreground hover:bg-primary/80 border-0">
-                  <a href="/quiz">Fazer Quiz</a>
-                </Button>
-              </div>
+              <Button asChild size="lg" variant="secondary" className="text-lg px-8">
+                <a href="/academy">
+                  Começar Agora
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </a>
+              </Button>
             </div>
           </div>
         </section>
