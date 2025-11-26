@@ -370,8 +370,24 @@ export default function AcademyTrail() {
                   {trail.modules.length} módulos
                 </div>
                 <div className="flex items-center gap-2">
-                  <Award className="h-4 w-4" />
-                  Certificado incluído
+                  <Award
+                    className={`h-4 w-4 ${
+                      isCourseComplete ? "text-academy" : ""
+                    }`}
+                  />
+                  {isCourseComplete ? (
+                    <Button
+                      variant="link"
+                      className="p-0 h-auto text-academy font-semibold"
+                      asChild
+                    >
+                      <Link to={`/academy/trail/${trailId}/certificate`}>
+                        Descarregar certificado
+                      </Link>
+                    </Button>
+                  ) : (
+                    <span>Certificado incluído</span>
+                  )}
                 </div>
               </div>
 

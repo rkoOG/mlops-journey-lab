@@ -19,18 +19,13 @@ export const Footer = () => {
             <h4 className="mb-3 text-sm font-semibold">Recursos</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
-                <a href="/pipeline" className="hover:text-foreground transition-colors">
-                  Pipeline Interativo
+                <a href="/academy" className="hover:text-foreground transition-colors">
+                  Cursos
                 </a>
               </li>
               <li>
-                <a href="/simulation" className="hover:text-foreground transition-colors">
-                  Simulação de Treino
-                </a>
-              </li>
-              <li>
-                <a href="/dashboard" className="hover:text-foreground transition-colors">
-                  Dashboard
+                <a href="/quiz" className="hover:text-foreground transition-colors">
+                  Quiz
                 </a>
               </li>
               <li>
