@@ -460,6 +460,279 @@ while True:
       },
     },
   },
+    "cicd-ml": {
+    1: {
+      title: "Fundamentos de CI/CD",
+      description: "Entende como aplicar princípios de integração e deployment contínuos a projetos de machine learning.",
+      duration: "1h",
+      lessons: [
+        { id: 1, title: "O que é CI/CD em ML?", type: "video", duration: "12min", completed: false, videoUrl: "" },
+        { id: 2, title: "Pipeline básico de CI", type: "reading", duration: "15min", completed: false, videoUrl: "" },
+        { id: 3, title: "Deployment contínuo para modelos", type: "video", duration: "18min", completed: false, videoUrl: "" },
+        { id: 4, title: "Ambientes: dev, staging, prod", type: "reading", duration: "15min", completed: false, videoUrl: "" },
+      ],
+      content: {
+        overview:
+          "Neste módulo introduces os conceitos de integração contínua (CI) e deployment contínuo (CD) aplicados a ML. Vais ver como automatizar testes, builds de imagens e deploys de modelos para reduzir erros manuais e acelerar a entrega.",
+        videoUrl: "",
+        keyPoints: [
+          "Diferenças entre CI/CD tradicional e CI/CD para ML.",
+          "Componentes principais de um pipeline de CI (lint, testes, build de imagem).",
+          "Estratégias de deployment contínuo para modelos ML.",
+          "Gestão de ambientes e configuração (dev, staging, prod).",
+        ],
+        codeSnippet: `# Exemplo simplificado de pipeline CI para modelo ML em GitHub Actions
+name: ci-ml
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+      - name: Correr testes e lint
+        run: |
+          pytest -q
+          flake8 .
+
+  build-image:
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build docker image
+        run: |
+          docker build -t registry.example.com/ml-model:latest .
+          docker push registry.example.com/ml-model:latest`,
+        exercises: [
+          "Desenha o fluxo de um pipeline CI/CD para um modelo que já tenhas (ou imaginas). Identifica os passos de testes, build e deployment.",
+          "Lista pelo menos 3 diferenças entre pipelines de CI/CD para código backend normal e para projetos de ML.",
+          "Configura um pipeline CI simples (local ou em GitHub Actions) que corra testes do teu modelo a cada push.",
+        ],
+      },
+    },
+  },
+
+  "experiment-tracking": {
+    1: {
+      title: "Introdução ao Experiment Tracking",
+      description:
+        "Aprende a registar, comparar e reproduzir experiências de machine learning de forma estruturada.",
+      duration: "1h",
+      lessons: [
+        {
+          id: 1,
+          title: "Porque precisamos de experiment tracking",
+          type: "video",
+          duration: "10min",
+          completed: false,
+          videoUrl: "",
+        },
+        {
+          id: 2,
+          title: "Conceitos básicos: run, params, metrics",
+          type: "reading",
+          duration: "15min",
+          completed: false,
+          videoUrl: "",
+        },
+        { id: 3, title: "Demo com MLflow Tracking", type: "video", duration: "20min", completed: false, videoUrl: "" },
+      ],
+      content: {
+        overview:
+          "Neste módulo vais perceber como organizar experiências de ML para não te perderes em versões de notebooks. Vais ver como guardar parâmetros, métricas, artefactos e código de cada experimento para poderes compará-los e reproduzi-los mais tarde.",
+        videoUrl: "",
+        keyPoints: [
+          "Problemas comuns sem experiment tracking (notebooks v1_final_final).",
+          "Conceitos principais: experimento, run, parâmetros, métricas e artefactos.",
+          "Vantagens de usar uma ferramenta centralizada como MLflow Tracking.",
+          "Boas práticas para nomear e organizar experiências.",
+        ],
+        codeSnippet: `# Exemplo simples de uso de MLflow Tracking
+import mlflow
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+def train_and_log(X_train, X_test, y_train, y_test, n_estimators: int):
+    with mlflow.start_run(run_name=f"rf_{n_estimators}"):
+        model = RandomForestClassifier(n_estimators=n_estimators, random_state=42)
+        model.fit(X_train, y_train)
+
+        preds = model.predict(X_test)
+        acc = accuracy_score(y_test, preds)
+
+        mlflow.log_param("n_estimators", n_estimators)
+        mlflow.log_metric("accuracy", acc)
+        mlflow.sklearn.log_model(model, "model")
+
+        print(f"Run com {n_estimators} árvores -> accuracy={acc:.3f}")
+
+# Exemplo de vários runs
+for n in [50, 100, 200]:
+    train_and_log(X_train, X_test, y_train, y_test, n)`,
+        exercises: [
+          "Lista 3 problemas que já tiveste (ou imaginas ter) por não registar bem as experiências.",
+          "Desenha como organizarias experiências de um projeto real (nomes de experimento, tags, etc.).",
+          "Implementa um script simples com MLflow (ou outra ferramenta) para comparar pelo menos 3 modelos diferentes.",
+        ],
+      },
+    },
+  },
+
+  "monitoring-drift": {
+    1: {
+      title: "Fundamentos de Monitorização ML",
+      description:
+        "Entende o que deve ser monitorizado num sistema de ML em produção e como começar a instrumentar o teu modelo.",
+      duration: "1.5h",
+      lessons: [
+        { id: 1, title: "Porque monitorizar modelos?", type: "video", duration: "12min", completed: false, videoUrl: "" },
+        {
+          id: 2,
+          title: "Tipos de métricas (negócio, modelo, sistema)",
+          type: "reading",
+          duration: "20min",
+          completed: false,
+          videoUrl: "",
+        },
+        { id: 3, title: "Instrumentação básica", type: "video", duration: "20min", completed: false, videoUrl: "" },
+        {
+          id: 4,
+          title: "Ferramentas de monitorização",
+          type: "reading",
+          duration: "15min",
+          completed: false,
+          videoUrl: "",
+        },
+        { id: 5, title: "Primeiro dashboard", type: "video", duration: "15min", completed: false, videoUrl: "" },
+      ],
+      content: {
+        overview:
+          "Neste módulo vais ver porque é que colocar o modelo em produção é só o começo. Vais aprender a distinguir métricas de negócio, do modelo e de infraestrutura, e a enviar essas métricas para uma stack de monitorização como Prometheus + Grafana.",
+        videoUrl: "",
+        keyPoints: [
+          "Riscos de não monitorizar modelos em produção.",
+          "Tipos de métricas: negócio (ex: conversão), modelo (ex: accuracy, AUC), sistema (ex: latência, erros).",
+          "Instrumentação via código para enviar métricas para Prometheus.",
+          "Primeiros passos para construir um dashboard de monitorização.",
+        ],
+        codeSnippet: `# Exemplo simples de exposição de métricas com Prometheus client
+from prometheus_client import Counter, Histogram, start_http_server
+import time
+
+# Métricas de exemplo
+PREDICTIONS_TOTAL = Counter("predictions_total", "Número total de previsões do modelo")
+PREDICTION_LATENCY = Histogram("prediction_latency_seconds", "Latência do endpoint de previsão")
+
+def predict(request):
+    start = time.time()
+    # ... chamar modelo aqui ...
+    result = {"prediction": 1}
+
+    duration = time.time() - start
+    PREDICTIONS_TOTAL.inc()
+    PREDICTION_LATENCY.observe(duration)
+
+    return result
+
+if __name__ == "__main__":
+    # Expor métricas em :8000/metrics
+    start_http_server(8000)
+    while True:
+      _ = predict({})
+      time.sleep(1)`,
+        exercises: [
+          "Define pelo menos 5 métricas que farias questão de monitorizar num modelo teu em produção.",
+          "Desenha um dashboard ideal com 3–4 gráficos para acompanhar a saúde do modelo.",
+          "Implementa um pequeno script que exponha pelo menos uma métrica de contagem e uma de latência.",
+        ],
+      },
+    },
+  },
+
+  "chatbots-llm": {
+    1: {
+      title: "Introdução a LLMs",
+      description:
+        "Percebe os conceitos base de Large Language Models e como usá-los para construir chatbots simples.",
+      duration: "1.5h",
+      lessons: [
+        { id: 1, title: "O que são LLMs?", type: "video", duration: "15min", completed: false, videoUrl: "" },
+        {
+          id: 2,
+          title: "Tokenização e contexto",
+          type: "reading",
+          duration: "20min",
+          completed: false,
+          videoUrl: "",
+        },
+        { id: 3, title: "Chamadas a APIs de LLM", type: "video", duration: "20min", completed: false, videoUrl: "" },
+        {
+          id: 4,
+          title: "Limitações e riscos",
+          type: "reading",
+          duration: "20min",
+          completed: false,
+          videoUrl: "",
+        },
+        {
+          id: 5,
+          title: "Mini chatbot em linha de comandos",
+          type: "video",
+          duration: "15min",
+          completed: false,
+          videoUrl: "",
+        },
+      ],
+      content: {
+        overview:
+          "Neste módulo vais ter uma visão geral de como funcionam LLMs, como são treinados e como podes começar a consumi-los via API. Também vamos falar de limitações, riscos e boas práticas básicas antes de pôr um chatbot em produção.",
+        videoUrl: "",
+        keyPoints: [
+          "Intuição sobre como LLMs são treinados (pré-treino + fine-tuning).",
+          "Conceitos de tokens, janela de contexto e custo por chamada.",
+          "Como fazer uma chamada simples a uma API de LLM.",
+          "Riscos: alucinações, enviesamentos, segurança e privacidade.",
+        ],
+        codeSnippet: `# Exemplo muito simples de chatbot em linha de comandos com uma API de LLM
+import os
+import openai  # ou outro SDK equivalente
+
+openai.api_key = os.environ.get("OPENAI_API_KEY")
+
+def ask_llm(prompt: str) -> str:
+    response = openai.ChatCompletion.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "És um assistente útil."},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=0.3,
+        max_tokens=200,
+    )
+    return response["choices"][0]["message"]["content"]
+
+if __name__ == "__main__":
+    while True:
+        user_input = input("Tu: ")
+        if not user_input:
+            break
+        answer = ask_llm(user_input)
+        print("Bot:", answer)`,
+        exercises: [
+          "Escreve 3 casos de uso concretos onde usarias um chatbot com LLM na tua área.",
+          "Desenha o fluxo de alto nível de um sistema de chatbot (frontend → API → LLM → logs/monitorização).",
+          "Implementa um pequeno script de consola que faça pelo menos uma chamada a uma API de LLM (mesmo que seja num ambiente de sandbox).",
+        ],
+      },
+    },
+  },
+
 };
 
 export default function AcademyModule() {
