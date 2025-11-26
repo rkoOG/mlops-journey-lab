@@ -1,20 +1,26 @@
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  BookOpen, 
-  PlayCircle, 
-  FileCode, 
-  CheckCircle2, 
-  Circle, 
-  ChevronLeft, 
+import {
+  BookOpen,
+  PlayCircle,
+  FileCode,
+  CheckCircle2,
+  Circle,
+  ChevronLeft,
   ChevronRight,
-  ExternalLink 
+  ExternalLink,
 } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import introVideo from "@/assets/mlops-intro-video.mp4";
@@ -22,19 +28,50 @@ import { markModuleComplete, getSpecificTrailProgress } from "@/lib/storage";
 import { toast } from "sonner";
 
 const moduleData = {
+  // 🔹 Mantém aqui EXACTAMENTE o que já tinhas para mlops-fundamentals
   "mlops-fundamentals": {
     1: {
       title: "Introdução ao MLOps",
-      description: "Compreende os fundamentos de MLOps e porque é essencial para projetos de ML em produção.",
+      description:
+        "Compreende os fundamentos de MLOps e porque é essencial para projetos de ML em produção.",
       duration: "1h",
       lessons: [
-        { id: 1, title: "O que é MLOps?", type: "video", duration: "10min", completed: false, videoUrl: introVideo },
-        { id: 2, title: "Ciclo de vida de ML", type: "reading", duration: "15min", completed: false, videoUrl: introVideo },
-        { id: 3, title: "Desafios em produção", type: "video", duration: "12min", completed: false, videoUrl: introVideo },
-        { id: 4, title: "Ferramentas essenciais", type: "reading", duration: "18min", completed: false, videoUrl: introVideo },
+        {
+          id: 1,
+          title: "O que é MLOps?",
+          type: "video",
+          duration: "10min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Ciclo de vida de ML",
+          type: "reading",
+          duration: "15min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Desafios em produção",
+          type: "video",
+          duration: "12min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Ferramentas essenciais",
+          type: "reading",
+          duration: "18min",
+          completed: false,
+          videoUrl: introVideo,
+        },
       ],
       content: {
-        overview: "Neste módulo vais aprender os conceitos fundamentais de MLOps, incluindo o ciclo de vida completo de um modelo de machine learning em produção.",
+        overview:
+          "Neste módulo vais aprender os conceitos fundamentais de MLOps, incluindo o ciclo de vida completo de um modelo de machine learning em produção.",
         videoUrl: "https://example.com/video",
         keyPoints: [
           "Definição e importância de MLOps",
@@ -42,23 +79,6 @@ const moduleData = {
           "Componentes principais de um sistema MLOps",
           "Ciclo de vida: desenvolvimento → deployment → monitorização",
         ],
-        codeSnippet: `# Exemplo: Pipeline MLOps básico
-import mlflow
-from sklearn.model_selection import train_test_split
-
-# 1. Carregar e preparar dados
-X_train, X_test, y_train, y_test = train_test_split(X, y)
-
-# 2. Treinar modelo com tracking
-with mlflow.start_run():
-    model = train_model(X_train, y_train)
-    
-    # Log métricas
-    mlflow.log_metric("accuracy", accuracy)
-    mlflow.log_metric("f1_score", f1)
-    
-    # Log modelo
-    mlflow.sklearn.log_model(model, "model")`,
         exercises: [
           "Identifica os componentes principais de um pipeline MLOps",
           "Descreve 3 desafios de modelos ML em produção",
@@ -68,17 +88,54 @@ with mlflow.start_run():
     },
     2: {
       title: "Data Ingestion & Validation",
-      description: "Aprende a construir pipelines de ingestão de dados robustos e implementar validação automática.",
+      description:
+        "Aprende a construir pipelines de ingestão de dados robustos e implementar validação automática.",
       duration: "1.5h",
       lessons: [
-        { id: 1, title: "Arquiteturas de ingestão", type: "video", duration: "15min", completed: false, videoUrl: introVideo },
-        { id: 2, title: "Streaming vs Batch", type: "reading", duration: "20min", completed: false, videoUrl: introVideo },
-        { id: 3, title: "Data validation com Great Expectations", type: "video", duration: "25min", completed: false, videoUrl: introVideo },
-        { id: 4, title: "Schema evolution", type: "reading", duration: "15min", completed: false, videoUrl: introVideo },
-        { id: 5, title: "Data quality monitoring", type: "video", duration: "15min", completed: false, videoUrl: introVideo },
+        {
+          id: 1,
+          title: "Arquiteturas de ingestão",
+          type: "video",
+          duration: "15min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Streaming vs Batch",
+          type: "reading",
+          duration: "20min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Data validation com Great Expectations",
+          type: "video",
+          duration: "25min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Schema evolution",
+          type: "reading",
+          duration: "15min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 5,
+          title: "Data quality monitoring",
+          type: "video",
+          duration: "15min",
+          completed: false,
+          videoUrl: introVideo,
+        },
       ],
       content: {
-        overview: "Neste módulo vais dominar técnicas de ingestão e validação de dados para garantir qualidade e consistência nos teus pipelines ML.",
+        overview:
+          "Neste módulo vais dominar técnicas de ingestão e validação de dados para garantir qualidade e consistência nos teus pipelines ML.",
         videoUrl: "https://example.com/video",
         keyPoints: [
           "Padrões de arquitetura: batch, streaming, micro-batch",
@@ -87,26 +144,6 @@ with mlflow.start_run():
           "Deteção de anomalias e drift nos dados",
           "Integração com ferramentas como Great Expectations",
         ],
-        codeSnippet: `# Exemplo: Data validation com Great Expectations
-import great_expectations as ge
-from great_expectations.dataset import PandasDataset
-
-# Carregar dados
-df = ge.read_csv('data/training_data.csv')
-
-# Definir expectativas
-df.expect_column_values_to_not_be_null('user_id')
-df.expect_column_values_to_be_between('age', 0, 120)
-df.expect_column_values_to_be_in_set('country', ['PT', 'ES', 'FR'])
-
-# Validar dados
-results = df.validate()
-
-if not results['success']:
-    print("Validação falhou!")
-    for check in results['results']:
-        if not check['success']:
-            print(f"Erro: {check['expectation_config']['kwargs']}")`,
         exercises: [
           "Implementa um pipeline de ingestão batch e streaming",
           "Define expectativas de qualidade para um dataset",
@@ -117,18 +154,62 @@ if not results['success']:
     },
     3: {
       title: "Model Training Pipeline",
-      description: "Constrói pipelines de treino escaláveis com experiment tracking e hyperparameter tuning.",
+      description:
+        "Constrói pipelines de treino escaláveis com experiment tracking e hyperparameter tuning.",
       duration: "2h",
       lessons: [
-        { id: 1, title: "Pipeline orchestration", type: "video", duration: "20min", completed: false, videoUrl: introVideo },
-        { id: 2, title: "Feature engineering", type: "reading", duration: "25min", completed: false, videoUrl: introVideo },
-        { id: 3, title: "Hyperparameter tuning distribuído", type: "video", duration: "25min", completed: false, videoUrl: introVideo },
-        { id: 4, title: "Experiment tracking com MLflow", type: "reading", duration: "20min", completed: false, videoUrl: introVideo },
-        { id: 5, title: "Model artifacts", type: "video", duration: "15min", completed: false, videoUrl: introVideo },
-        { id: 6, title: "Reprodutibilidade", type: "reading", duration: "15min", completed: false, videoUrl: introVideo },
+        {
+          id: 1,
+          title: "Pipeline orchestration",
+          type: "video",
+          duration: "20min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Feature engineering",
+          type: "reading",
+          duration: "25min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Hyperparameter tuning distribuído",
+          type: "video",
+          duration: "25min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Experiment tracking com MLflow",
+          type: "reading",
+          duration: "20min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 5,
+          title: "Model artifacts",
+          type: "video",
+          duration: "15min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 6,
+          title: "Reprodutibilidade",
+          type: "reading",
+          duration: "15min",
+          completed: false,
+          videoUrl: introVideo,
+        },
       ],
       content: {
-        overview: "Aprende a construir pipelines de treino profissionais com orchestration, tracking e reprodutibilidade garantida.",
+        overview:
+          "Aprende a construir pipelines de treino profissionais com orchestration, tracking e reprodutibilidade garantida.",
         videoUrl: "https://example.com/video",
         keyPoints: [
           "Orchestração com Airflow, Kubeflow ou Prefect",
@@ -138,47 +219,6 @@ if not results['success']:
           "Versionamento de dados, código e modelos",
           "Garantir reprodutibilidade total",
         ],
-        codeSnippet: `# Exemplo: Training pipeline com MLflow e Optuna
-import mlflow
-import optuna
-from sklearn.ensemble import RandomForestClassifier
-
-def objective(trial):
-    with mlflow.start_run(nested=True):
-        # Hyperparameters
-        n_estimators = trial.suggest_int('n_estimators', 50, 300)
-        max_depth = trial.suggest_int('max_depth', 3, 15)
-        min_samples_split = trial.suggest_int('min_samples_split', 2, 20)
-        
-        # Treinar modelo
-        clf = RandomForestClassifier(
-            n_estimators=n_estimators,
-            max_depth=max_depth,
-            min_samples_split=min_samples_split,
-            random_state=42
-        )
-        clf.fit(X_train, y_train)
-        
-        # Avaliar
-        accuracy = clf.score(X_test, y_test)
-        
-        # Log no MLflow
-        mlflow.log_params({
-            'n_estimators': n_estimators,
-            'max_depth': max_depth,
-            'min_samples_split': min_samples_split
-        })
-        mlflow.log_metric('accuracy', accuracy)
-        mlflow.sklearn.log_model(clf, 'model')
-        
-        return accuracy
-
-# Otimização com Optuna
-study = optuna.create_study(direction='maximize')
-study.optimize(objective, n_trials=50)
-
-print(f"Melhor accuracy: {study.best_value}")
-print(f"Melhores params: {study.best_params}")`,
         exercises: [
           "Cria um pipeline Airflow para treino automatizado",
           "Implementa feature store para partilha de features",
@@ -190,16 +230,46 @@ print(f"Melhores params: {study.best_params}")`,
     },
     4: {
       title: "Model Registry & Versioning",
-      description: "Gestão profissional de modelos com registry, versionamento semântico e lifecycle management.",
+      description:
+        "Gestão profissional de modelos com registry, versionamento semântico e lifecycle management.",
       duration: "1.5h",
       lessons: [
-        { id: 1, title: "Model Registry: conceitos", type: "video", duration: "20min", completed: false, videoUrl: introVideo },
-        { id: 2, title: "Versionamento semântico", type: "reading", duration: "25min", completed: false, videoUrl: introVideo },
-        { id: 3, title: "Model lifecycle stages", type: "video", duration: "25min", completed: false, videoUrl: introVideo },
-        { id: 4, title: "Gestão de metadados", type: "reading", duration: "20min", completed: false, videoUrl: introVideo },
+        {
+          id: 1,
+          title: "Model Registry: conceitos",
+          type: "video",
+          duration: "20min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Versionamento semântico",
+          type: "reading",
+          duration: "25min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Model lifecycle stages",
+          type: "video",
+          duration: "25min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Gestão de metadados",
+          type: "reading",
+          duration: "20min",
+          completed: false,
+          videoUrl: introVideo,
+        },
       ],
       content: {
-        overview: "Aprende a gerir modelos de forma profissional com registry centralizado, versionamento e tracking de lifecycle.",
+        overview:
+          "Aprende a gerir modelos de forma profissional com registry centralizado, versionamento e tracking de lifecycle.",
         videoUrl: "https://example.com/video",
         keyPoints: [
           "Model Registry: repositório centralizado de modelos",
@@ -209,54 +279,6 @@ print(f"Melhores params: {study.best_params}")`,
           "Promoção automática de modelos baseada em métricas",
           "Rollback e auditoria de mudanças",
         ],
-        codeSnippet: `# Exemplo: Model Registry com MLflow
-import mlflow
-from mlflow.tracking import MlflowClient
-
-client = MlflowClient()
-
-# 1. Registar modelo após treino
-model_uri = f"runs:/{run_id}/model"
-model_details = mlflow.register_model(
-    model_uri=model_uri,
-    name="fraud_detection_model"
-)
-
-# 2. Adicionar descrição e tags
-client.update_model_version(
-    name="fraud_detection_model",
-    version=model_details.version,
-    description="Random Forest com SMOTE para balanceamento"
-)
-
-client.set_model_version_tag(
-    name="fraud_detection_model",
-    version=model_details.version,
-    key="validation_status",
-    value="passed"
-)
-
-# 3. Transicionar para Production se métricas OK
-if accuracy > 0.95 and f1_score > 0.90:
-    client.transition_model_version_stage(
-        name="fraud_detection_model",
-        version=model_details.version,
-        stage="Production",
-        archive_existing_versions=True
-    )
-    print(f"Modelo v{model_details.version} promovido para Production!")
-
-# 4. Carregar modelo de Production
-production_model = mlflow.pyfunc.load_model(
-    model_uri="models:/fraud_detection_model/Production"
-)
-
-# 5. Rollback se necessário
-client.transition_model_version_stage(
-    name="fraud_detection_model",
-    version="3",  # versão anterior
-    stage="Production"
-)`,
         exercises: [
           "Implementa um model registry com MLflow",
           "Define estratégia de versionamento semântico",
@@ -268,17 +290,54 @@ client.transition_model_version_stage(
     },
     5: {
       title: "CI/CD para ML",
-      description: "Automatiza testing, validação e deployment de modelos com pipelines CI/CD adaptados para ML.",
+      description:
+        "Automatiza testing, validação e deployment de modelos com pipelines CI/CD adaptados para ML.",
       duration: "1.5h",
       lessons: [
-        { id: 1, title: "CI/CD tradicional vs ML", type: "video", duration: "20min", completed: false, videoUrl: introVideo },
-        { id: 2, title: "Testes para modelos ML", type: "reading", duration: "25min", completed: false, videoUrl: introVideo },
-        { id: 3, title: "Deployment strategies", type: "video", duration: "20min", completed: false, videoUrl: introVideo },
-        { id: 4, title: "GitOps para ML", type: "reading", duration: "15min", completed: false, videoUrl: introVideo },
-        { id: 5, title: "Canary deployments", type: "video", duration: "20min", completed: false, videoUrl: introVideo },
+        {
+          id: 1,
+          title: "CI/CD tradicional vs ML",
+          type: "video",
+          duration: "20min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Testes para modelos ML",
+          type: "reading",
+          duration: "25min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Deployment strategies",
+          type: "video",
+          duration: "20min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "GitOps para ML",
+          type: "reading",
+          duration: "15min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 5,
+          title: "Canary deployments",
+          type: "video",
+          duration: "20min",
+          completed: false,
+          videoUrl: introVideo,
+        },
       ],
       content: {
-        overview: "Domina CI/CD para machine learning com testes automatizados, deployment strategies e GitOps.",
+        overview:
+          "Domina CI/CD para machine learning com testes automatizados, deployment strategies e GitOps.",
         videoUrl: "https://example.com/video",
         keyPoints: [
           "Diferenças entre CI/CD tradicional e ML",
@@ -288,75 +347,6 @@ client.transition_model_version_stage(
           "GitOps: Git como single source of truth",
           "Rollback automático baseado em métricas",
         ],
-        codeSnippet: `# Exemplo: CI/CD Pipeline com GitHub Actions
-# .github/workflows/ml-pipeline.yml
-
-name: ML Model CI/CD
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          pip install pytest pytest-cov
-      
-      - name: Run unit tests
-        run: pytest tests/unit --cov
-      
-      - name: Data validation tests
-        run: python tests/validate_data.py
-      
-      - name: Model performance tests
-        run: |
-          python train.py
-          python tests/test_model_performance.py
-
-  deploy-staging:
-    needs: test
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to staging
-        run: |
-          # Deploy modelo para ambiente de staging
-          python scripts/deploy.py --env staging
-      
-      - name: Integration tests
-        run: python tests/integration_tests.py
-      
-      - name: Performance monitoring
-        run: python scripts/monitor_staging.py --duration 3600
-
-  deploy-production:
-    needs: deploy-staging
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Canary deployment
-        run: |
-          # Deploy com 10% de tráfego
-          python scripts/deploy.py --env production --strategy canary --traffic 10
-      
-      - name: Monitor canary metrics
-        run: python scripts/monitor_canary.py --threshold 0.95
-      
-      - name: Full rollout
-        run: python scripts/deploy.py --env production --traffic 100`,
         exercises: [
           "Cria pipeline CI/CD para modelo ML no GitHub Actions",
           "Implementa testes automatizados (unit, integration, model)",
@@ -368,17 +358,54 @@ jobs:
     },
     6: {
       title: "Monitoring & Observability",
-      description: "Monitoriza modelos em produção com métricas, alertas e deteção de drift para garantir performance contínua.",
+      description:
+        "Monitoriza modelos em produção com métricas, alertas e deteção de drift para garantir performance contínua.",
       duration: "1.5h",
       lessons: [
-        { id: 1, title: "Métricas de produção", type: "video", duration: "20min", completed: false, videoUrl: introVideo },
-        { id: 2, title: "Data drift detection", type: "reading", duration: "25min", completed: false, videoUrl: introVideo },
-        { id: 3, title: "Concept drift", type: "video", duration: "15min", completed: false, videoUrl: introVideo },
-        { id: 4, title: "Alerting e incident response", type: "reading", duration: "20min", completed: false, videoUrl: introVideo },
-        { id: 5, title: "Observability stack", type: "video", duration: "20min", completed: false, videoUrl: introVideo },
+        {
+          id: 1,
+          title: "Métricas de produção",
+          type: "video",
+          duration: "20min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Data drift detection",
+          type: "reading",
+          duration: "25min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Concept drift",
+          type: "video",
+          duration: "15min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Alerting e incident response",
+          type: "reading",
+          duration: "20min",
+          completed: false,
+          videoUrl: introVideo,
+        },
+        {
+          id: 5,
+          title: "Observability stack",
+          type: "video",
+          duration: "20min",
+          completed: false,
+          videoUrl: introVideo,
+        },
       ],
       content: {
-        overview: "Aprende a monitorizar modelos ML em produção com deteção de drift, alertas inteligentes e observability completa.",
+        overview:
+          "Aprende a monitorizar modelos ML em produção com deteção de drift, alertas inteligentes e observability completa.",
         videoUrl: "https://example.com/video",
         keyPoints: [
           "Métricas de negócio vs métricas técnicas",
@@ -389,66 +416,6 @@ jobs:
           "Observability: logs, metrics, traces",
           "Retraining triggers automáticos",
         ],
-        codeSnippet: `# Exemplo: Monitoring com Evidently e Prometheus
-from evidently.report import Report
-from evidently.metric_preset import DataDriftPreset, DataQualityPreset
-from prometheus_client import Gauge, Counter, start_http_server
-import pandas as pd
-
-# Métricas Prometheus
-prediction_latency = Gauge('model_prediction_latency_seconds', 'Latência das previsões')
-prediction_counter = Counter('model_predictions_total', 'Total de previsões')
-data_drift_score = Gauge('model_data_drift_score', 'Score de data drift')
-accuracy_gauge = Gauge('model_accuracy', 'Accuracy em produção')
-
-# Dados de referência (training data)
-reference_data = pd.read_csv('training_data.csv')
-
-# Monitorização contínua
-def monitor_predictions(current_data):
-    """Monitoriza previsões e deteta drift"""
-    
-    # 1. Criar relatório de drift
-    report = Report(metrics=[
-        DataDriftPreset(),
-        DataQualityPreset(),
-    ])
-    
-    report.run(
-        reference_data=reference_data,
-        current_data=current_data
-    )
-    
-    # 2. Extrair métricas
-    drift_results = report.as_dict()
-    dataset_drift = drift_results['metrics'][0]['result']['dataset_drift']
-    drift_share = drift_results['metrics'][0]['result']['share_of_drifted_columns']
-    
-    # 3. Atualizar métricas Prometheus
-    data_drift_score.set(drift_share)
-    
-    # 4. Alertar se drift detetado
-    if dataset_drift:
-        print(f"⚠️ DATA DRIFT DETETADO! {drift_share*100:.1f}% das features com drift")
-        trigger_retraining_pipeline()
-    
-    # 5. Calcular accuracy em produção (se labels disponíveis)
-    if 'actual_label' in current_data.columns:
-        accuracy = (current_data['prediction'] == current_data['actual_label']).mean()
-        accuracy_gauge.set(accuracy)
-        
-        if accuracy < 0.85:  # Threshold
-            print(f"⚠️ ACCURACY BAIXA: {accuracy:.3f}")
-            send_alert_to_slack(f"Modelo com accuracy {accuracy:.3f}")
-
-# Iniciar servidor Prometheus
-start_http_server(8000)
-
-# Loop de monitorização
-while True:
-    current_batch = get_latest_predictions()
-    monitor_predictions(current_batch)
-    time.sleep(3600)  # Verificar a cada hora`,
         exercises: [
           "Implementa dashboard de monitorização com Grafana",
           "Configura deteção de data drift e concept drift",
@@ -460,6 +427,1107 @@ while True:
       },
     },
   },
+
+  // 🔹 CICD-ML
+  "cicd-ml": {
+    1: {
+      title: "Fundamentos de CI/CD",
+      description: "Conceitos essenciais de CI/CD aplicados a projetos ML.",
+      duration: "1h",
+      lessons: [
+        {
+          id: 1,
+          title: "O que é CI/CD?",
+          type: "video",
+          duration: "10min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Integração Contínua (CI)",
+          type: "reading",
+          duration: "15min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Deployment Contínuo (CD)",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "CI/CD em ML vs tradicional",
+          type: "reading",
+          duration: "15min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Neste módulo vais entender os conceitos base de CI/CD e como se adaptam ao contexto de machine learning.",
+        keyPoints: [
+          "Definição de CI e CD",
+          "Benefícios de automatizar o ciclo de entrega",
+          "Desafios específicos de ML em CI/CD",
+        ],
+        exercises: [
+          "Desenha um pipeline simples de CI/CD para uma API",
+          "Lista 3 diferenças entre CI/CD tradicional e CI/CD para ML",
+        ],
+      },
+    },
+    2: {
+      title: "Testing de Modelos ML",
+      description: "Como testar código, dados e modelos em pipelines ML.",
+      duration: "1.5h",
+      lessons: [
+        {
+          id: 1,
+          title: "Tipos de testes em ML",
+          type: "video",
+          duration: "15min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Testes de dados",
+          type: "reading",
+          duration: "25min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Testes de modelos",
+          type: "video",
+          duration: "25min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Testes de performance",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 5,
+          title: "Integração de testes em CI",
+          type: "video",
+          duration: "15min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Aprende a garantir qualidade em todas as camadas: dados, código e modelos.",
+        keyPoints: [
+          "Unit tests para código de ML",
+          "Testes de integridade e schema de dados",
+          "Testes de performance mínima de modelos",
+        ],
+        exercises: [
+          "Define 5 testes unitários para uma função de feature engineering",
+          "Cria critérios de aprovação para um modelo (accuracy mínima, etc.)",
+        ],
+      },
+    },
+    3: {
+      title: "Continuous Training",
+      description: "Implementa re-treino automatizado de modelos ML.",
+      duration: "1.5h",
+      lessons: [
+        {
+          id: 1,
+          title: "O que é Continuous Training",
+          type: "video",
+          duration: "15min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Triggers de re-treino",
+          type: "reading",
+          duration: "25min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Orquestração de CT",
+          type: "video",
+          duration: "25min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Integração com CI/CD",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Aprende a ligar monitorização a re-treino automático de modelos.",
+        keyPoints: [
+          "Conceito de Continuous Training",
+          "Re-treino baseado em tempo vs baseado em eventos",
+          "Riscos de re-treino automático",
+        ],
+        exercises: [
+          "Desenha um pipeline onde drift dispara re-treino automático",
+          "Define regras de segurança para evitar re-treino excessivo",
+        ],
+      },
+    },
+    4: {
+      title: "Deployment Strategies",
+      description: "Blue-green, canary e shadow deployments para ML.",
+      duration: "1h",
+      lessons: [
+        {
+          id: 1,
+          title: "Blue-Green deployments",
+          type: "video",
+          duration: "15min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Canary deployments",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Shadow deployments",
+          type: "video",
+          duration: "15min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Rollback e mitigação de risco",
+          type: "reading",
+          duration: "10min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Explora estratégias de deployment que reduzem o risco de colocar um modelo novo em produção.",
+        keyPoints: [
+          "Quando usar blue-green vs canary",
+          "Como medir impacto num canary deployment",
+          "Rollback rápido em caso de degradação",
+        ],
+        exercises: [
+          "Escolhe uma estratégia para lançar um modelo de fraude bancária e justifica",
+        ],
+      },
+    },
+    5: {
+      title: "Infrastructure as Code",
+      description: "Define infra-estrutura para pipelines ML com IaC.",
+      duration: "1h",
+      lessons: [
+        {
+          id: 1,
+          title: "Fundamentos de IaC",
+          type: "video",
+          duration: "15min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Componentes de infra ML",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Versionamento e ambientes",
+          type: "video",
+          duration: "25min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Percebe como descrever e versionar a infra-estrutura necessária para ML.",
+        keyPoints: [
+          "Benefícios de IaC em MLOps",
+          "Separação de ambientes (dev, staging, prod)",
+          "Reprodutibilidade através de código",
+        ],
+        exercises: [
+          "Desenha a infra básica para servir um modelo em produção",
+          "Lista recursos necessários (compute, storage, rede)",
+        ],
+      },
+    },
+  },
+
+  // 🔹 Experiment Tracking
+  "experiment-tracking": {
+    1: {
+      title: "Introdução ao Experiment Tracking",
+      description: "Conceitos base de tracking de experiências em ML.",
+      duration: "1h",
+      lessons: [
+        {
+          id: 1,
+          title: "Porquê trackear experiências?",
+          type: "video",
+          duration: "15min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "O que trackear (parâmetros, métricas, artefactos)",
+          type: "reading",
+          duration: "25min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Organização de experiências",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Introdução aos conceitos e benefícios de um sistema de experiment tracking.",
+        keyPoints: [
+          "Problemas sem tracking",
+          "O que é um experimento em ML",
+          "Tipos de informação que devem ser registados",
+        ],
+        exercises: [
+          "Descreve um cenário onde a falta de tracking causou confusão",
+          "Lista os campos mínimos para registar um experimento",
+        ],
+      },
+    },
+    2: {
+      title: "MLflow em Profundidade",
+      description: "Como usar MLflow para gerir experiências e modelos.",
+      duration: "2h",
+      lessons: [
+        {
+          id: 1,
+          title: "MLflow Tracking",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Logging de parâmetros e métricas",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Logging de modelos e artefactos",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "MLflow UI",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 5,
+          title: "Organização em experiments e runs",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 6,
+          title: "Boas práticas com MLflow",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Neste módulo vais aprender a usar MLflow de forma prática para gerir experiências.",
+        keyPoints: [
+          "Componentes principais do MLflow",
+          "Como integrar MLflow no código de treino",
+          "Visualização e comparação de runs",
+        ],
+        exercises: [
+          "Adiciona MLflow a um script de treino existente",
+          "Cria pelo menos 5 runs diferentes e compara as métricas",
+        ],
+      },
+    },
+    3: {
+      title: "Model Registry",
+      description: "Registo, versionamento e promoção de modelos.",
+      duration: "1h",
+      lessons: [
+        {
+          id: 1,
+          title: "Porquê usar um Model Registry",
+          type: "video",
+          duration: "15min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Versionamento de modelos",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Stages (Staging, Production, Archived)",
+          type: "video",
+          duration: "15min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Promoção e rollback de versões",
+          type: "reading",
+          duration: "10min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Este módulo foca-se na gestão de modelos ao longo do seu ciclo de vida.",
+        keyPoints: [
+          "Vantagens de ter um registry centralizado",
+          "Diferença entre runs e registered models",
+          "Fluxo de aprovação de modelos",
+        ],
+        exercises: [
+          "Desenha um fluxo de aprovação para promover um modelo a production",
+          "Define critérios para fazer rollback de uma versão",
+        ],
+      },
+    },
+    4: {
+      title: "Versionamento de Datasets",
+      description: "Como versionar dados usados em experiências ML.",
+      duration: "1h",
+      lessons: [
+        {
+          id: 1,
+          title: "Porque versionar dados",
+          type: "video",
+          duration: "15min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Ferramentas (DVC, LakeFS, etc.)",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Ligação entre data versions e modelos",
+          type: "video",
+          duration: "15min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Reprodutibilidade completa",
+          type: "reading",
+          duration: "10min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Aprende a garantir que consegues sempre saber com que dados um modelo foi treinado.",
+        keyPoints: [
+          "Problemas de não versionar dados",
+          "Estratégias de versionamento",
+          "Ligação entre dataset, código e modelo",
+        ],
+        exercises: [
+          "Desenha um esquema onde cada modelo aponta para uma versão de dados",
+          "Explica como reproduzir um experimento antigo 6 meses depois",
+        ],
+      },
+    },
+  },
+
+  // 🔹 Monitoring & Drift
+  "monitoring-drift": {
+    1: {
+      title: "Fundamentos de Monitorização ML",
+      description: "O que monitorizar num modelo em produção.",
+      duration: "1.5h",
+      lessons: [
+        {
+          id: 1,
+          title: "Porquê monitorizar modelos?",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Métricas de negócio vs técnicas",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Sinais de degradação de performance",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Introdução a SLIs e SLOs",
+          type: "reading",
+          duration: "25min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 5,
+          title: "Stack típica de monitorização",
+          type: "video",
+          duration: "25min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Este módulo introduz os conceitos base de monitorização em ML.",
+        keyPoints: [
+          "Diferença entre métricas de modelo e métricas de negócio",
+          "Exemplos de métricas para classificação e regressão",
+          "Como definir SLIs e SLOs",
+        ],
+        exercises: [
+          "Define 3 métricas técnicas e 3 métricas de negócio para um modelo real",
+          "Escreve um SLO para tempo de resposta de inferência",
+        ],
+      },
+    },
+    2: {
+      title: "Data Drift Detection",
+      description: "Deteção de alterações na distribuição dos dados.",
+      duration: "2h",
+      lessons: [
+        {
+          id: 1,
+          title: "O que é data drift",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Tipos de drift",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Métricas e testes estatísticos",
+          type: "video",
+          duration: "25min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Ferramentas para drift detection",
+          type: "reading",
+          duration: "25min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 5,
+          title: "Integração com pipelines",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 6,
+          title: "Alertas baseados em drift",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Aprende a detetar quando os dados em produção deixam de parecer-se com os dados de treino.",
+        keyPoints: [
+          "Diferença entre data drift, concept drift e prediction drift",
+          "Exemplos de métricas de drift (PSI, KS test, etc.)",
+          "Quando agir sobre um alerta de drift",
+        ],
+        exercises: [
+          "Dá um exemplo real onde data drift pode ocorrer (domínio à tua escolha)",
+          "Define um plano de ação quando é detetado drift severo",
+        ],
+      },
+    },
+    3: {
+      title: "Model Performance Monitoring",
+      description: "Monitorização contínua da performance do modelo.",
+      duration: "1.5h",
+      lessons: [
+        {
+          id: 1,
+          title: "Recolha de labels em produção",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Cálculo de métricas em janelas de tempo",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Degradação gradual vs súbita",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Alertas de performance baixa",
+          type: "reading",
+          duration: "25min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 5,
+          title: "Ligações com re-treino",
+          type: "video",
+          duration: "25min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Monitora continuamente a performance real do modelo em produção.",
+        keyPoints: [
+          "Desafios quando labels chegam atrasadas",
+          "Como definir janelas de análise (diária, semanal...)",
+          "Relação entre performance e negócio",
+        ],
+        exercises: [
+          "Descreve como avaliarias um modelo de churn 1 mês após deployment",
+          "Define thresholds de alerta para uma métrica de F1-score",
+        ],
+      },
+    },
+    4: {
+      title: "Alerting & Incident Response",
+      description: "Como reagir quando algo corre mal com o modelo.",
+      duration: "1h",
+      lessons: [
+        {
+          id: 1,
+          title: "Desenho de alertas eficazes",
+          type: "video",
+          duration: "15min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Runbooks e playbooks",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Gestão de incidentes",
+          type: "video",
+          duration: "15min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Post-mortems e melhoria contínua",
+          type: "reading",
+          duration: "10min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Aprende a preparar-te para incidentes em produção e a responder com calma.",
+        keyPoints: [
+          "Características de um bom alerta",
+          "O que é um runbook",
+          "Como fazer um post-mortem produtivo",
+        ],
+        exercises: [
+          "Escreve um mini runbook para quando um modelo começa a falhar",
+          "Descreve um exemplo de incidente e as lições aprendidas",
+        ],
+      },
+    },
+    5: {
+      title: "Observability em ML Systems",
+      description: "Observabilidade fim-a-fim em sistemas de ML.",
+      duration: "1h",
+      lessons: [
+        {
+          id: 1,
+          title: "Logs, métricas e traces",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Stack de observability (Prometheus, Grafana, etc.)",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Correlacionar problemas",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Uma visão integrada de tudo o que está a acontecer com o teu sistema de ML.",
+        keyPoints: [
+          "Diferença entre logging, metrics e tracing",
+          "Exemplos de dashboards úteis",
+          "Como diagnosticar problemas complexos",
+        ],
+        exercises: [
+          "Desenha um dashboard ideal para um serviço de scoring em tempo real",
+          "Lista 5 métricas técnicas que colocarias num painel de observability",
+        ],
+      },
+    },
+  },
+
+  // 🔹 Chatbots & LLM Ops
+  "chatbots-llm": {
+    1: {
+      title: "Introdução a LLMs",
+      description:
+        "Fundamentos de Large Language Models e aplicações em chatbots.",
+      duration: "1.5h",
+      lessons: [
+        {
+          id: 1,
+          title: "O que é um LLM",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Arquitetura base (Transformers)",
+          type: "reading",
+          duration: "25min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Casos de uso típicos",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Limitações e riscos",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 5,
+          title: "Visão geral de LLM Ops",
+          type: "video",
+          duration: "15min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Explora os conceitos essenciais por trás de LLMs e como são usados em chatbots.",
+        keyPoints: [
+          "O que diferencia LLMs de modelos clássicos de NLP",
+          "Forças e fraquezas de LLMs",
+          "Riscos de hallucinations e viés",
+        ],
+        exercises: [
+          "Lista 3 casos de uso onde LLMs fazem sentido",
+          "Lista 3 casos de uso onde NÃO fazem sentido",
+        ],
+      },
+    },
+    2: {
+      title: "Prompt Engineering",
+      description: "Como desenhar prompts eficazes para LLMs.",
+      duration: "2h",
+      lessons: [
+        {
+          id: 1,
+          title: "Prompting básico",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Estratégias (few-shot, chain-of-thought, etc.)",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Controlar estilo e persona",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Evitar respostas perigosas",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 5,
+          title: "Testes A/B de prompts",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 6,
+          title: "Documentar e versionar prompts",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Aprende técnicas práticas para tirar o máximo partido de LLMs através de prompts bem desenhados.",
+        keyPoints: [
+          "Boas práticas de escrita de prompts",
+          "Diferença entre zero-shot, one-shot e few-shot",
+          "Importância de exemplos concretos",
+        ],
+        exercises: [
+          "Escreve dois prompts diferentes para o mesmo objetivo e compara respostas",
+          "Cria um template de prompt reutilizável para um caso de uso",
+        ],
+      },
+    },
+    3: {
+      title: "LangChain & Frameworks",
+      description: "Uso de LangChain e outros frameworks para orquestrar LLMs.",
+      duration: "2h",
+      lessons: [
+        {
+          id: 1,
+          title: "Introdução ao LangChain",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Chains e agents",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Memória em chatbots",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Ferramentas (tools) e chamadas a APIs",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 5,
+          title: "Integração com bases de dados",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 6,
+          title: "Logging e tracing em LangChain",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 7,
+          title: "Alternativas a LangChain",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Constrói pipelines mais complexos à volta de LLMs com frameworks modernas.",
+        keyPoints: [
+          "Componentes principais de LangChain",
+          "Como combinar múltiplas chamadas de LLM",
+          "Integração com fontes externas",
+        ],
+        exercises: [
+          "Desenha um fluxo de um chatbot com memória e acesso a API externa",
+          "Lista vantagens e desvantagens de usar um framework em vez de chamadas diretas à API",
+        ],
+      },
+    },
+    4: {
+      title: "RAG Systems",
+      description:
+        "Retrieval-Augmented Generation para resposta com contexto externo.",
+      duration: "2h",
+      lessons: [
+        {
+          id: 1,
+          title: "O que é RAG",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Ingestão e chunking de documentos",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Embeddings e similaridade",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Arquitetura de um sistema RAG",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 5,
+          title: "Avaliação de qualidade em RAG",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 6,
+          title: "Melhores práticas e pitfalls",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Aprende a combinar LLMs com dados externos para respostas mais fiáveis.",
+        keyPoints: [
+          "Diferença entre RAG e fine-tuning",
+          "Desafios na construção de pipelines de retrieval",
+          "Importância de dados bem preparados",
+        ],
+        exercises: [
+          "Descreve um sistema RAG para FAQs de uma empresa",
+          "Lista potenciais problemas de segurança num sistema destes",
+        ],
+      },
+    },
+    5: {
+      title: "Vector Databases",
+      description:
+        "Bases de dados vetoriais para armazenamento e pesquisa semântica.",
+      duration: "1h",
+      lessons: [
+        {
+          id: 1,
+          title: "Porquê usar bases de dados vetoriais",
+          type: "video",
+          duration: "15min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Conceitos base (embeddings, índices)",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Exemplos de ferramentas (Pinecone, Weaviate, etc.)",
+          type: "video",
+          duration: "15min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 4,
+          title: "Boas práticas de schema e queries",
+          type: "reading",
+          duration: "10min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Fundamentos de armazenamento vetorial para suportar RAG e buscas semânticas.",
+        keyPoints: [
+          "Como funcionam embeddings",
+          "O que é um índice vetorial",
+          "Trade-offs entre precisão e performance",
+        ],
+        exercises: [
+          "Desenha o schema simples de uma collection de documentos",
+          "Descreve uma query típica de similarity search",
+        ],
+      },
+    },
+    6: {
+      title: "LLM Deployment",
+      description: "Como colocar LLMs em produção de forma robusta.",
+      duration: "1h",
+      lessons: [
+        {
+          id: 1,
+          title: "Arquiteturas de serving (API, serverless, etc.)",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Escalabilidade e latência",
+          type: "reading",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Gestão de limites de taxa (rate limits)",
+          type: "video",
+          duration: "20min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview: "Considerações práticas para expor LLMs em produção.",
+        keyPoints: [
+          "Diferença entre self-hosted e API externa",
+          "Técnicas de caching de respostas",
+          "Estratégias para lidar com picos de tráfego",
+        ],
+        exercises: [
+          "Desenha a arquitetura de um serviço que chama um LLM externo",
+          "Lista medidas para reduzir latência percebida pelo utilizador",
+        ],
+      },
+    },
+    7: {
+      title: "Monitoring & Cost Optimization",
+      description:
+        "Monitorizar qualidade e controlar custos em sistemas com LLMs.",
+      duration: "0.5h",
+      lessons: [
+        {
+          id: 1,
+          title: "Métricas de qualidade para LLMs",
+          type: "video",
+          duration: "10min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 2,
+          title: "Monitorização de custos e uso",
+          type: "reading",
+          duration: "10min",
+          videoUrl: introVideo,
+        },
+        {
+          id: 3,
+          title: "Estratégias de optimização",
+          type: "video",
+          duration: "10min",
+          videoUrl: introVideo,
+        },
+      ],
+      content: {
+        overview:
+          "Gere a longo prazo qualidade e custo dos teus sistemas com LLMs.",
+        keyPoints: [
+          "Tipos de métricas de qualidade (human eval, automáticas, etc.)",
+          "Como controlar custos por utilizador",
+          "Técnicas para reduzir chamadas desnecessárias",
+        ],
+        exercises: [
+          "Define 3 métricas para avaliar um chatbot em produção",
+          "Descreve medidas de controlo de custo num sistema de suporte ao cliente baseado em LLM",
+        ],
+      },
+
+    },
+
+  },
+
+  
+
 };
 
 export default function AcademyModule() {
@@ -467,9 +1535,18 @@ export default function AcademyModule() {
   const navigate = useNavigate();
   const [currentLesson, setCurrentLesson] = useState(0);
   const [completedLessons, setCompletedLessons] = useState<number[]>([]);
+
   
-  const module = moduleData[trailId as keyof typeof moduleData]?.[Number(moduleId) as keyof typeof moduleData["mlops-fundamentals"]];
-  const totalModules = 6; // Total de módulos no curso
+  // Obter todos os módulos da trilha actual
+  const currentTrailModules = (moduleData as any)?.[trailId as string];
+
+  // Módulo actual
+  const module = currentTrailModules?.[Number(moduleId)];
+
+  // Número total de módulos desta trilha (pode ser 5, 6, 7, etc.)
+  const totalModules = currentTrailModules
+    ? Object.keys(currentTrailModules).length
+    : 0;
 
   useEffect(() => {
     // Carregar progresso do localStorage
@@ -487,15 +1564,30 @@ export default function AcademyModule() {
   useEffect(() => {
     // Salvar progresso
     if (completedLessons.length > 0) {
-      localStorage.setItem(`module_${trailId}_${moduleId}`, JSON.stringify(completedLessons));
+      localStorage.setItem(
+        `module_${trailId}_${moduleId}`,
+        JSON.stringify(completedLessons)
+      );
     }
   }, [completedLessons, trailId, moduleId]);
 
+  // Garantir que, se todas as lições estiverem completas, o módulo fica marcado como concluído na trilha
+  useEffect(() => {
+    if (!module) return;
+
+    if (
+      completedLessons.length === module.lessons.length &&
+      module.lessons.length > 0
+    ) {
+      markModuleComplete(trailId as string, moduleId as string, totalModules);
+    }
+  }, [completedLessons, module, trailId, moduleId, totalModules]);
+
   const markLessonComplete = (lessonIndex: number) => {
     if (!completedLessons.includes(lessonIndex)) {
-      setCompletedLessons(prev => [...prev, lessonIndex]);
+      setCompletedLessons((prev) => [...prev, lessonIndex]);
       toast.success("Lição concluída!");
-      
+
       // Se todas as lições completadas, marcar módulo como completo
       if (completedLessons.length + 1 === module.lessons.length) {
         markModuleComplete(trailId as string, moduleId as string, totalModules);
@@ -505,23 +1597,26 @@ export default function AcademyModule() {
   };
 
   const goToNextLesson = () => {
-    // Marcar lição atual como completa
+    const isLastLesson = currentLesson === module.lessons.length - 1;
+
+    // Tenta sempre marcar esta lição como completa
     markLessonComplete(currentLesson);
-    
-    // Avançar para próxima lição se não for a última
-    if (currentLesson < module.lessons.length - 1) {
-      setCurrentLesson(prev => prev + 1);
+
+    if (!isLastLesson) {
+      // Ainda há mais lições neste módulo → só avançar dentro do módulo
+      setCurrentLesson((prev) => prev + 1);
+    } else {
+      // Última lição → garante que o módulo fica marcado como completo
+      markModuleComplete(trailId as string, moduleId as string, totalModules);
+      toast.success("🎉 Módulo concluído!");
+      // E depois segue para próximo módulo / fim do curso
+      goToNextModule();
     }
-    // Se for a última lição, apenas marca como completa (o botão mudará automaticamente)
   };
 
   const goToNextModule = () => {
-    // Garantir que a última lição está marcada como completa antes de avançar
-    if (!completedLessons.includes(currentLesson)) {
-      markLessonComplete(currentLesson);
-    }
-    
     const nextModule = Number(moduleId) + 1;
+
     if (nextModule <= totalModules) {
       navigate(`/academy/trail/${trailId}/module/${nextModule}`);
       window.scrollTo(0, 0);
@@ -550,15 +1645,16 @@ export default function AcademyModule() {
   const progress = (completedLessons.length / module.lessons.length) * 100;
   const allLessonsCompleted = completedLessons.length === module.lessons.length;
   const isLastModule = Number(moduleId) === totalModules;
-  
+
   // Verificar se o curso inteiro está completo
   const trailProgress = getSpecificTrailProgress(trailId as string);
-  const isCourseComplete = trailProgress?.completedModules.length === totalModules;
+  const isCourseComplete =
+    trailProgress?.completedModules.length === totalModules;
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
-      
+
       <main className="flex-1">
         {/* Header with Progress */}
         <section className="border-b border-border bg-card/50">
@@ -566,17 +1662,23 @@ export default function AcademyModule() {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <Button variant="ghost" size="sm" asChild className="mb-2">
-                  <Link to={`/academy/trail/${trailId}`}>← Voltar à trilha</Link>
+                  <Link to={`/academy/trail/${trailId}`}>
+                    ← Voltar à trilha
+                  </Link>
                 </Button>
                 <h1 className="text-2xl md:text-3xl font-bold">
                   Módulo {moduleId}: {module.title}
                 </h1>
-                <p className="text-muted-foreground mt-1">{module.description}</p>
+                <p className="text-muted-foreground mt-1">
+                  {module.description}
+                </p>
               </div>
               <div className="flex items-center gap-4">
                 <Badge variant="outline">{module.duration}</Badge>
                 <div className="text-right">
-                  <div className="text-sm font-medium">{Math.round(progress)}%</div>
+                  <div className="text-sm font-medium">
+                    {Math.round(progress)}%
+                  </div>
                   <Progress value={progress} className="w-24 h-2" />
                 </div>
               </div>
@@ -596,37 +1698,38 @@ export default function AcademyModule() {
                   {module.lessons.map((lesson, index) => {
                     const isCompleted = completedLessons.includes(index);
                     return (
-                    <button
-                      key={lesson.id}
-                      onClick={() => setCurrentLesson(index)}
-                      className={`w-full text-left p-3 rounded-lg transition-colors ${
-                        currentLesson === index 
-                          ? 'bg-academy/20 border border-academy' 
-                          : 'hover:bg-muted'
-                      }`}
-                    >
-                      <div className="flex items-start gap-3">
-                        {isCompleted ? (
-                          <CheckCircle2 className="h-5 w-5 text-academy flex-shrink-0 mt-0.5" />
-                        ) : (
-                          <Circle className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <div className="font-medium text-sm mb-1 truncate">
-                            {lesson.title}
-                          </div>
-                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                            {lesson.type === "video" ? (
-                              <PlayCircle className="h-3 w-3" />
-                            ) : (
-                              <BookOpen className="h-3 w-3" />
-                            )}
-                            {lesson.duration}
+                      <button
+                        key={lesson.id}
+                        onClick={() => setCurrentLesson(index)}
+                        className={`w-full text-left p-3 rounded-lg transition-colors ${
+                          currentLesson === index
+                            ? "bg-academy/20 border border-academy"
+                            : "hover:bg-muted"
+                        }`}
+                      >
+                        <div className="flex items-start gap-3">
+                          {isCompleted ? (
+                            <CheckCircle2 className="h-5 w-5 text-academy flex-shrink-0 mt-0.5" />
+                          ) : (
+                            <Circle className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <div className="font-medium text-sm mb-1 truncate">
+                              {lesson.title}
+                            </div>
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                              {lesson.type === "video" ? (
+                                <PlayCircle className="h-3 w-3" />
+                              ) : (
+                                <BookOpen className="h-3 w-3" />
+                              )}
+                              {lesson.duration}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </button>
-                  )})}
+                      </button>
+                    );
+                  })}
                 </CardContent>
               </Card>
             </aside>
@@ -637,7 +1740,9 @@ export default function AcademyModule() {
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle>{module.lessons[currentLesson].title}</CardTitle>
+                      <CardTitle>
+                        {module.lessons[currentLesson].title}
+                      </CardTitle>
                       <CardDescription className="flex items-center gap-2 mt-2">
                         {module.lessons[currentLesson].type === "video" ? (
                           <PlayCircle className="h-4 w-4" />
@@ -647,8 +1752,16 @@ export default function AcademyModule() {
                         {module.lessons[currentLesson].duration}
                       </CardDescription>
                     </div>
-                    <Badge variant={completedLessons.includes(currentLesson) ? "default" : "outline"}>
-                      {completedLessons.includes(currentLesson) ? "Concluída" : "Em progresso"}
+                    <Badge
+                      variant={
+                        completedLessons.includes(currentLesson)
+                          ? "default"
+                          : "outline"
+                      }
+                    >
+                      {completedLessons.includes(currentLesson)
+                        ? "Concluída"
+                        : "Em progresso"}
                     </Badge>
                   </div>
                 </CardHeader>
@@ -656,13 +1769,16 @@ export default function AcademyModule() {
                   {/* Video/Reading Area */}
                   {module.lessons[currentLesson].type === "video" ? (
                     <div className="aspect-video bg-muted rounded-lg overflow-hidden mb-6">
-                      <video 
+                      <video
                         key={currentLesson}
-                        controls 
+                        controls
                         className="w-full h-full"
                         poster=""
                       >
-                        <source src={module.lessons[currentLesson].videoUrl} type="video/mp4" />
+                        <source
+                          src={module.lessons[currentLesson].videoUrl}
+                          type="video/mp4"
+                        />
                         O teu navegador não suporta vídeos.
                       </video>
                     </div>
@@ -670,7 +1786,9 @@ export default function AcademyModule() {
                     <div className="aspect-video bg-muted rounded-lg flex items-center justify-center mb-6">
                       <div className="text-center">
                         <BookOpen className="h-16 w-16 text-muted-foreground mx-auto mb-2" />
-                        <p className="text-sm text-muted-foreground">Conteúdo de leitura</p>
+                        <p className="text-sm text-muted-foreground">
+                          Conteúdo de leitura
+                        </p>
                       </div>
                     </div>
                   )}
@@ -678,9 +1796,9 @@ export default function AcademyModule() {
               </Card>
 
               <Tabs defaultValue="overview" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
+                <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-                  <TabsTrigger value="code">Código</TabsTrigger>
+
                   <TabsTrigger value="exercises">Exercícios</TabsTrigger>
                 </TabsList>
 
@@ -690,8 +1808,10 @@ export default function AcademyModule() {
                       <CardTitle>Sobre este módulo</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <p className="text-muted-foreground">{module.content.overview}</p>
-                      
+                      <p className="text-muted-foreground">
+                        {module.content.overview}
+                      </p>
+
                       <div>
                         <h4 className="font-semibold mb-3">Pontos-chave:</h4>
                         <ul className="space-y-2">
@@ -703,29 +1823,6 @@ export default function AcademyModule() {
                           ))}
                         </ul>
                       </div>
-
-                      <Button asChild variant="outline" className="w-full">
-                        <Link to="/simulation">
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          Tentar na Simulação
-                        </Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-
-                <TabsContent value="code" className="mt-6">
-                  <Card>
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <CardTitle>Exemplo de Código</CardTitle>
-                        <FileCode className="h-5 w-5 text-muted-foreground" />
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
-                        <code>{module.content.codeSnippet}</code>
-                      </pre>
                     </CardContent>
                   </Card>
                 </TabsContent>
@@ -753,31 +1850,39 @@ export default function AcademyModule() {
 
               {/* Navigation */}
               <div className="flex justify-between items-center pt-6">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   disabled={currentLesson === 0}
-                  onClick={() => setCurrentLesson(prev => Math.max(0, prev - 1))}
+                  onClick={() =>
+                    setCurrentLesson((prev) => Math.max(0, prev - 1))
+                  }
                 >
                   <ChevronLeft className="h-4 w-4 mr-2" />
                   Anterior
                 </Button>
-                
+
                 {/* Se todas as lições completas, mostrar botão para próximo módulo */}
                 {allLessonsCompleted ? (
-                  <Button 
+                  <Button
                     className="bg-academy hover:bg-academy/80 text-academy-foreground"
                     onClick={goToNextModule}
                   >
-                    {isLastModule ? (isCourseComplete ? "Voltar ao Curso" : "Concluir Curso") : "Próximo Módulo"}
+                    {isLastModule
+                      ? isCourseComplete
+                        ? "Voltar ao Curso"
+                        : "Concluir Curso"
+                      : "Próximo Módulo"}
                     <ChevronRight className="h-4 w-4 ml-2" />
                   </Button>
                 ) : (
                   /* Botão para marcar lição como completa e avançar */
-                  <Button 
+                  <Button
                     className="bg-academy hover:bg-academy/80 text-academy-foreground"
                     onClick={goToNextLesson}
                   >
-                    {currentLesson === module.lessons.length - 1 ? "Concluir Módulo" : "Marcar como Completa"}
+                    {currentLesson === module.lessons.length - 1
+                      ? "Concluir Módulo"
+                      : "Marcar como Completa"}
                     <ChevronRight className="h-4 w-4 ml-2" />
                   </Button>
                 )}

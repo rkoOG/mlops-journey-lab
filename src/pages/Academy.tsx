@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,7 +20,8 @@ const trails = [
   {
     id: "mlops-fundamentals",
     title: "MLOps Fundamentals",
-    description: "Aprende os fundamentos de MLOps desde a ingestão de dados até à monitorização em produção.",
+    description:
+      "Aprende os fundamentos de MLOps desde a ingestão de dados até à monitorização em produção.",
     duration: "8 horas",
     level: "Iniciante",
     modules: 6,
@@ -23,7 +30,8 @@ const trails = [
   {
     id: "cicd-ml",
     title: "CI/CD para ML",
-    description: "Implementa pipelines de integração e deployment contínuo para modelos de machine learning.",
+    description:
+      "Implementa pipelines de integração e deployment contínuo para modelos de machine learning.",
     duration: "6 horas",
     level: "Intermédio",
     modules: 5,
@@ -32,7 +40,8 @@ const trails = [
   {
     id: "experiment-tracking",
     title: "Experiment Tracking & Registry",
-    description: "Gere experiências e versões de modelos com ferramentas modernas de tracking.",
+    description:
+      "Gere experiências e versões de modelos com ferramentas modernas de tracking.",
     duration: "5 horas",
     level: "Intermédio",
     modules: 4,
@@ -41,7 +50,8 @@ const trails = [
   {
     id: "monitoring-drift",
     title: "Monitorização & Drift",
-    description: "Monitoriza modelos em produção e detecta data drift para garantir qualidade.",
+    description:
+      "Monitoriza modelos em produção e detecta data drift para garantir qualidade.",
     duration: "7 horas",
     level: "Avançado",
     modules: 5,
@@ -50,7 +60,8 @@ const trails = [
   {
     id: "chatbots-llm",
     title: "Chatbots & LLM Ops",
-    description: "Constrói e opera chatbots com Large Language Models em produção.",
+    description:
+      "Constrói e opera chatbots com Large Language Models em produção.",
     duration: "10 horas",
     level: "Avançado",
     modules: 7,
@@ -104,35 +115,57 @@ const resources = [
 ];
 
 export default function Academy() {
-  const [trailsProgress, setTrailsProgress] = useState<Record<string, number>>({});
+  const [trailsProgress, setTrailsProgress] = useState<Record<string, number>>(
+    {}
+  );
+  const [searchTerm, setSearchTerm] = useState("");
+  const [levelFilter, setLevelFilter] = useState<
+    "Iniciante" | "Intermédio" | "Avançado" | null
+  >(null);
 
   useEffect(() => {
     const progress = getTrailProgress();
     const progressMap: Record<string, number> = {};
-    progress.forEach(p => {
+    progress.forEach((p) => {
       progressMap[p.trailId] = p.progress;
     });
     setTrailsProgress(progressMap);
   }, []);
+  // Filtrar trilhas com base na pesquisa e no nível
+  const normalizedSearch = searchTerm.trim().toLowerCase();
+
+  const filteredTrails = trails.filter((trail) => {
+    const matchesSearch =
+      !normalizedSearch ||
+      trail.title.toLowerCase().includes(normalizedSearch) ||
+      trail.description.toLowerCase().includes(normalizedSearch);
+
+    const matchesLevel = !levelFilter || trail.level === levelFilter;
+
+    return matchesSearch && matchesLevel;
+  });
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
-      
+
       <main className="flex-1">
         {/* Hero Section */}
         <section className="container mx-auto px-4 py-12 md:py-20">
           <div className="text-center max-w-3xl mx-auto animate-fade-in-up">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-academy/10 border border-academy/20 mb-6">
               <Award className="h-4 w-4 text-academy" />
-              <span className="text-sm font-medium text-academy">Aprende no teu ritmo</span>
+              <span className="text-sm font-medium text-academy">
+                Aprende no teu ritmo
+              </span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-academy via-academy-glow to-primary bg-clip-text text-transparent">
               Cursos de MLOps
             </h1>
             <p className="text-lg text-muted-foreground mb-8">
-              Plataforma educacional completa com conteúdo estruturado, exercícios práticos e avaliações.
-              Do zero à produção em MLOps e LLMOps.
+              Plataforma educacional completa com conteúdo estruturado,
+              exercícios práticos e avaliações. Do zero à produção em MLOps e
+              LLMOps.
             </p>
           </div>
         </section>
@@ -140,9 +173,9 @@ export default function Academy() {
         {/* Main Content */}
         <section className="container mx-auto px-4 pb-20">
           <Tabs defaultValue="trilhas" className="w-full">
-            <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 mb-12">
+            <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-12">
               <TabsTrigger value="trilhas">Cursos</TabsTrigger>
-              <TabsTrigger value="cursos">Tutoriais</TabsTrigger>
+
               <TabsTrigger value="recursos">Recursos</TabsTrigger>
             </TabsList>
 
@@ -151,23 +184,76 @@ export default function Academy() {
               <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                 <div className="relative w-full md:w-96">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input placeholder="Pesquisar cursos..." className="pl-10" />
+                  <Input
+                    placeholder="Pesquisar cursos..."
+                    className="pl-10"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
                 </div>
                 <div className="flex gap-2 flex-wrap">
-                  <Badge variant="outline" className="cursor-pointer hover:bg-muted">Iniciante</Badge>
-                  <Badge variant="outline" className="cursor-pointer hover:bg-muted">Intermédio</Badge>
-                  <Badge variant="outline" className="cursor-pointer hover:bg-muted">Avançado</Badge>
+                  <Badge
+                    variant={
+                      levelFilter === "Iniciante" ? "default" : "outline"
+                    }
+                    className="cursor-pointer hover:bg-muted"
+                    onClick={() =>
+                      setLevelFilter((current) =>
+                        current === "Iniciante" ? null : "Iniciante"
+                      )
+                    }
+                  >
+                    Iniciante
+                  </Badge>
+
+                  <Badge
+                    variant={
+                      levelFilter === "Intermédio" ? "default" : "outline"
+                    }
+                    className="cursor-pointer hover:bg-muted"
+                    onClick={() =>
+                      setLevelFilter((current) =>
+                        current === "Intermédio" ? null : "Intermédio"
+                      )
+                    }
+                  >
+                    Intermédio
+                  </Badge>
+
+                  <Badge
+                    variant={levelFilter === "Avançado" ? "default" : "outline"}
+                    className="cursor-pointer hover:bg-muted"
+                    onClick={() =>
+                      setLevelFilter((current) =>
+                        current === "Avançado" ? null : "Avançado"
+                      )
+                    }
+                  >
+                    Avançado
+                  </Badge>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {trails.map((trail, index) => {
+                {filteredTrails.map((trail, index) => {
                   const progress = trailsProgress[trail.id] || 0;
                   return (
-                    <Card key={trail.id} className="group hover:shadow-card-hover transition-all duration-300 hover:scale-105 animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
+                    <Card
+                      key={trail.id}
+                      className="group hover:shadow-card-hover transition-all duration-300 hover:scale-105 animate-fade-in-up"
+                      style={{ animationDelay: `${index * 100}ms` }}
+                    >
                       <CardHeader>
                         <div className="flex items-start justify-between mb-2">
-                          <Badge variant={trail.level === "Iniciante" ? "secondary" : trail.level === "Intermédio" ? "default" : "destructive"}>
+                          <Badge
+                            variant={
+                              trail.level === "Iniciante"
+                                ? "secondary"
+                                : trail.level === "Intermédio"
+                                ? "default"
+                                : "destructive"
+                            }
+                          >
                             {trail.level}
                           </Badge>
                           <BookOpen className="h-5 w-5 text-academy" />
@@ -191,15 +277,23 @@ export default function Academy() {
                         {progress > 0 && (
                           <div className="space-y-2">
                             <div className="flex justify-between text-sm">
-                              <span className="text-muted-foreground">Progresso</span>
+                              <span className="text-muted-foreground">
+                                Progresso
+                              </span>
                               <span className="font-medium">{progress}%</span>
                             </div>
                             <div className="h-2 bg-muted rounded-full overflow-hidden">
-                              <div className="h-full bg-academy transition-all duration-500" style={{ width: `${progress}%` }} />
+                              <div
+                                className="h-full bg-academy transition-all duration-500"
+                                style={{ width: `${progress}%` }}
+                              />
                             </div>
                           </div>
                         )}
-                        <Button asChild className="w-full bg-academy hover:bg-academy/80 text-academy-foreground">
+                        <Button
+                          asChild
+                          className="w-full bg-academy hover:bg-academy/80 text-academy-foreground"
+                        >
                           <Link to={`/academy/trail/${trail.id}`}>
                             {progress > 0 ? "Continuar" : "Iniciar Curso"}
                           </Link>
@@ -215,7 +309,11 @@ export default function Academy() {
             <TabsContent value="cursos" className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {courses.map((course, index) => (
-                  <Card key={index} className="hover:shadow-card-hover transition-all duration-300 hover:scale-105 animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
+                  <Card
+                    key={index}
+                    className="hover:shadow-card-hover transition-all duration-300 hover:scale-105 animate-fade-in-up"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
                     <CardHeader>
                       <div className="flex items-start justify-between mb-2">
                         <Badge variant="outline">{course.level}</Badge>
@@ -230,7 +328,9 @@ export default function Academy() {
                         {course.duration}
                       </div>
                       <Button asChild variant="secondary" className="w-full">
-                        <Link to={`/academy/course/${course.id}`}>Ver Curso</Link>
+                        <Link to={`/academy/course/${course.id}`}>
+                          Ver Curso
+                        </Link>
                       </Button>
                     </CardContent>
                   </Card>
@@ -242,17 +342,27 @@ export default function Academy() {
             <TabsContent value="recursos" className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {resources.map((resource, index) => (
-                  <Card key={index} className="hover:shadow-card-hover transition-all duration-300 hover:scale-105 animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
+                  <Card
+                    key={index}
+                    className="hover:shadow-card-hover transition-all duration-300 hover:scale-105 animate-fade-in-up"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
                     <CardHeader>
                       <div className="flex items-start justify-between mb-2">
                         <Badge variant="outline">{resource.type}</Badge>
                       </div>
-                      <CardTitle className="text-xl">{resource.title}</CardTitle>
+                      <CardTitle className="text-xl">
+                        {resource.title}
+                      </CardTitle>
                       <CardDescription>{resource.description}</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <Button asChild variant="outline" className="w-full">
-                        <a href={resource.url} target="_blank" rel="noopener noreferrer">
+                        <a
+                          href={resource.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           Download
                         </a>
                       </Button>
