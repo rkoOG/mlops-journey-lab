@@ -28,12 +28,12 @@ const App = () => (
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
-            <Route path="/academy" element={<ProtectedRoute><Academy /></ProtectedRoute>} />
-            <Route path="/academy/trail/:trailId" element={<ProtectedRoute><AcademyTrail /></ProtectedRoute>} />
-            <Route path="/academy/trail/:trailId/module/:moduleId" element={<ProtectedRoute><AcademyModule /></ProtectedRoute>} />
-            <Route path="/academy/progress" element={<ProtectedRoute><AcademyProgress /></ProtectedRoute>} />
-            <Route path="/quiz" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
-            <Route path="/glossary" element={<ProtectedRoute><Glossary /></ProtectedRoute>} />
+            <Route path="/academy" element={<Academy />} />
+            <Route path="/academy/trail/:trailId" element={<AcademyTrail />} />
+            <Route path="/academy/trail/:trailId/module/:moduleId" element={<AcademyModule />} />
+            <Route path="/academy/progress" element={<AcademyProgress />} />
+            <Route path="/quiz" element={<Quiz />} />
+            <Route path="/glossary" element={<Glossary />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
