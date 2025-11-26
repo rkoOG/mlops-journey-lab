@@ -15,6 +15,7 @@ import AcademyTrail from "./pages/AcademyTrail";
 import AcademyModule from "./pages/AcademyModule";
 import AcademyProgress from "./pages/AcademyProgress";
 import NotFound from "./pages/NotFound";
+import AcademyCertificate from "@/pages/AcademyCertificate";
 
 const queryClient = new QueryClient();
 
@@ -27,16 +28,38 @@ const App = () => (
         <AuthProvider>
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
+
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Index />
+                </ProtectedRoute>
+              }
+            />
+
             <Route path="/academy" element={<Academy />} />
             <Route path="/academy/trail/:trailId" element={<AcademyTrail />} />
-            <Route path="/academy/trail/:trailId/module/:moduleId" element={<AcademyModule />} />
+
+            {/* NOVA ROTA DO CERTIFICADO */}
+            <Route
+              path="/academy/trail/:trailId/certificate"
+              element={<AcademyCertificate />}
+            />
+
+            <Route
+              path="/academy/trail/:trailId/module/:moduleId"
+              element={<AcademyModule />}
+            />
+
             <Route path="/academy/progress" element={<AcademyProgress />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/glossary" element={<Glossary />} />
+
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+
           {/* Chatbot global - aparece em todas as páginas */}
           <Chatbot />
         </AuthProvider>
