@@ -23,17 +23,17 @@ export const Chatbot = () => {
   // Injetar estilos personalizados no shadow DOM
   useEffect(() => {
     const injectCustomStyles = () => {
-      const chatElement = document.querySelector('bsc-chat');
+      const chatElement = document.querySelector("bsc-chat");
       if (!chatElement?.shadowRoot) {
         setTimeout(injectCustomStyles, 500);
         return;
       }
 
       const shadowRoot = chatElement.shadowRoot;
-      if (shadowRoot.getElementById('custom-mlops-styles')) return;
+      if (shadowRoot.getElementById("custom-mlops-styles")) return;
 
-      const style = document.createElement('style');
-      style.id = 'custom-mlops-styles';
+      const style = document.createElement("style");
+      style.id = "custom-mlops-styles";
       style.textContent = `
         /* Container principal - Sombra mais suave e elegante */
         #bsc-chat-container {
@@ -379,36 +379,49 @@ export const Chatbot = () => {
         }
 
         /* Botão minimizado - Mais destaque e elegante */
-        .bsc-chat-minimized {
-          width: 64px !important;
-          height: 64px !important;
-          border-radius: 50% !important;
-          background: linear-gradient(135deg, #D4A024 0%, #C8941D 50%, #A67A18 100%) !important;
-          box-shadow: 0 12px 32px rgba(200, 148, 29, 0.35), 0 4px 8px rgba(0, 0, 0, 0.15) !important;
-          bottom: 28px !important;
-          right: 28px !important;
-          cursor: pointer !important;
-          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          border: 3px solid rgba(255, 255, 255, 0.2) !important;
-        }
+.bsc-chat-minimized {
+  width: 64px !important;
+  height: 64px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #D4A024 0%, #C8941D 50%, #A67A18 100%) !important;
+  box-shadow: 0 12px 32px rgba(200, 148, 29, 0.35), 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+  bottom: 28px !important;
+  right: 28px !important;
+  cursor: pointer !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 3px solid rgba(255, 255, 255, 0.2) !important;
+}
 
-        .bsc-chat-minimized:hover {
-          transform: scale(1.15) translateY(-4px) !important;
-          box-shadow: 0 16px 40px rgba(200, 148, 29, 0.45), 0 8px 16px rgba(0, 0, 0, 0.2) !important;
-          border-color: rgba(255, 255, 255, 0.4) !important;
-        }
+/* Ícone de chat dentro do círculo */
+.bsc-chat-minimized::before {
+  content: "" !important;
+  display: block !important;
+  width: 28px !important;
+  height: 28px !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M4 5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3H9.25L6 18.5V15H7a3 3 0 0 1-3-3V5z'/%3E%3C/svg%3E") !important;
+  background-size: 24px 24px !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
 
-        .bsc-chat-minimized:active {
-          transform: scale(1.05) translateY(-2px) !important;
-        }
+.bsc-chat-minimized:hover {
+  transform: scale(1.15) translateY(-4px) !important;
+  box-shadow: 0 16px 40px rgba(200, 148, 29, 0.45), 0 8px 16px rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+}
 
-        /* Esconder texto do botão minimizado */
-        .bsc-chat-minimized .bsc-text-container {
-          display: none !important;
-        }
+.bsc-chat-minimized:active {
+  transform: scale(1.05) translateY(-2px) !important;
+}
+
+/* Esconder qualquer texto do botão minimizado */
+.bsc-chat-minimized .bsc-text-container {
+  display: none !important;
+}
+
 
         /* Botões de ação */
         #bsc-chat-container button {
@@ -441,7 +454,7 @@ export const Chatbot = () => {
           background: #A67A18 !important;
         }
       `;
-      
+
       shadowRoot.appendChild(style);
     };
 
