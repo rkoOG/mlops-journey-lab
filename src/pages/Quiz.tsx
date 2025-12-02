@@ -26,6 +26,14 @@ interface Question {
   correctAnswer: number;
   explanation: string;
 }
+interface AnswerRecord {
+  question: string;
+  options: string[];
+  selectedAnswer: number;
+  correctAnswer: number;
+  isCorrect: boolean;
+  explanation: string;
+}
 
 // Quantas perguntas queres por tentativa
 const QUESTIONS_PER_QUIZ = 15;
@@ -1066,6 +1074,7 @@ const Quiz = () => {
   const [completed, setCompleted] = useState(false);
   const [bestScore, setBestScore] = useState(0);
   const [attemptCount, setAttemptCount] = useState(0);
+  const [answers, setAnswers] = useState<AnswerRecord[]>([]);
 
   useEffect(() => {
     setBestScore(getBestQuizScore());
@@ -1081,14 +1090,32 @@ const Quiz = () => {
     setShowFeedback(false);
     setScore(0);
     setCompleted(false);
+    setAnswers([]); // limpar histórico de respostas
   };
 
   const handleSubmit = () => {
     if (selectedAnswer === null) return;
+
+    const current = questions[currentQuestion];
+    const isCorrect = selectedAnswer === current.correctAnswer;
+
     setShowFeedback(true);
-    if (selectedAnswer === questions[currentQuestion].correctAnswer) {
+    if (isCorrect) {
       setScore((prev) => prev + 1);
     }
+
+    // guardar resposta no histórico
+    setAnswers((prev) => [
+      ...prev,
+      {
+        question: current.question,
+        options: current.options,
+        selectedAnswer,
+        correctAnswer: current.correctAnswer,
+        isCorrect,
+        explanation: current.explanation,
+      },
+    ]);
   };
 
   const finalizarQuiz = () => {
@@ -1332,6 +1359,48 @@ const Quiz = () => {
                           : "Continua a estudar! Volta aos módulos e revê os temas principais. 📚"}
                       </p>
                     </div>
+                    {answers.length > 0 && (
+                      <div className="text-left space-y-3 max-h-[360px] overflow-y-auto border rounded-lg p-4">
+                        <h3 className="font-semibold mb-2 text-center">
+                          Resumo das tuas respostas
+                        </h3>
+                        {answers.map((ans, index) => (
+                          <div
+                            key={index}
+                            className="border-b pb-3 last:border-0 last:pb-0"
+                          >
+                            <p className="text-sm font-medium mb-1">
+                              {index + 1}. {ans.question}
+                            </p>
+                            <p className="text-xs">
+                              A tua resposta:{" "}
+                              <span
+                                className={
+                                  ans.isCorrect
+                                    ? "text-green-600"
+                                    : "text-red-500"
+                                }
+                              >
+                                {ans.options[ans.selectedAnswer]}
+                              </span>
+                            </p>
+                            {!ans.isCorrect && (
+                              <p className="text-xs">
+                                Correta:{" "}
+                                <span className="text-green-600">
+                                  {ans.options[ans.correctAnswer]}
+                                </span>
+                              </p>
+                            )}
+                            {ans.explanation && (
+                              <p className="text-xs text-muted-foreground mt-1">
+                                {ans.explanation}
+                              </p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
                       <Button onClick={handleRestart} size="lg" variant="hero">
