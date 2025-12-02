@@ -5,7 +5,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, BookOpen, Brain, CheckCircle2, Trophy } from "lucide-react";
 import heroImage from "@/assets/hero-pipeline.jpg";
-import { Chatbot } from "@/components/Chatbot";
 
 const Index = () => {
   return (
@@ -218,7 +217,6 @@ const Index = () => {
           </div>
         </section>
       </main>
-      <Chatbot />
 
       <Footer />
     </div>
