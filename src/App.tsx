@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { Chatbot } from "./components/Chatbot";
 import Login from "./pages/login";
 import Index from "./pages/Index";
 import Quiz from "./pages/Quiz";
@@ -14,6 +15,16 @@ import AcademyTrail from "./pages/AcademyTrail";
 import AcademyModule from "./pages/AcademyModule";
 import AcademyProgress from "./pages/AcademyProgress";
 import NotFound from "./pages/NotFound";
+import { useLocation } from "react-router-dom";
+
+const ChatbotWrapper = () => {
+  const location = useLocation();
+  // Não mostrar chatbot na página de login
+  if (location.pathname === "/login") {
+    return null;
+  }
+  return <Chatbot />;
+};
 
 const queryClient = new QueryClient();
 
@@ -36,7 +47,8 @@ const App = () => (
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-          {/* Chatbot removido do global; renderizado só na Home */}
+          {/* Chatbot em todas as páginas exceto login */}
+          <ChatbotWrapper />
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
