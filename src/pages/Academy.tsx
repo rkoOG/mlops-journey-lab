@@ -12,9 +12,22 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Clock, Award, TrendingUp, Search } from "lucide-react";
+import {
+  BookOpen,
+  Clock,
+  Award,
+  TrendingUp,
+  Search,
+  ExternalLink,
+  Library,
+  Link as LinkIcon,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { getTrailProgress } from "@/lib/storage";
+
+// -------------------------------------
+// TRILHAS DE CURSOS (AS TUAS ORIGINAIS)
+// -------------------------------------
 
 const trails = [
   {
@@ -25,7 +38,6 @@ const trails = [
     duration: "8 horas",
     level: "Iniciante",
     modules: 6,
-    progress: 0,
   },
   {
     id: "cicd-ml",
@@ -35,7 +47,6 @@ const trails = [
     duration: "6 horas",
     level: "Intermédio",
     modules: 5,
-    progress: 0,
   },
   {
     id: "experiment-tracking",
@@ -45,7 +56,6 @@ const trails = [
     duration: "5 horas",
     level: "Intermédio",
     modules: 4,
-    progress: 0,
   },
   {
     id: "monitoring-drift",
@@ -55,7 +65,6 @@ const trails = [
     duration: "7 horas",
     level: "Avançado",
     modules: 5,
-    progress: 0,
   },
   {
     id: "chatbots-llm",
@@ -65,82 +74,123 @@ const trails = [
     duration: "10 horas",
     level: "Avançado",
     modules: 7,
-    progress: 0,
   },
 ];
 
-const courses = [
-  {
-    id: "intro-mlops",
-    title: "Introdução ao MLOps",
-    description: "Conceitos básicos e casos de uso",
-    duration: "2 horas",
-    level: "Iniciante",
-  },
-  {
-    id: "python-ml-pipeline",
-    title: "Python para ML Pipeline",
-    description: "Best practices e ferramentas",
-    duration: "4 horas",
-    level: "Iniciante",
-  },
-  {
-    id: "docker-kubernetes-ml",
-    title: "Docker & Kubernetes para ML",
-    description: "Containerização e orquestração",
-    duration: "6 horas",
-    level: "Intermédio",
-  },
-];
+// -------------------------------------
+// RECURSOS COMPLETOS (DOS TEUS FICHEIROS)
+// -------------------------------------
 
-const resources = [
+const resourceGroups = [
   {
-    title: "MLOps Cheat Sheet",
-    description: "Referência rápida de comandos e conceitos",
-    type: "PDF",
-    url: "https://ml-ops.org/content/references",
+    category: "Documentação oficial",
+    icon: BookOpen,
+    items: [
+      {
+        label: "MLOps (Google Cloud)",
+        description:
+          "Guia de arquitectura e práticas de MLOps na Google Cloud.",
+        url: "https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning",
+      },
+      {
+        label: "MLOps (Microsoft Azure)",
+        description:
+          "Gestão e deployment de modelos de ML no Azure Machine Learning.",
+        url: "https://learn.microsoft.com/azure/machine-learning/concept-model-management-and-deployment",
+      },
+      {
+        label: "MLOps (AWS)",
+        description: "Boas práticas e serviços AWS para MLOps.",
+        url: "https://aws.amazon.com/blogs/machine-learning/tag/mlops/",
+      },
+    ],
   },
   {
-    title: "Pipeline Templates",
-    description: "Templates prontos para diferentes casos de uso",
-    type: "Código",
-    url: "https://github.com/GoogleCloudPlatform/mlops-on-gcp",
+    category: "Ferramentas de MLOps",
+    icon: Library,
+    items: [
+      {
+        label: "MLflow",
+        description: "Experiment tracking e model registry.",
+        url: "https://mlflow.org/",
+      },
+      {
+        label: "DVC",
+        description: "Versionamento de dados e pipelines.",
+        url: "https://dvc.org/",
+      },
+      {
+        label: "Evidently AI",
+        description: "Monitorização e deteção de drift.",
+        url: "https://www.evidentlyai.com/",
+      },
+      {
+        label: "Kubeflow",
+        description: "Pipelines de ML em Kubernetes.",
+        url: "https://www.kubeflow.org/",
+      },
+    ],
   },
   {
-    title: "Artigos & Papers",
-    description: "Literatura essencial sobre MLOps",
-    type: "Leitura",
-    url: "https://arxiv.org/search/?query=mlops&searchtype=all",
+    category: "Repositórios recomendados",
+    icon: LinkIcon,
+    items: [
+      {
+        label: "Awesome MLOps",
+        description: "Coleção curada de conteúdos sobre MLOps.",
+        url: "https://github.com/visenger/awesome-mlops",
+      },
+      {
+        label: "MLOps Zoomcamp",
+        description: "Curso prático intensivo gratuito.",
+        url: "https://github.com/DataTalksClub/mlops-zoomcamp",
+      },
+      {
+        label: "Pipeline Templates (GCP)",
+        description: "Templates de pipelines de produção.",
+        url: "https://github.com/GoogleCloudPlatform/mlops-on-gcp",
+      },
+    ],
+  },
+  {
+    category: "Materiais de apoio",
+    icon: BookOpen,
+    items: [
+      {
+        label: "MLOps Cheat Sheet",
+        description: "Referência rápida de conceitos e comandos.",
+        url: "https://ml-ops.org/content/references",
+      },
+      {
+        label: "Artigos & Papers",
+        description: "Literatura fundamental.",
+        url: "https://arxiv.org/search/?query=mlops&searchtype=all",
+      },
+    ],
   },
 ];
 
 export default function Academy() {
-  const [trailsProgress, setTrailsProgress] = useState<Record<string, number>>(
-    {}
-  );
+  const [trailsProgress, setTrailsProgress] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
-  const [levelFilter, setLevelFilter] = useState<
-    "Iniciante" | "Intermédio" | "Avançado" | null
-  >(null);
+  const [levelFilter, setLevelFilter] = useState(null);
 
   useEffect(() => {
     const progress = getTrailProgress();
-    const progressMap: Record<string, number> = {};
-    progress.forEach((p) => {
-      progressMap[p.trailId] = p.progress;
-    });
-    setTrailsProgress(progressMap);
+    const map = {};
+    progress.forEach((p) => (map[p.trailId] = p.progress));
+    setTrailsProgress(map);
   }, []);
-  // Filtrar trilhas com base na pesquisa e no nível
-  const normalizedSearch = searchTerm.trim().toLowerCase();
 
   const filteredTrails = trails.filter((trail) => {
+    const term = searchTerm.toLowerCase();
     const matchesSearch =
-      !normalizedSearch ||
-      trail.title.toLowerCase().includes(normalizedSearch) ||
-      trail.description.toLowerCase().includes(normalizedSearch);
+      !term ||
+      trail.title.toLowerCase().includes(term) ||
+      trail.description.toLowerCase().includes(term);
 
-    const matchesLevel = !levelFilter || trail.level === levelFilter;
+    const matchesLevel =
+      !levelFilter || trail.level.toString() === levelFilter.toString();
 
     return matchesSearch && matchesLevel;
   });
@@ -150,99 +200,70 @@ export default function Academy() {
       <Navbar />
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="container mx-auto px-4 py-12 md:py-20">
-          <div className="text-center max-w-3xl mx-auto animate-fade-in-up">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-academy/10 border border-academy/20 mb-6">
-              <Award className="h-4 w-4 text-academy" />
-              <span className="text-sm font-medium text-academy">
-                Aprende no teu ritmo
-              </span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-academy via-academy-glow to-primary bg-clip-text text-transparent">
-              Cursos de MLOps
-            </h1>
-            <p className="text-lg text-muted-foreground mb-8">
-              Plataforma educacional completa com conteúdo estruturado,
-              exercícios práticos e avaliações. Do zero à produção em MLOps e
-              LLMOps.
-            </p>
+        <section className="container mx-auto px-4 py-12 md:py-20 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-academy/10 border mb-6">
+            <Award className="h-4 w-4 text-academy" />
+            <span className="text-sm font-medium text-academy">
+              Aprende ao teu ritmo
+            </span>
           </div>
+
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            Cursos de MLOps
+          </h1>
+
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Trilhas completas com conteúdo estruturado, exercícios práticos e
+            material de apoio.
+          </p>
         </section>
 
-        {/* Main Content */}
+        {/* TABS */}
         <section className="container mx-auto px-4 pb-20">
-          <Tabs defaultValue="trilhas" className="w-full">
+          <Tabs defaultValue="trilhas">
             <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-12">
               <TabsTrigger value="trilhas">Cursos</TabsTrigger>
-
               <TabsTrigger value="recursos">Recursos</TabsTrigger>
             </TabsList>
 
-            {/* Trilhas Tab */}
-            <TabsContent value="trilhas" className="space-y-8">
+            {/* ------------------------------ */}
+            {/* TRILHAS */}
+            {/* ------------------------------ */}
+            <TabsContent value="trilhas">
+              {/* Pesquisar / Filtros */}
               <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                 <div className="relative w-full md:w-96">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     placeholder="Pesquisar cursos..."
-                    className="pl-10"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10"
                   />
                 </div>
-                <div className="flex gap-2 flex-wrap">
-                  <Badge
-                    variant={
-                      levelFilter === "Iniciante" ? "default" : "outline"
-                    }
-                    className="cursor-pointer hover:bg-muted"
-                    onClick={() =>
-                      setLevelFilter((current) =>
-                        current === "Iniciante" ? null : "Iniciante"
-                      )
-                    }
-                  >
-                    Iniciante
-                  </Badge>
 
-                  <Badge
-                    variant={
-                      levelFilter === "Intermédio" ? "default" : "outline"
-                    }
-                    className="cursor-pointer hover:bg-muted"
-                    onClick={() =>
-                      setLevelFilter((current) =>
-                        current === "Intermédio" ? null : "Intermédio"
-                      )
-                    }
-                  >
-                    Intermédio
-                  </Badge>
-
-                  <Badge
-                    variant={levelFilter === "Avançado" ? "default" : "outline"}
-                    className="cursor-pointer hover:bg-muted"
-                    onClick={() =>
-                      setLevelFilter((current) =>
-                        current === "Avançado" ? null : "Avançado"
-                      )
-                    }
-                  >
-                    Avançado
-                  </Badge>
+                <div className="flex gap-2">
+                  {["Iniciante", "Intermédio", "Avançado"].map((lvl) => (
+                    <Badge
+                      key={lvl}
+                      variant={levelFilter === lvl ? "default" : "outline"}
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setLevelFilter((prev) => (prev === lvl ? null : lvl))
+                      }
+                    >
+                      {lvl}
+                    </Badge>
+                  ))}
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredTrails.map((trail, index) => {
+              {/* Cartões das trilhas */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+                {filteredTrails.map((trail) => {
                   const progress = trailsProgress[trail.id] || 0;
                   return (
-                    <Card
-                      key={trail.id}
-                      className="group hover:shadow-card-hover transition-all duration-300 hover:scale-105 animate-fade-in-up"
-                      style={{ animationDelay: `${index * 100}ms` }}
-                    >
+                    <Card key={trail.id} className="group hover:shadow-lg transition">
                       <CardHeader>
                         <div className="flex items-start justify-between mb-2">
                           <Badge
@@ -256,44 +277,44 @@ export default function Academy() {
                           >
                             {trail.level}
                           </Badge>
+
                           <BookOpen className="h-5 w-5 text-academy" />
                         </div>
-                        <CardTitle className="text-xl group-hover:text-academy transition-colors">
-                          {trail.title}
-                        </CardTitle>
+
+                        <CardTitle>{trail.title}</CardTitle>
                         <CardDescription>{trail.description}</CardDescription>
                       </CardHeader>
+
                       <CardContent className="space-y-4">
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <div className="flex items-center gap-1">
+                          <span className="flex items-center gap-1">
                             <Clock className="h-4 w-4" />
                             {trail.duration}
-                          </div>
-                          <div className="flex items-center gap-1">
+                          </span>
+
+                          <span className="flex items-center gap-1">
                             <BookOpen className="h-4 w-4" />
                             {trail.modules} módulos
-                          </div>
+                          </span>
                         </div>
+
                         {progress > 0 && (
-                          <div className="space-y-2">
+                          <>
                             <div className="flex justify-between text-sm">
-                              <span className="text-muted-foreground">
-                                Progresso
-                              </span>
+                              <span>Progresso</span>
                               <span className="font-medium">{progress}%</span>
                             </div>
+
                             <div className="h-2 bg-muted rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-academy transition-all duration-500"
+                                className="h-full bg-academy transition"
                                 style={{ width: `${progress}%` }}
                               />
                             </div>
-                          </div>
+                          </>
                         )}
-                        <Button
-                          asChild
-                          className="w-full bg-academy hover:bg-academy/80 text-academy-foreground"
-                        >
+
+                        <Button asChild className="w-full bg-academy">
                           <Link to={`/academy/trail/${trail.id}`}>
                             {progress > 0 ? "Continuar" : "Iniciar Curso"}
                           </Link>
@@ -305,70 +326,56 @@ export default function Academy() {
               </div>
             </TabsContent>
 
-            {/* Cursos Tab */}
-            <TabsContent value="cursos" className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {courses.map((course, index) => (
-                  <Card
-                    key={index}
-                    className="hover:shadow-card-hover transition-all duration-300 hover:scale-105 animate-fade-in-up"
-                    style={{ animationDelay: `${index * 100}ms` }}
-                  >
-                    <CardHeader>
-                      <div className="flex items-start justify-between mb-2">
-                        <Badge variant="outline">{course.level}</Badge>
-                        <TrendingUp className="h-5 w-5 text-primary" />
-                      </div>
-                      <CardTitle className="text-xl">{course.title}</CardTitle>
-                      <CardDescription>{course.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Clock className="h-4 w-4" />
-                        {course.duration}
-                      </div>
-                      <Button asChild variant="secondary" className="w-full">
-                        <Link to={`/academy/course/${course.id}`}>
-                          Ver Curso
-                        </Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
+            {/* ------------------------------ */}
+            {/* RECURSOS */}
+            {/* ------------------------------ */}
+            <TabsContent value="recursos" className="space-y-10">
+              <div className="max-w-2xl mx-auto text-center">
+                <h2 className="text-2xl font-semibold">Recursos recomendados</h2>
+                <p className="text-muted-foreground text-sm">
+                  Documentação, ferramentas, repositórios e materiais essenciais para aprofundares o teu conhecimento.
+                </p>
               </div>
-            </TabsContent>
 
-            {/* Recursos Tab */}
-            <TabsContent value="recursos" className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {resources.map((resource, index) => (
-                  <Card
-                    key={index}
-                    className="hover:shadow-card-hover transition-all duration-300 hover:scale-105 animate-fade-in-up"
-                    style={{ animationDelay: `${index * 100}ms` }}
-                  >
-                    <CardHeader>
-                      <div className="flex items-start justify-between mb-2">
-                        <Badge variant="outline">{resource.type}</Badge>
-                      </div>
-                      <CardTitle className="text-xl">
-                        {resource.title}
-                      </CardTitle>
-                      <CardDescription>{resource.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <Button asChild variant="outline" className="w-full">
-                        <a
-                          href={resource.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Download
-                        </a>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
+                {resourceGroups.map((group) => {
+                  const Icon = group.icon;
+                  return (
+                    <Card key={group.category} className="hover:shadow-lg transition">
+                      <CardHeader className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Icon className="h-5 w-5 text-academy" />
+                          <CardTitle className="text-base">
+                            {group.category}
+                          </CardTitle>
+                        </div>
+
+                        <Badge variant="outline">{group.items.length}</Badge>
+                      </CardHeader>
+
+                      <CardContent className="space-y-2">
+                        {group.items.map((item) => (
+                          <a
+                            key={item.url}
+                            href={item.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="p-3 rounded-md hover:bg-muted flex justify-between gap-3 transition"
+                          >
+                            <div>
+                              <p className="text-sm font-medium">{item.label}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {item.description}
+                              </p>
+                            </div>
+
+                            <ExternalLink className="h-4 w-4 text-muted-foreground" />
+                          </a>
+                        ))}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             </TabsContent>
           </Tabs>

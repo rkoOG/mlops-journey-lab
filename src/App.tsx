@@ -2,9 +2,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
-import ProtectedRoute from "./components/ProtectedRoute";
 import { Chatbot } from "./components/Chatbot";
 import Login from "./pages/login";
 import Index from "./pages/Index";
@@ -14,15 +13,12 @@ import Academy from "./pages/Academy";
 import AcademyTrail from "./pages/AcademyTrail";
 import AcademyModule from "./pages/AcademyModule";
 import AcademyProgress from "./pages/AcademyProgress";
+import ObjectivesCredits from "./pages/ObjectivesCredits";
 import NotFound from "./pages/NotFound";
-import { useLocation } from "react-router-dom";
 
 const ChatbotWrapper = () => {
   const location = useLocation();
-  // Não mostrar chatbot na página de login
-  if (location.pathname === "/login") {
-    return null;
-  }
+  if (location.pathname === "/login") return null;
   return <Chatbot />;
 };
 
@@ -37,17 +33,22 @@ const App = () => (
         <AuthProvider>
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
-            <Route path="/academy" element={<ProtectedRoute><Academy /></ProtectedRoute>} />
-            <Route path="/academy/trail/:trailId" element={<ProtectedRoute><AcademyTrail /></ProtectedRoute>} />
-            <Route path="/academy/trail/:trailId/module/:moduleId" element={<ProtectedRoute><AcademyModule /></ProtectedRoute>} />
-            <Route path="/academy/progress" element={<ProtectedRoute><AcademyProgress /></ProtectedRoute>} />
-            <Route path="/quiz" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
-            <Route path="/glossary" element={<ProtectedRoute><Glossary /></ProtectedRoute>} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="/" element={<Index />} />
+            <Route path="/academy" element={<Academy />} />
+            <Route path="/academy/trail/:trailId" element={<AcademyTrail />} />
+            <Route
+              path="/academy/trail/:trailId/module/:moduleId"
+              element={<AcademyModule />}
+            />
+            <Route path="/academy/progress" element={<AcademyProgress />} />
+            <Route path="/quiz" element={<Quiz />} />
+            <Route path="/glossary" element={<Glossary />} />
+            <Route path="/objectives" element={<ObjectivesCredits />} />
+
+            {/* catch-all */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-          {/* Chatbot em todas as páginas exceto login */}
+
           <ChatbotWrapper />
         </AuthProvider>
       </BrowserRouter>

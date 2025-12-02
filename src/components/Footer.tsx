@@ -9,28 +9,33 @@ export const Footer = () => {
           <div>
             <h3 className="mb-3 text-lg font-bold">MLOps Explorer</h3>
             <p className="text-sm text-muted-foreground">
-              Aprende MLOps de forma prática e interativa. Um projeto educativo para
-              estudantes e profissionais.
+              Aprende MLOps de forma prática e interativa. Um projecto educativo
+              para estudantes e profissionais.
             </p>
           </div>
 
           {/* Links */}
           <div>
-            <h4 className="mb-3 text-sm font-semibold">Recursos</h4>
+            <h4 className="mb-3 text-sm font-semibold">Navegação</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
-                <a href="/academy" className="hover:text-foreground transition-colors">
+                <a className="hover:text-foreground transition-colors" href="/academy">
                   Cursos
                 </a>
               </li>
               <li>
-                <a href="/quiz" className="hover:text-foreground transition-colors">
+                <a className="hover:text-foreground transition-colors" href="/quiz">
                   Quiz
                 </a>
               </li>
               <li>
-                <a href="/glossary" className="hover:text-foreground transition-colors">
+                <a className="hover:text-foreground transition-colors" href="/glossary">
                   Glossário
+                </a>
+              </li>
+              <li>
+                <a className="hover:text-foreground transition-colors" href="/objectives">
+                  Objetivos & Créditos
                 </a>
               </li>
             </ul>
@@ -40,22 +45,31 @@ export const Footer = () => {
           <div>
             <h4 className="mb-3 text-sm font-semibold">Contacto</h4>
             <div className="flex space-x-4">
+              {/* GitHub */}
               <a
-                href="#"
+                href="https://github.com/rkoOG/mlops-journey-lab"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="GitHub"
               >
                 <Github className="h-5 w-5" />
               </a>
+
+              {/* LinkedIn */}
               <a
-                href="#"
+                href="https://www.linkedin.com/in/francisco-nunes-b2248a377/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="h-5 w-5" />
               </a>
+
+              {/* Email */}
               <a
-                href="#"
+                href="mailto:rodrigo.meireles9@gmail.com"
                 className="text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Email"
               >
@@ -66,7 +80,7 @@ export const Footer = () => {
         </div>
 
         <div className="mt-8 border-t border-border pt-6 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} MLOps Explorer. Projeto educativo.</p>
+          <p>&copy; {new Date().getFullYear()} MLOps Explorer. Projecto educativo.</p>
         </div>
       </div>
     </footer>
