@@ -29,6 +29,7 @@ import qualidadeDadosVideo from "@/assets/qualidade-de-dados.mp4";
 import validacaoDadosVideo from "@/assets/validacao-de-dados.mp4";
 import { markModuleComplete, getSpecificTrailProgress } from "@/lib/storage";
 import { toast } from "sonner";
+import { readingContent, ReadingSlide } from "@/data/readingContent";
 
 const moduleData = {
   // 🔹 Mantém aqui EXACTAMENTE o que já tinhas para mlops-fundamentals
@@ -50,7 +51,7 @@ const moduleData = {
         {
           id: 2,
           title: "Ciclo de vida de ML",
-          type: "reading",
+          type: "https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning",
           duration: "15min",
           completed: false,
           videoUrl: introVideo,
@@ -1538,6 +1539,7 @@ export default function AcademyModule() {
   const navigate = useNavigate();
   const [currentLesson, setCurrentLesson] = useState(0);
   const [completedLessons, setCompletedLessons] = useState<number[]>([]);
+  const [readIndex, setReadIndex] = useState(0);
 
   
   // Obter todos os módulos da trilha actual
@@ -1562,6 +1564,7 @@ export default function AcademyModule() {
     }
     // Reset lição atual ao mudar de módulo
     setCurrentLesson(0);
+    setReadIndex(0);
   }, [trailId, moduleId]);
 
   useEffect(() => {
@@ -1585,6 +1588,14 @@ export default function AcademyModule() {
       markModuleComplete(trailId as string, moduleId as string, totalModules);
     }
   }, [completedLessons, module, trailId, moduleId, totalModules]);
+
+  useEffect(() => {
+    // Reset do carousel quando muda a lesson
+    setReadIndex(0);
+  }, [currentLesson]);
+
+  const currentSlides: ReadingSlide[] =
+    readingContent[module?.lessons?.[currentLesson]?.title ?? ""] ?? [];
 
   const markLessonComplete = (lessonIndex: number) => {
     if (!completedLessons.includes(lessonIndex)) {
@@ -1786,13 +1797,112 @@ export default function AcademyModule() {
                       </video>
                     </div>
                   ) : (
-                    <div className="aspect-video bg-muted rounded-lg flex items-center justify-center mb-6">
-                      <div className="text-center">
-                        <BookOpen className="h-16 w-16 text-muted-foreground mx-auto mb-2" />
-                        <p className="text-sm text-muted-foreground">
-                          Conteúdo de leitura
-                        </p>
-                      </div>
+                    <div className="bg-muted/60 border rounded-lg p-6 space-y-4 mb-6">
+                      {currentSlides.length > 0 ? (
+                        <>
+                          <div className="flex items-start gap-3">
+                            <div className="p-2 rounded-full bg-academy/10 text-academy">
+                              <BookOpen className="h-5 w-5" />
+                            </div>
+                            <div>
+                              <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                                Leitura guiada
+                              </p>
+                              <h3 className="text-lg font-semibold leading-tight">
+                                {currentSlides[readIndex].title}
+                              </h3>
+                              <p className="text-sm text-muted-foreground">
+                                {module.lessons[currentLesson].duration} •{" "}
+                                {currentSlides[readIndex].tag ?? "Leitura"}
+                              </p>
+                            </div>
+                          </div>
+
+                          <p className="text-sm leading-relaxed text-muted-foreground">
+                            {currentSlides[readIndex].excerpt}
+                          </p>
+
+                          <div className="flex items-center justify-between">
+                            <div className="space-y-1">
+                              <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                                Fonte
+                              </p>
+                              <a
+                                className="inline-flex items-center gap-2 text-sm font-semibold text-academy hover:underline"
+                                href={currentSlides[readIndex].url}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                {currentSlides[readIndex].source}
+                                <ExternalLink className="h-4 w-4" />
+                              </a>
+                              {currentSlides[readIndex].est ? (
+                                <p className="text-xs text-muted-foreground">
+                                  Est. {currentSlides[readIndex].est}
+                                </p>
+                              ) : null}
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              <Button
+                                variant="outline"
+                                size="icon"
+                                aria-label="Anterior"
+                                disabled={currentSlides.length <= 1}
+                                onClick={() =>
+                                  setReadIndex((prev) =>
+                                    prev === 0
+                                      ? currentSlides.length - 1
+                                      : prev - 1
+                                  )
+                                }
+                              >
+                                <ChevronLeft className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="icon"
+                                aria-label="Seguinte"
+                                disabled={currentSlides.length <= 1}
+                                onClick={() =>
+                                  setReadIndex((prev) =>
+                                    prev === currentSlides.length - 1
+                                      ? 0
+                                      : prev + 1
+                                  )
+                                }
+                              >
+                                <ChevronRight className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+
+                          {currentSlides.length > 1 ? (
+                            <div className="flex items-center justify-center gap-2 pt-2">
+                              {currentSlides.map((_, idx) => (
+                                <span
+                                  key={idx}
+                                  onClick={() => setReadIndex(idx)}
+                                  className={`h-2 w-2 rounded-full cursor-pointer transition ${
+                                    idx === readIndex
+                                      ? "bg-academy"
+                                      : "bg-muted-foreground/30"
+                                  }`}
+                                />
+                              ))}
+                            </div>
+                          ) : null}
+                        </>
+                      ) : (
+                        <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
+                          <div className="text-center">
+                            <BookOpen className="h-16 w-16 text-muted-foreground mx-auto mb-2" />
+                            <p className="text-sm text-muted-foreground">
+                              Conteúdo de leitura
+                            </p>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </CardContent>
