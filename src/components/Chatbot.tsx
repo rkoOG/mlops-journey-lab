@@ -37,7 +37,10 @@ export const Chatbot = () => {
       style.textContent = `
         /* Container principal - Sombra mais suave e elegante */
         #bsc-chat-container {
-          width: 380px !important;
+          position: fixed !important;
+          right: clamp(12px, 2vw, 28px) !important;
+          bottom: clamp(12px, 2vh, 28px) !important;
+          width: min(380px, calc(100vw - 48px)) !important;
           height: 600px !important;
           max-height: 85vh !important;
           border-radius: 20px !important;
@@ -264,21 +267,30 @@ export const Chatbot = () => {
           padding: 16px 20px 18px 20px !important;
           border-radius: 0 0 20px 20px !important;
           border-top: 1px solid #e8eaed !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
         }
 
-        /* Container do input e botão */
+        /* Container do input e bot?o */
         #bsc-chat-container .bsc-footer #bsc-footer-zones {
           display: flex !important;
           align-items: center !important;
-          gap: 12px !important;
+          justify-content: center !important;
+          gap: 10px !important;
           padding: 0 !important;
+          width: 100% !important;
+          max-width: 520px !important;
+          margin: 0 auto !important;
         }
 
         /* Input - Design ultra moderno */
         #bsc-chat-container .bsc-footer #bsc-user-input {
+          display: flex !important;
+          align-items: center !important;
           background-color: #f8f9fa !important;
           border-radius: 28px !important;
-          padding: 14px 24px !important;
+          padding: 16px 26px !important;
           font-size: 15px !important;
           border: 2px solid #e8eaed !important;
           color: #1f2937 !important;
@@ -286,18 +298,8 @@ export const Chatbot = () => {
           box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
           flex: 1 !important;
           min-height: 48px !important;
-        }
-
-        #bsc-chat-container .bsc-footer #bsc-user-input:hover {
-          border-color: #d1d5db !important;
-          background-color: #ffffff !important;
-        }
-
-        #bsc-chat-container .bsc-footer #bsc-user-input:focus {
-          background-color: #ffffff !important;
-          border-color: #D4A024 !important;
-          box-shadow: 0 0 0 4px rgba(212, 160, 36, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08) !important;
-          outline: none !important;
+          margin: 0 6px 0 0 !important;
+          line-height: 1.4 !important;
         }
 
         #bsc-chat-container .bsc-footer #bsc-user-input::placeholder {
@@ -318,6 +320,7 @@ export const Chatbot = () => {
           display: flex !important;
           align-items: center !important;
           justify-content: center !important;
+          align-self: center !important;
           cursor: pointer !important;
           border: none !important;
           position: relative !important;
@@ -385,8 +388,8 @@ export const Chatbot = () => {
   border-radius: 50% !important;
   background: linear-gradient(135deg, #D4A024 0%, #C8941D 50%, #A67A18 100%) !important;
   box-shadow: 0 12px 32px rgba(200, 148, 29, 0.35), 0 4px 8px rgba(0, 0, 0, 0.15) !important;
-  bottom: 28px !important;
-  right: 28px !important;
+  bottom: clamp(12px, 2vh, 28px) !important;
+  right: clamp(12px, 2vw, 28px) !important;
   cursor: pointer !important;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
   display: flex !important;
@@ -471,3 +474,6 @@ export const Chatbot = () => {
     />
   );
 };
+
+
+

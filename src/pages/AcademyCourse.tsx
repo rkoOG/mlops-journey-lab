@@ -19,6 +19,9 @@ import {
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import introVideo from "@/assets/mlops-intro-video.mp4";
+import ingestaoDadosVideo from "@/assets/ingestao-dados-video.mp4";
+import qualidadeDadosVideo from "@/assets/qualidade-dados-video.mp4";
+import validacaoDadosVideo from "@/assets/validacao-dados-video.mp4";
 
 const courseData = {
   "intro-mlops": {
