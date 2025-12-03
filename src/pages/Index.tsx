@@ -181,11 +181,11 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="grid gap-8 md:grid-cols-3 max-w-4xl mx-auto">
               <div className="text-center">
-                <div className="text-4xl font-bold text-academy mb-2">3</div>
+                <div className="text-4xl font-bold text-academy mb-2">5</div>
                 <div className="text-muted-foreground">Cursos Disponíveis</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold text-primary mb-2">50+</div>
+                <div className="text-4xl font-bold text-primary mb-2">25+</div>
                 <div className="text-muted-foreground">Lições Interativas</div>
               </div>
               <div className="text-center">
