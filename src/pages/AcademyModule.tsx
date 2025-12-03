@@ -24,6 +24,9 @@ import {
 } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import introVideo from "@/assets/mlops-intro-video.mp4";
+import ingestaoDadosVideo from "@/assets/ingestao-de-dados.mp4";
+import qualidadeDadosVideo from "@/assets/qualidade-de-dados.mp4";
+import validacaoDadosVideo from "@/assets/validacao-de-dados.mp4";
 import { markModuleComplete, getSpecificTrailProgress } from "@/lib/storage";
 import { toast } from "sonner";
 
@@ -98,7 +101,7 @@ const moduleData = {
           type: "video",
           duration: "15min",
           completed: false,
-          videoUrl: introVideo,
+          videoUrl: ingestaoDadosVideo,
         },
         {
           id: 2,
@@ -114,7 +117,7 @@ const moduleData = {
           type: "video",
           duration: "25min",
           completed: false,
-          videoUrl: introVideo,
+          videoUrl: validacaoDadosVideo,
         },
         {
           id: 4,
@@ -130,7 +133,7 @@ const moduleData = {
           type: "video",
           duration: "15min",
           completed: false,
-          videoUrl: introVideo,
+          videoUrl: qualidadeDadosVideo,
         },
       ],
       content: {
@@ -180,7 +183,7 @@ const moduleData = {
           type: "video",
           duration: "25min",
           completed: false,
-          videoUrl: introVideo,
+          videoUrl: validacaoDadosVideo,
         },
         {
           id: 4,
@@ -196,7 +199,7 @@ const moduleData = {
           type: "video",
           duration: "15min",
           completed: false,
-          videoUrl: introVideo,
+          videoUrl: validacaoDadosVideo,
         },
         {
           id: 6,
